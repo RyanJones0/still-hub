@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Five-Pocket Trouser — STILL</title>
+  <meta name="description" content="228gsm Merino-TENCEL blend, woven in Biella, Italy. Made in Portugal. The trouser that moves with your day.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================== NAV ======================== -->
+  <nav class="nav" role="navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">Still</a>
+      <ul class="nav__links">
+        <li><a href="collection.html" class="nav__link">Collection</a></li>
+        <li><a href="shop.html" class="nav__link active">Shop</a></li>
+        <li><a href="about.html" class="nav__link">Story</a></li>
+        <li><a href="journal.html" class="nav__link">Journal</a></li>
+      </ul>
+      <div class="nav__actions">
+        <div class="nav__cart" role="button" tabindex="0">
+          Cart <span class="nav__cart-count">0</span>
+        </div>
+      </div>
+      <button class="nav__hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <nav class="nav__mobile">
+    <a href="shop.html" class="nav__mobile-link">Shop</a>
+    <a href="about.html" class="nav__mobile-link">Story</a>
+    <a href="journal.html" class="nav__mobile-link">Journal</a>
+    <a href="#" class="nav__mobile-link" style="color:var(--muted);font-size:18px">Cart (0)</a>
+  </nav>
+
+  <main>
+    <div class="product-detail">
+
+      <!-- ======================== GALLERY ======================== -->
+      <div class="product-gallery">
+        <div class="product-gallery__main">
+
+          <div class="product-gallery__primary">
+            <div class="img-placeholder img-placeholder--light" style="width:100%;height:100%;"></div>
+          </div>
+
+          <div class="product-gallery__secondary">
+            <div class="product-gallery__thumb active">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <div class="product-gallery__thumb">
+              <div class="img-placeholder img-placeholder--chalk"></div>
+            </div>
+            <div class="product-gallery__thumb">
+              <div class="img-placeholder img-placeholder--sand"></div>
+            </div>
+            <div class="product-gallery__thumb">
+              <div class="img-placeholder img-placeholder--dark"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================== PRODUCT INFO ======================== -->
+      <div class="product-info">
+
+        <!-- Breadcrumb -->
+        <p class="label" style="margin-bottom:20px">
+          <a href="shop.html" style="color:var(--muted)">Shop</a>
+          <span style="margin:0 8px;color:var(--border)">—</span>
+          The Trouser
+        </p>
+
+        <h1 class="product-info__name">The Five-Pocket Trouser</h1>
+        <p class="product-info__price">$225</p>
+
+        <!-- Fabric block -->
+        <div class="product-fabric">
+          <p class="product-fabric__heading">Fabric &amp; Origin</p>
+          <p class="product-fabric__text">
+            228gsm Merino-TENCEL blend. Wrinkle-resistant.
+            Machine washable cold. Structured without stiffness.
+            Pre-washed for immediate comfort. Gets better with wear.
+          </p>
+          <div class="product-fabric__origin">
+            <div class="product-fabric__origin-item">
+              <strong>Woven</strong>
+              Biella, Italy
+            </div>
+            <div class="product-fabric__origin-item">
+              <strong>Made</strong>
+              Porto, Portugal
+            </div>
+            <div class="product-fabric__origin-item">
+              <strong>Weight</strong>
+              228gsm
+            </div>
+          </div>
+        </div>
+
+        <!-- Fit note -->
+        <p class="product-fit">
+          Mid-rise. Tapered from hip. 30" inseam (size 32).
+          Fits true to size. If between sizes, size down.
+          <a href="#" style="color:var(--graphite);border-bottom:1px solid var(--border)">Full size guide</a>
+        </p>
+
+        <!-- Color selector -->
+        <div class="product-colors">
+          <p class="product-colors__label">Colour — <span id="color-name">Graphite</span></p>
+          <div class="product-colors__options">
+            <div class="color-swatch active"
+              style="background:var(--graphite)"
+              title="Graphite"
+              data-color="Graphite"></div>
+            <div class="color-swatch"
+              style="background:var(--sand)"
+              title="Sand"
+              data-color="Sand"></div>
+            <div class="color-swatch"
+              style="background:var(--navy)"
+              title="Navy"
+              data-color="Navy"></div>
+            <div class="color-swatch"
+              style="background:var(--black)"
+              title="Black"
+              data-color="Black"></div>
+          </div>
+        </div>
+
+        <!-- Size selector -->
+        <div class="product-sizes">
+          <p class="product-sizes__label">Size</p>
+          <div class="product-sizes__grid">
+            <button class="size-btn unavailable">28</button>
+            <button class="size-btn">30</button>
+            <button class="size-btn">32</button>
+            <button class="size-btn">34</button>
+            <button class="size-btn">36</button>
+            <button class="size-btn">38</button>
+          </div>
+        </div>
+
+        <!-- Add to cart -->
+        <button class="btn-primary">Add to Cart</button>
+
+        <!-- Shipping note -->
+        <p style="font-size:12px;color:var(--muted);text-align:center;letter-spacing:0.04em">
+          Ships within 2 business days. Free returns within 30 days.
+        </p>
+
+        <!-- Accordions -->
+        <div class="accordion">
+
+          <div class="accordion__item">
+            <button class="accordion__trigger">
+              Details &amp; Construction
+              <span class="accordion__icon">+</span>
+            </button>
+            <div class="accordion__content">
+              <div class="accordion__body">
+                <p>Five-pocket silhouette. Mid-rise with a clean, flat front. Tapered leg from hip to hem. Concealed zip fly. Internal waistband grip. Belt loops spaced for standard 1.25" belts.</p>
+                <p style="margin-top:12px">Every piece is inspected before shipping. Seam allowance 1.5cm throughout. Bartacked at all stress points.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion__item">
+            <button class="accordion__trigger">
+              Care Instructions
+              <span class="accordion__icon">+</span>
+            </button>
+            <div class="accordion__content">
+              <div class="accordion__body">
+                <p>Machine wash cold, gentle cycle. Lay flat to dry or tumble dry low. Do not bleach. Iron on low if needed — the fabric is largely wrinkle-resistant so this is rarely necessary.</p>
+                <p style="margin-top:12px">The Merino-TENCEL blend improves with careful washing. After 5–6 washes it reaches its final hand-feel.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion__item">
+            <button class="accordion__trigger">
+              Shipping &amp; Returns
+              <span class="accordion__icon">+</span>
+            </button>
+            <div class="accordion__content">
+              <div class="accordion__body">
+                <p>Standard shipping: 3–5 business days. Express: 1–2 business days.</p>
+                <p style="margin-top:12px">Returns accepted within 30 days of receipt. Item must be unworn and in original packaging. Initiate a return through your order confirmation email.</p>
+                <p style="margin-top:12px">The price is the price. We don't discount. If you're unsure on sizing, email us before ordering — we'll help you get it right.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- / product-info -->
+
+    </div>
+    <!-- / product-detail -->
+
+    <!-- ======================== YOU MIGHT ALSO WANT ======================== -->
+    <section style="padding:80px 0;border-top:1px solid var(--border)">
+      <div class="container">
+        <p class="label label--dark" style="margin-bottom:40px">Complete the look</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px">
+
+          <a href="product.html" class="product-card">
+            <div class="product-card__image" style="aspect-ratio:3/4">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <div class="product-card__info" style="margin-top:16px">
+              <span class="product-card__name">Foundation Tee</span>
+              <span class="product-card__price">$95</span>
+            </div>
+          </a>
+
+          <a href="product.html" class="product-card">
+            <div class="product-card__image" style="aspect-ratio:3/4">
+              <div class="img-placeholder img-placeholder--dark"></div>
+            </div>
+            <div class="product-card__info" style="margin-top:16px">
+              <span class="product-card__name">Soft-Construction Blazer</span>
+              <span class="product-card__price">$445</span>
+            </div>
+          </a>
+
+          <a href="product.html" class="product-card">
+            <div class="product-card__image" style="aspect-ratio:3/4">
+              <div class="img-placeholder img-placeholder--light"></div>
+            </div>
+            <div class="product-card__info" style="margin-top:16px">
+              <span class="product-card__name">Merino Half-Zip</span>
+              <span class="product-card__price">$265</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__brand">Still</span>
+        <nav class="footer__nav">
+          <a href="shop.html" class="footer__nav-link">Shop</a>
+          <a href="about.html" class="footer__nav-link">Story</a>
+          <a href="journal.html" class="footer__nav-link">Journal</a>
+          <a href="#" class="footer__nav-link">Care</a>
+          <a href="#" class="footer__nav-link">Returns</a>
+        </nav>
+        <div class="footer__right">
+          <p>Made in Portugal &amp; Peru</p>
+          <p style="margin-top:6px">© 2026 Still</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Color name update on swatch click
+    document.querySelectorAll('.color-swatch[data-color]').forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        document.getElementById('color-name').textContent = swatch.dataset.color;
+      });
+    });
+  </script>
+</body>
+</html>

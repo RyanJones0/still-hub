@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Full Collection — STILL</title>
+  <meta name="description" content="The complete STILL wardrobe. Socks to hat. Every piece considered.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Collection-specific styles */
+    .collection-hero {
+      height: 80svh;
+      min-height: 560px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: var(--nav-height);
+    }
+
+    .collection-hero__image {
+      overflow: hidden;
+    }
+
+    .collection-hero__image .img-placeholder {
+      width: 100%;
+      height: 100%;
+    }
+
+    .collection-hero__content {
+      background: var(--graphite);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 72px;
+    }
+
+    .collection-hero__eyebrow {
+      color: var(--sand);
+      margin-bottom: 24px;
+    }
+
+    .collection-hero__title {
+      font-size: clamp(40px, 4.5vw, 72px);
+      font-weight: 300;
+      color: var(--chalk);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .collection-hero__desc {
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(244,241,236,0.6);
+      line-height: 1.8;
+      max-width: 380px;
+    }
+
+    /* Category nav */
+    .category-nav {
+      position: sticky;
+      top: var(--nav-height);
+      z-index: 50;
+      background: var(--chalk);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+
+    .category-nav__inner {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .category-nav__inner::-webkit-scrollbar { display: none; }
+
+    .category-nav__item {
+      flex-shrink: 0;
+      padding: 20px 28px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .category-nav__item:hover { color: var(--graphite); }
+    .category-nav__item.active {
+      color: var(--graphite);
+      border-bottom-color: var(--graphite);
+    }
+
+    /* Category section */
+    .cat-section {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cat-section__header {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: start;
+      margin-bottom: 72px;
+    }
+
+    .cat-section__number {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 16px;
+    }
+
+    .cat-section__title {
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 300;
+      color: var(--graphite);
+      line-height: 1.1;
+    }
+
+    .cat-section__intro {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.85;
+      padding-top: 8px;
+    }
+
+    /* Product rows within a category */
+    .cat-products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      row-gap: 64px;
+    }
+
+    .cat-products--3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .cat-products--full {
+      grid-template-columns: 1fr;
+    }
+
+    /* Product card variant — horizontal for socks/accessories */
+    .product-card--horizontal {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .product-card--horizontal .product-card__image {
+      aspect-ratio: 4/3;
+    }
+
+    .product-card--horizontal .product-card__body {
+      padding-top: 8px;
+    }
+
+    .product-card__name-lg {
+      font-size: clamp(18px, 1.8vw, 24px);
+      font-weight: 300;
+      color: var(--graphite);
+      margin-bottom: 6px;
+    }
+
+    .product-card__price-lg {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .product-card__fabric {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--graphite);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-card__desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .product-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .product-card__meta-item strong {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3px;
+      font-weight: 500;
+    }
+
+    .product-card__meta-item span {
+      font-size: 12px;
+      color: var(--graphite);
+    }
+
+    /* Full-set look block */
+    .set-look {
+      background: var(--graphite);
+      padding: 100px 0;
+    }
+
+    .set-look__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .set-look__image {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+
+    .set-look__image .img-placeholder {
+      width: 100%;
+      height: 100%;
+    }
+
+    .set-look__content {
+      padding: 80px 72px;
+      background: rgba(255,255,255,0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .set-look__eyebrow {
+      color: var(--sand);
+      margin-bottom: 32px;
+    }
+
+    .set-look__title {
+      font-size: clamp(28px,3vw,44px);
+      font-weight: 300;
+      color: var(--chalk);
+      margin-bottom: 48px;
+      line-height: 1.2;
+    }
+
+    .set-look__items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .set-look__item {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .set-look__item:first-child { border-top: 1px solid rgba(255,255,255,0.1); }
+
+    .set-look__item-name {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--chalk);
+    }
+
+    .set-look__item-price {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(244,241,236,0.5);
+    }
+
+    .set-look__total {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 24px;
+      margin-top: 8px;
+    }
+
+    .set-look__total-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(244,241,236,0.5);
+    }
+
+    .set-look__total-price {
+      font-size: 15px;
+      color: var(--chalk);
+      font-weight: 300;
+    }
+
+    .set-look__cta {
+      margin-top: 40px;
+      display: inline-block;
+      padding: 18px 40px;
+      border: 1px solid rgba(244,241,236,0.3);
+      color: var(--chalk);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      transition: background 0.25s, border-color 0.25s;
+    }
+
+    .set-look__cta:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(244,241,236,0.6);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .collection-hero { grid-template-columns: 1fr; height: auto; }
+      .collection-hero__image { aspect-ratio: 4/3; }
+      .collection-hero__content { padding: 48px var(--gutter); }
+      .cat-section__header { grid-template-columns: 1fr; gap: 24px; }
+      .cat-products { grid-template-columns: 1fr; }
+      .cat-products--3 { grid-template-columns: 1fr; }
+      .product-card--horizontal { grid-template-columns: 1fr; }
+      .set-look__inner { grid-template-columns: 1fr; }
+      .set-look__content { padding: 48px var(--gutter); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">Still</a>
+      <ul class="nav__links">
+        <li><a href="shop.html" class="nav__link active">Shop</a></li>
+        <li><a href="about.html" class="nav__link">Story</a></li>
+        <li><a href="journal.html" class="nav__link">Journal</a></li>
+      </ul>
+      <div class="nav__actions">
+        <div class="nav__cart" role="button" tabindex="0">Cart <span class="nav__cart-count">0</span></div>
+      </div>
+      <button class="nav__hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <nav class="nav__mobile">
+    <a href="shop.html" class="nav__mobile-link">Shop</a>
+    <a href="about.html" class="nav__mobile-link">Story</a>
+    <a href="journal.html" class="nav__mobile-link">Journal</a>
+    <a href="#" class="nav__mobile-link" style="color:var(--muted);font-size:18px">Cart (0)</a>
+  </nav>
+
+  <main>
+
+    <!-- COLLECTION HERO -->
+    <section class="collection-hero">
+      <div class="collection-hero__image">
+        <div class="img-placeholder img-placeholder--warm" style="width:100%;height:100%"></div>
+      </div>
+      <div class="collection-hero__content">
+        <p class="label collection-hero__eyebrow">The Foundation Collection</p>
+        <h1 class="collection-hero__title">Head<br>to toe.</h1>
+        <p class="collection-hero__desc">
+          Every piece you need. Nothing you don't.
+          From the sock on your foot to the cap on your head —
+          one wardrobe, one material standard, one approach.
+        </p>
+      </div>
+    </section>
+
+    <!-- STICKY CATEGORY NAV -->
+    <nav class="category-nav" aria-label="Collection categories">
+      <div class="container">
+        <div class="category-nav__inner">
+          <a href="#hats"       class="category-nav__item active">Hats</a>
+          <a href="#hoodies"    class="category-nav__item">Hoodies</a>
+          <a href="#shirts"     class="category-nav__item">Shirts</a>
+          <a href="#longsleeve" class="category-nav__item">Long Sleeve</a>
+          <a href="#tees"       class="category-nav__item">Tees</a>
+          <a href="#trackies"   class="category-nav__item">Trackies</a>
+          <a href="#shorts"     class="category-nav__item">Shorts</a>
+          <a href="#trousers"   class="category-nav__item">Trousers</a>
+          <a href="#socks"      class="category-nav__item">Socks</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===================================================
+         01. HATS
+    =================================================== -->
+    <section class="cat-section" id="hats">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">01 — Hats</p>
+            <h2 class="cat-section__title">The Cap</h2>
+          </div>
+          <p class="cat-section__intro">
+            No embroidered logos. No plastic snapbacks. A hat made from
+            the same standard as everything else — structured where it needs
+            to be, relaxed where it doesn't. Two versions: one for every day,
+            one for everywhere else.
+          </p>
+        </div>
+
+        <div class="cat-products cat-products--3">
+
+          <!-- The 6-Panel -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <div class="product-card__info" style="margin-top:16px">
+              <span class="product-card__name">The Six-Panel</span>
+              <span class="product-card__price">$85</span>
+            </div>
+            <div style="margin-top:10px">
+              <p style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.6">
+                Unstructured. Cotton twill shell, cotton sweatband.
+                Adjustable with a clean brass buckle at the back.
+                No external branding.
+              </p>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- The Wool Cap -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--dark"></div>
+            </div>
+            <div class="product-card__info" style="margin-top:16px">
+              <span class="product-card__name">The Wool Cap</span>
+              <span class="product-card__price">$105</span>
+            </div>
+            <div style="margin-top:10px">
+              <p style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.6">
+                Structured 6-panel. 80% Merino wool, 20% nylon.
+                Pre-curved peak. Tonal taping on the interior brim.
+                One size, fully adjustable.
+              </p>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- The Bucket -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+            </div>
+            <div class="product-card__info" style="margin-top:16px">
+              <span class="product-card__name">The Bucket</span>
+              <span class="product-card__price">$95</span>
+            </div>
+            <div style="margin-top:10px">
+              <p style="font-size:12px;color:var(--muted);font-weight:300;line-height:1.6">
+                Medium brim. 100% washed cotton canvas.
+                Clean seams, no grommets, no eyelets.
+                Packable. Holds its shape after packing.
+              </p>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         02. HOODIES
+    =================================================== -->
+    <section class="cat-section" id="hoodies">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">02 — Hoodies</p>
+            <h2 class="cat-section__title">The Hoodie</h2>
+          </div>
+          <p class="cat-section__intro">
+            Most hoodies are made from fleece that goes soft immediately and
+            loses its structure within months. Ours uses structured French terry —
+            380gsm, woven tight, architectural through the chest and shoulder.
+            Two versions: pullover and zip.
+          </p>
+        </div>
+
+        <div class="cat-products">
+
+          <!-- Foundation Hoodie -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+              <div class="img-placeholder img-placeholder--chalk img-placeholder--alt"></div>
+            </div>
+            <div style="padding-top:20px">
+              <div class="product-card__info">
+                <span class="product-card__name">Foundation Hoodie</span>
+                <span class="product-card__price">$185</span>
+              </div>
+              <p style="margin-top:12px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                380gsm French terry. Structured pullover silhouette.
+                Set-in sleeve. Clean kangaroo pocket with internal
+                phone divider. Ribbed cuffs and hem. Drawcord with
+                gunmetal tips. No logo — just a small interior label.
+              </p>
+              <div style="margin-top:12px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Lyon, France · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- The Zip -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--dark"></div>
+              <div class="img-placeholder img-placeholder--graphite img-placeholder--alt"></div>
+            </div>
+            <div style="padding-top:20px">
+              <div class="product-card__info">
+                <span class="product-card__name">The Zip</span>
+                <span class="product-card__price">$205</span>
+              </div>
+              <p style="margin-top:12px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                Same French terry as the pullover. Full-length YKK
+                zip in gunmetal. No hood drawcord (cleaner silhouette).
+                Two zip pockets at hip — no hand warmer pocket.
+                Structured enough to wear over a shirt and under a jacket.
+              </p>
+              <div style="margin-top:12px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Lyon, France · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         03. SHIRTS (WOVEN)
+    =================================================== -->
+    <section class="cat-section" id="shirts">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">03 — Shirts</p>
+            <h2 class="cat-section__title">The Shirt</h2>
+          </div>
+          <p class="cat-section__intro">
+            Woven shirts. Not dress shirts — life shirts. Cut with enough
+            structure to read intentional, enough ease to wear untucked,
+            enough fabric weight to hang correctly. The collar is the detail
+            everything else is built around.
+          </p>
+        </div>
+
+        <div class="cat-products cat-products--3">
+
+          <!-- The Oxford -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">The Oxford</span>
+                <span class="product-card__price">$165</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                140gsm Royal Oxford cloth. 100% Pima cotton. Two-button
+                collar. Slightly elongated body for untucked wear.
+                Mother-of-pearl buttons. Split hem.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+            </div>
+          </a>
+
+          <!-- The Overshirt -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">The Overshirt</span>
+                <span class="product-card__price">$225</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                300gsm brushed cotton twill. Worn over a tee or under
+                a jacket. Two chest pockets with single-button closure.
+                Slightly boxy cut. Heavyweight enough to read as outerwear.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Japan · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- The Polo -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--chalk"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Foundation Polo</span>
+                <span class="product-card__price">$145</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                210gsm Pima piqué. 2-button placket, no external logo.
+                Ribbed collar and cuffs in the same fabric — not a
+                contrast rib. Slight curved hem. Fits true to size.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Peru · Made in Peru
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         04. LONG SLEEVE
+    =================================================== -->
+    <section class="cat-section" id="longsleeve">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">04 — Long Sleeve</p>
+            <h2 class="cat-section__title">The Long-Sleeve</h2>
+          </div>
+          <p class="cat-section__intro">
+            The piece between a tee and a shirt. Worn alone or under a jacket —
+            it has to do both equally well. Two constructions: one in Pima
+            for warmth, one in Merino for everything else.
+          </p>
+        </div>
+
+        <div class="cat-products">
+
+          <!-- Long-Sleeve Foundation -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Long-Sleeve Foundation</span>
+                <span class="product-card__price">$125</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                230gsm Pima cotton. Same fabric as the Foundation Tee —
+                extended into a long sleeve. Set-in sleeve. Clean crew
+                neck. Slightly heavier hem to prevent riding up.
+                Pre-washed. Ready to wear from the first use.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Peru · Made in Peru
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- Merino Long Sleeve -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--dark"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Merino Long-Sleeve</span>
+                <span class="product-card__price">$165</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                180gsm superfine Merino (17.5 micron). Temperature-regulating.
+                Odour-resistant — wear it three days. Machine washable.
+                Slightly slimmer fit than the Pima version — cut to sit
+                clean under a jacket without bunching.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Wool from New Zealand · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         05. TEES
+    =================================================== -->
+    <section class="cat-section" id="tees">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">05 — Tees</p>
+            <h2 class="cat-section__title">The Tee</h2>
+          </div>
+          <p class="cat-section__intro">
+            The most over-made, under-considered garment in any wardrobe.
+            Ours starts with 230gsm Pima — heavier than most brands dare,
+            because weight is what gives a tee presence. Two cuts: foundation
+            (relaxed) and fitted. Both earn the price tag.
+          </p>
+        </div>
+
+        <div class="cat-products cat-products--3">
+
+          <!-- Foundation Tee -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+              <div class="img-placeholder img-placeholder--warm img-placeholder--alt"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Foundation Tee</span>
+                <span class="product-card__price">$95</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                230gsm Pima cotton. Pre-washed for a settled hand-feel.
+                Set-in sleeve. Slightly extended body and hem.
+                Crew neck with 1x1 rib collar. No side seams — tubular
+                knit for a cleaner line. Gets better with every wash.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Peru · Made in Peru
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- Fitted Tee -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--sand"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Fitted Tee</span>
+                <span class="product-card__price">$95</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                Same 230gsm Pima as the Foundation. Shorter body, closer
+                to the torso, narrower sleeve. For when you want the tee
+                to be the point. Not slim-fit — fitted. There's a difference.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Peru · Made in Peru
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- Heavyweight Tee -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--graphite"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Heavyweight Tee</span>
+                <span class="product-card__price">$110</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                280gsm garment-dyed Pima. The tee with presence.
+                Boxy fit, drop shoulder, slightly shortened body.
+                Looks better the more you wear it. Fades intentionally.
+                Garment-dyed for a lived-in starting point.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Peru · Made in Peru · Garment-dyed in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         06. TRACKIES
+    =================================================== -->
+    <section class="cat-section" id="trackies">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">06 — Trackies</p>
+            <h2 class="cat-section__title">The Track Pant</h2>
+          </div>
+          <p class="cat-section__intro">
+            Not a sweatpant. Not a jogger. A track pant — but one that
+            holds its shape through a day, tucks into a shoe or sits clean
+            above it, and reads intentional rather than lazy. The hardest
+            garment to get right. We've done it twice.
+          </p>
+        </div>
+
+        <div class="cat-products">
+
+          <!-- Track Pant -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+              <div class="img-placeholder img-placeholder--chalk img-placeholder--alt"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Foundation Track Pant</span>
+                <span class="product-card__price">$195</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                380gsm French terry. Matching fabric to the Foundation Hoodie —
+                worn as a set or separated. Tapered leg. Ribbed ankle cuff.
+                Hidden drawcord at waistband. Two side pockets, one zip
+                back pocket. No external branding.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Lyon, France · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- Tech Track Pant -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--dark"></div>
+              <div class="img-placeholder img-placeholder--navy img-placeholder--alt"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Tech Track Pant</span>
+                <span class="product-card__price">$225</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                220gsm Japanese technical twill — 4-way stretch,
+                moisture-wicking, crease-resistant. Looks like a tailored
+                pant, performs like an athletic one. Wears to dinner.
+                Wears to the airport. Wears everywhere.
+                Clean ankle — no cuff, no taper break.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Fabric from Osaka, Japan · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         07. SHORTS
+    =================================================== -->
+    <section class="cat-section" id="shorts">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">07 — Shorts</p>
+            <h2 class="cat-section__title">The Short</h2>
+          </div>
+          <p class="cat-section__intro">
+            Shorts done properly — not athletic, not tailored, not trying
+            to be either. A 7" inseam that hits exactly where it should.
+            A waistband that lies flat. A fabric weight that moves correctly.
+            Three versions for three different days.
+          </p>
+        </div>
+
+        <div class="cat-products cat-products--3">
+
+          <!-- Pull-On Short -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">The Pull-On Short</span>
+                <span class="product-card__price">$145</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                220gsm Japanese technical twill. 7" inseam. Hidden
+                drawcord — flat waistband with no external tie.
+                Two side pockets, one back welt pocket with zip.
+                Looks like a tailored short, wears like nothing else.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Fabric from Osaka, Japan · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- French Terry Short -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Terry Short</span>
+                <span class="product-card__price">$125</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                Matching French terry to the Foundation Hoodie and Track Pant.
+                Makes a complete set. 6" inseam. Elastic waistband with
+                exposed tonal drawcord. Side seam pockets. Clean hem.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven in Lyon, France · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- Linen Short -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--sand"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Linen Short</span>
+                <span class="product-card__price">$155</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                190gsm Portuguese linen. The summer piece. 7.5" inseam —
+                slightly longer for the linen to hang correctly.
+                Two side pockets, one back patch pocket.
+                Side hem split for ease. Slight texture to the hand.
+                Gets better every time you wear it.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Woven &amp; made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         08. TROUSERS
+    =================================================== -->
+    <section class="cat-section" id="trousers">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">08 — Trousers</p>
+            <h2 class="cat-section__title">The Trouser</h2>
+          </div>
+          <p class="cat-section__intro">
+            The trouser is the brand. Everything we believe about clothing —
+            material integrity, precision, versatility — is resolved in
+            this category. Three silhouettes. One standard.
+          </p>
+        </div>
+
+        <div class="cat-products cat-products--3">
+
+          <!-- Five-Pocket -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+              <div class="img-placeholder img-placeholder--warm img-placeholder--alt"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">The Five-Pocket Trouser</span>
+                <span class="product-card__price">$225</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                228gsm Merino-TENCEL. Woven in Biella, made in Porto.
+                The signature piece. Mid-rise, tapered, clean front.
+                Moves from coffee to dinner without asking anything of you.
+              </p>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- Tapered Chino -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--sand"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Tapered Chino</span>
+                <span class="product-card__price">$185</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                260gsm Japanese cotton-Tencel chino twill.
+                No cargo pockets. No contrast stitching. Clean back pocket.
+                The chino done with restraint — this is the one you wear
+                when you want trousers that are simply correct.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Fabric from Japan · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- Wide-Leg -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--dark"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Wide-Leg Pant</span>
+                <span class="product-card__price">$245</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                280gsm Italian wool-linen blend. Wide leg with a
+                clean break at the shoe. High-rise. No belt loops —
+                a wide waistband with an internal drawcord.
+                The statement trouser. Worn with a simple tee,
+                it's complete.
+              </p>
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:0.06em">
+                Fabric from Italy · Made in Portugal
+              </div>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         09. SOCKS
+    =================================================== -->
+    <section class="cat-section" id="socks">
+      <div class="container">
+        <div class="cat-section__header">
+          <div>
+            <p class="cat-section__number">09 — Socks</p>
+            <h2 class="cat-section__title">The Sock</h2>
+          </div>
+          <p class="cat-section__intro">
+            The most ignored piece in any wardrobe. Ours are made from
+            Egyptian cotton and Merino — because a sock is in contact with
+            your foot every hour of every day, and that contact should
+            feel considered. Two heights. No logos.
+          </p>
+        </div>
+
+        <div class="cat-products cat-products--3">
+
+          <!-- Crew Sock -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">The Crew Sock</span>
+                <span class="product-card__price">$28</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                80% Egyptian cotton, 15% nylon, 5% elastane.
+                Mid-calf height. 2x2 rib. Reinforced heel and toe.
+                Tonal colour throughout — no contrast stripe, no logo.
+                Sold individually or as a 3-pack ($75).
+              </p>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+              <div class="color-dot color-dot--sand" title="Sand"></div>
+            </div>
+          </a>
+
+          <!-- No-Show -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">The No-Show</span>
+                <span class="product-card__price">$22</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                75% Egyptian cotton, 20% nylon, 5% elastane.
+                Silicone grip heel — stays put. Seamless toe.
+                Sits below the shoe line on every loafer, sneaker,
+                and low-cut shoe. Sold individually or 3-pack ($60).
+              </p>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+            </div>
+          </a>
+
+          <!-- Merino Sock -->
+          <a href="product.html" class="product-card">
+            <div class="product-card__image">
+              <div class="img-placeholder img-placeholder--dark"></div>
+            </div>
+            <div style="padding-top:16px">
+              <div class="product-card__info">
+                <span class="product-card__name">Merino Crew</span>
+                <span class="product-card__price">$38</span>
+              </div>
+              <p style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:300;line-height:1.7">
+                70% Merino wool, 25% nylon, 5% elastane.
+                Temperature-regulating. Odour-resistant.
+                For colder months, travel, or anyone who has ever
+                worn a Merino sock and been unable to wear anything
+                else since. Sold individually or 3-pack ($105).
+              </p>
+            </div>
+            <div class="product-card__colors" style="margin-top:12px">
+              <div class="color-dot color-dot--graphite" title="Graphite"></div>
+              <div class="color-dot color-dot--navy" title="Navy"></div>
+              <div class="color-dot color-dot--black" title="Black"></div>
+              <div class="color-dot color-dot--chalk" title="Chalk"></div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         SHOP THE FULL SET
+    =================================================== -->
+    <section class="set-look">
+      <div class="container">
+        <p class="label" style="color:var(--sand);margin-bottom:48px">The Complete Wardrobe</p>
+        <div class="set-look__inner">
+
+          <div class="set-look__image">
+            <div class="img-placeholder img-placeholder--warm" style="width:100%;height:100%"></div>
+          </div>
+
+          <div class="set-look__content">
+            <p class="label set-look__eyebrow">One look, head to toe</p>
+            <h2 class="set-look__title">Everything you need.<br>Every piece considered.</h2>
+
+            <div class="set-look__items">
+              <div class="set-look__item">
+                <span class="set-look__item-name">The Wool Cap</span>
+                <span class="set-look__item-price">$105</span>
+              </div>
+              <div class="set-look__item">
+                <span class="set-look__item-name">Foundation Hoodie</span>
+                <span class="set-look__item-price">$185</span>
+              </div>
+              <div class="set-look__item">
+                <span class="set-look__item-name">Foundation Tee</span>
+                <span class="set-look__item-price">$95</span>
+              </div>
+              <div class="set-look__item">
+                <span class="set-look__item-name">The Five-Pocket Trouser</span>
+                <span class="set-look__item-price">$225</span>
+              </div>
+              <div class="set-look__item">
+                <span class="set-look__item-name">The Crew Sock</span>
+                <span class="set-look__item-price">$28</span>
+              </div>
+            </div>
+
+            <div class="set-look__total">
+              <span class="set-look__total-label">Full look</span>
+              <span class="set-look__total-price">$638</span>
+            </div>
+
+            <a href="shop.html" class="set-look__cta">Shop all pieces</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EMAIL CAPTURE -->
+    <section class="email-capture section--sm">
+      <div class="container">
+        <div class="email-capture__inner">
+          <p class="email-capture__heading">Early access</p>
+          <p class="email-capture__subtext">Be first to know when the collection is ready.</p>
+          <form class="email-capture__form" novalidate>
+            <input type="email" class="email-capture__input" placeholder="Your email" required>
+            <button type="submit" class="email-capture__submit">Join</button>
+          </form>
+          <p class="email-capture__note">One email when something new is ready.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__brand">Still</span>
+        <nav class="footer__nav">
+          <a href="shop.html" class="footer__nav-link">Shop</a>
+          <a href="collection.html" class="footer__nav-link">Full Collection</a>
+          <a href="about.html" class="footer__nav-link">Story</a>
+          <a href="journal.html" class="footer__nav-link">Journal</a>
+          <a href="#" class="footer__nav-link">Returns</a>
+        </nav>
+        <div class="footer__right">
+          <p>Made in Portugal &amp; Peru</p>
+          <p style="margin-top:6px">© 2026 Still</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Category nav active state on scroll
+    const sections = document.querySelectorAll('.cat-section');
+    const navItems = document.querySelectorAll('.category-nav__item');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navItems.forEach(item => {
+            item.classList.toggle('active', item.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>

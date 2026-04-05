@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>STILL — Generate Product Images</title>
+  <script src="https://js.puter.com/v2/"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      background: #F8F5F0;
+      color: #2A2A2A;
+      padding: 48px 40px;
+      min-height: 100vh;
+    }
+    h1 { font-size: 28px; font-weight: 300; margin-bottom: 8px; }
+    .sub { font-size: 14px; color: #888; margin-bottom: 40px; line-height: 1.6; }
+    .sub code { background: #eee; padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+
+    .controls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 14px 32px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+    }
+    #startBtn {
+      background: #2A2A2A;
+      color: #F4F1EC;
+    }
+    #startBtn:hover { background: #1a1a1a; }
+    #startBtn:disabled { background: #aaa; cursor: not-allowed; }
+    #stopBtn {
+      background: transparent;
+      color: #888;
+      border: 1px solid #ccc;
+    }
+
+    .progress-bar-wrap {
+      height: 3px;
+      background: #e0ddd8;
+      border-radius: 2px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #2A2A2A;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .status {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 32px;
+      min-height: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 3px;
+    }
+    .card {
+      background: #EFEBE3;
+      aspect-ratio: 3/4;
+      position: relative;
+      overflow: hidden;
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .card img.loaded { display: block; }
+    .card-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .card-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #aaa;
+      text-align: center;
+      padding: 0 12px;
+    }
+    .card-status {
+      font-size: 9px;
+      color: #bbb;
+    }
+    .card.generating .card-status { color: #C9B89A; }
+    .card.done .card-status { color: #5a8a5a; }
+    .card.failed .card-status { color: #c06060; }
+
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid #e0ddd8;
+      border-top-color: #C9B89A;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      display: none;
+    }
+    .card.generating .spinner { display: block; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .log {
+      margin-top: 40px;
+      font-size: 11px;
+      color: #888;
+      line-height: 2;
+      font-family: monospace;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .log .ok   { color: #5a8a5a; }
+    .log .fail { color: #c06060; }
+    .log .info { color: #888; }
+
+    .done-banner {
+      display: none;
+      margin-top: 32px;
+      padding: 20px 28px;
+      background: #2A2A2A;
+      color: #F4F1EC;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+    .done-banner code { color: #C9B89A; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<h1>STILL — Product Image Generator</h1>
+<p class="sub">
+  Uses FLUX AI via Puter.js (free, no API key). Generates all 24 product images and downloads them automatically.
+  Once downloaded, move the files to <code>still/images/products/</code> and refresh mockups.html.
+</p>
+
+<div class="controls">
+  <button id="startBtn">Generate all 24 images</button>
+  <button id="stopBtn" style="display:none">Stop</button>
+  <span id="countLabel" style="font-size:13px;color:#888"></span>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="status" id="statusLine">Ready. Click Generate to start.</div>
+
+<div class="grid" id="grid"></div>
+<div class="log" id="log"></div>
+<div class="done-banner" id="doneBanner">
+  All images downloaded to your Downloads folder.<br>
+  Move them to <code>still/images/products/</code> then reload mockups.html — they appear automatically.
+</div>
+
+<script>
+const PRODUCTS = [
+  { slug: "six-panel-graphite",          name: "Six-Panel Cap",            prompt: "professional flat lay photography of a dark charcoal unstructured baseball cap with no logo, overhead shot, chalk white studio background, soft diffused lighting from top-left, fashion editorial, premium menswear brand, ultra clean, hyperrealistic" },
+  { slug: "wool-cap-graphite",           name: "Wool Cap",                 prompt: "professional flat lay photography of a structured dark charcoal wool baseball cap with pre-curved peak and no logo, overhead shot, chalk white studio background, soft diffused lighting, fashion editorial, premium brand, hyperrealistic" },
+  { slug: "bucket-chalk",               name: "Bucket Hat",               prompt: "professional flat lay photography of an off-white cream washed cotton canvas bucket hat with medium brim, overhead shot, chalk white studio background, soft natural lighting from top-left, fashion editorial, premium minimalist brand, hyperrealistic" },
+  { slug: "foundation-hoodie-graphite", name: "Foundation Hoodie",        prompt: "professional flat lay photography of a dark charcoal heavyweight cotton French terry pullover hoodie with set-in sleeves and kangaroo pocket, no graphic or logo, overhead shot, chalk white studio background, soft diffused lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "the-zip-graphite",           name: "The Zip Hoodie",           prompt: "professional flat lay photography of a dark charcoal heavyweight cotton full-zip hoodie with hood and zip hand pockets, no graphic or logo, overhead shot, chalk white studio background, soft diffused lighting, premium fashion editorial, hyperrealistic" },
+  { slug: "the-oxford-chalk",           name: "Oxford Shirt",             prompt: "professional flat lay photography of an off-white cream pima cotton oxford button-up shirt with spread collar and mother of pearl buttons, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "the-overshirt-sand",         name: "The Overshirt",            prompt: "professional flat lay photography of a camel sand tan brushed cotton overshirt with two chest pockets and boxy fit, no logo, overhead shot, chalk white studio background, soft natural lighting from top-left, premium menswear editorial, hyperrealistic" },
+  { slug: "foundation-polo-chalk",      name: "Foundation Polo",          prompt: "professional flat lay photography of an off-white cream pima cotton pique polo shirt with two-button ribbed collar, overhead shot, chalk white studio background, soft diffused lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "ls-foundation-chalk",        name: "Long-Sleeve Foundation",   prompt: "professional flat lay photography of an off-white cream heavyweight pima cotton long-sleeve crew neck t-shirt, minimal and clean, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "merino-ls-graphite",         name: "Merino Long-Sleeve",       prompt: "professional flat lay photography of a dark charcoal superfine merino wool long-sleeve slim fit crew neck shirt, overhead shot, chalk white studio background, soft diffused lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "foundation-tee-chalk",       name: "Foundation Tee",           prompt: "professional flat lay photography of an off-white cream heavyweight pima cotton t-shirt with extended body and crew neck, no graphics, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "fitted-tee-graphite",        name: "Fitted Tee",               prompt: "professional flat lay photography of a dark charcoal pima cotton fitted crew neck t-shirt, shorter body, no graphics, overhead shot, chalk white studio background, soft diffused lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "heavyweight-tee-graphite",   name: "Heavyweight Tee",          prompt: "professional flat lay photography of a dark charcoal garment-dyed heavyweight boxy t-shirt with drop shoulder and crew neck, no graphics or logo, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "foundation-track-graphite",  name: "Foundation Track Pant",    prompt: "professional flat lay photography of dark charcoal heavyweight French terry sweatpants with ribbed ankle cuffs and zip back pocket, overhead shot, chalk white studio background, soft diffused lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "tech-track-graphite",        name: "Tech Track Pant",          prompt: "professional flat lay photography of dark charcoal technical twill jogger trousers with clean tapered ankle and zip back pocket, looks tailored, overhead shot, chalk white studio background, soft diffused lighting from top-left, premium menswear editorial, hyperrealistic" },
+  { slug: "pull-on-short-chalk",        name: "Pull-On Short",            prompt: "professional flat lay photography of off-white cream technical twill shorts with flat hidden drawcord waistband and 7 inch inseam, no logo, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "terry-short-chalk",          name: "Terry Short",              prompt: "professional flat lay photography of off-white cream French terry shorts with elastic waist and 6 inch inseam, no logo, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "linen-short-chalk",          name: "Linen Short",              prompt: "professional flat lay photography of off-white cream Portuguese linen shorts with side hem split and patch pocket, 7.5 inch inseam, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "five-pocket-graphite",       name: "Five-Pocket Trouser",      prompt: "professional flat lay photography of dark charcoal merino wool five-pocket trousers with mid-rise tapered leg, clean and minimal, overhead shot, chalk white studio background, soft diffused lighting from top-left, premium menswear editorial, hyperrealistic" },
+  { slug: "tapered-chino-chalk",        name: "Tapered Chino",            prompt: "professional flat lay photography of off-white cream tapered chino trousers with clean back pockets and no contrast stitching, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "wide-leg-chalk",             name: "Wide-Leg Pant",            prompt: "professional flat lay photography of off-white cream Italian wool linen wide-leg trousers with high waist and drawcord, no belt loops, overhead shot, chalk white studio background, soft natural lighting from top-left, premium fashion editorial, hyperrealistic" },
+  { slug: "crew-sock-graphite",         name: "Crew Sock",                prompt: "professional flat lay photography of a pair of dark charcoal Egyptian cotton mid-calf crew socks, clean and minimal, arranged neatly, chalk white studio background, soft natural lighting, fashion editorial, premium brand, hyperrealistic" },
+  { slug: "no-show-chalk",              name: "No-Show Sock",             prompt: "professional flat lay photography of a pair of off-white cream Egyptian cotton no-show socks with seamless toe, arranged neatly, chalk white studio background, soft natural lighting, fashion editorial, premium brand, hyperrealistic" },
+  { slug: "merino-crew-sock-graphite",  name: "Merino Crew Sock",         prompt: "professional flat lay photography of a pair of dark charcoal merino wool crew socks, temperature regulating, arranged neatly, chalk white studio background, soft natural lighting, fashion editorial, premium brand, hyperrealistic" },
+];
+
+let running = false;
+let stopFlag = false;
+
+// Build grid
+const grid = document.getElementById('grid');
+PRODUCTS.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = 'card-' + p.slug;
+  card.innerHTML = `
+    <img id="img-${p.slug}" alt="${p.name}">
+    <div class="card-placeholder">
+      <div class="spinner"></div>
+      <div class="card-label">${p.name}</div>
+      <div class="card-status" id="status-${p.slug}">Pending</div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+function log(msg, type='info') {
+  const el = document.getElementById('log');
+  const line = document.createElement('div');
+  line.className = type;
+  line.textContent = msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStatus(slug, text) {
+  const el = document.getElementById('status-' + slug);
+  if (el) el.textContent = text;
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function generateOne(product, index) {
+  const card = document.getElementById('card-' + product.slug);
+  card.classList.add('generating');
+  setStatus(product.slug, 'Generating...');
+  document.getElementById('statusLine').textContent = `[${index+1}/${PRODUCTS.length}] Generating: ${product.name}`;
+
+  try {
+    const imgEl = await puter.ai.txt2img(product.prompt, false);
+
+    // Convert to blob and download
+    const canvas = document.createElement('canvas');
+    canvas.width = imgEl.naturalWidth || imgEl.width;
+    canvas.height = imgEl.naturalHeight || imgEl.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(imgEl, 0, 0);
+
+    // Use fetch to convert to blob (avoids canvas CORS taint)
+    try {
+      const resp = await fetch(imgEl.src);
+      const blob = await resp.blob();
+      downloadBlob(blob, product.slug + '.jpg');
+    } catch(fetchErr) {
+      // Fallback: canvas
+      const canvas = document.createElement('canvas');
+      canvas.width = imgEl.naturalWidth || 512;
+      canvas.height = imgEl.naturalHeight || 512;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(imgEl, 0, 0);
+      canvas.toBlob(blob => { downloadBlob(blob, product.slug + '.jpg'); }, 'image/jpeg', 0.95);
+    }
+
+    // Show in grid
+    const gridImg = document.getElementById('img-' + product.slug);
+    gridImg.src = imgEl.src;
+    gridImg.onload = () => gridImg.classList.add('loaded');
+    card.classList.remove('generating');
+    card.classList.add('done');
+    setStatus(product.slug, '✓ Done');
+    log(`✓ ${product.name} — downloaded as ${product.slug}.jpg`, 'ok');
+    return true;
+  } catch(e) {
+    card.classList.remove('generating');
+    card.classList.add('failed');
+    setStatus(product.slug, '✗ Failed');
+    log(`✗ ${product.name} — ${e.message || e}`, 'fail');
+    return false;
+  }
+}
+
+document.getElementById('startBtn').addEventListener('click', async () => {
+  if (running) return;
+  running = true;
+  stopFlag = false;
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('stopBtn').style.display = 'inline-block';
+  document.getElementById('doneBanner').style.display = 'none';
+  document.getElementById('log').innerHTML = '';
+
+  let done = 0;
+  for (let i = 0; i < PRODUCTS.length; i++) {
+    if (stopFlag) { log('— Stopped by user —', 'info'); break; }
+    await generateOne(PRODUCTS[i], i);
+    done++;
+    document.getElementById('progressBar').style.width = (done / PRODUCTS.length * 100) + '%';
+    document.getElementById('countLabel').textContent = `${done} / ${PRODUCTS.length} done`;
+    // Small pause between requests
+    if (i < PRODUCTS.length - 1 && !stopFlag) await new Promise(r => setTimeout(r, 800));
+  }
+
+  running = false;
+  stopFlag = false;
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').style.display = 'none';
+  document.getElementById('statusLine').textContent = 'Complete.';
+  document.getElementById('doneBanner').style.display = 'block';
+});
+
+document.getElementById('stopBtn').addEventListener('click', () => { stopFlag = true; });
+</script>
+</body>
+</html>

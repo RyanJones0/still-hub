@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection — STILL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+
+    body { background: #FAFAF8; }
+
+    /* ─── Page header ─── */
+    .mk-header {
+      padding: calc(var(--nav-height) + 80px) 0 72px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mk-header__eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 24px;
+    }
+    .mk-header__title {
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 300;
+      color: var(--graphite);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+    .mk-header__body {
+      margin-top: 24px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .mk-header__sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+    }
+    .mk-header__note {
+      flex-shrink: 0;
+      font-size: 11px;
+      color: var(--border);
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+      text-align: right;
+    }
+
+    /* ─── Filters ─── */
+    .mk-filters {
+      padding: 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .mk-filters::-webkit-scrollbar { display: none; }
+    .mk-filter-btn {
+      flex-shrink: 0;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 22px 28px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+      background: none;
+      font-family: var(--font);
+    }
+    .mk-filter-btn:hover { color: var(--graphite); }
+    .mk-filter-btn.active {
+      color: var(--graphite);
+      border-bottom-color: var(--graphite);
+    }
+
+    /* ─── Grid ─── */
+    .mk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      padding: 2px 0 0;
+    }
+
+    /* ─── Card ─── */
+    .mk-card {
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+    }
+    .mk-card[data-hero]::before {
+      content: 'Hero Product';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sand);
+      background: var(--graphite);
+      padding: 6px 12px;
+      z-index: 2;
+    }
+
+    /* ─── Image area ─── */
+    .mk-card__img-wrap {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background: #F0EDE7;
+    }
+    .mk-card__img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      opacity: 0;
+    }
+    .mk-card__img-wrap img.loaded {
+      opacity: 1;
+    }
+    .mk-card:hover .mk-card__img-wrap img.loaded {
+      transform: scale(1.04);
+    }
+
+    /* placeholder shown when no image */
+    .mk-card__placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      transition: background .4s;
+    }
+    .mk-card__placeholder-label {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(13px, 1.4vw, 17px);
+      letter-spacing: 0.01em;
+      line-height: 1.4;
+      text-align: center;
+      padding: 0 24px;
+      transition: color .4s;
+    }
+    .mk-card__placeholder-hint {
+      margin-top: 20px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      transition: color .4s;
+    }
+
+    /* ─── Card info ─── */
+    .mk-card__info {
+      padding: 20px 24px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .mk-card__row1 {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+    .mk-card__name {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--graphite);
+      letter-spacing: 0.01em;
+    }
+    .mk-card__price {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--graphite);
+    }
+    .mk-card__spec {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    /* ─── Swatches ─── */
+    .mk-swatches {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mk-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      transition: transform .2s;
+    }
+    .mk-swatch::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1.5px solid transparent;
+      transition: border-color .2s;
+    }
+    .mk-swatch.active::after { border-color: var(--graphite); }
+    .mk-swatch:hover { transform: scale(1.2); }
+    .mk-swatch[data-color="chalk"]    { background: #E8E3DA; border: 1px solid #ccc8be; }
+    .mk-swatch[data-color="graphite"] { background: #2A2A2A; }
+    .mk-swatch[data-color="navy"]     { background: #1B2B4B; }
+    .mk-swatch[data-color="sand"]     { background: #C9B89A; }
+    .mk-swatch[data-color="black"]    { background: #0F0F0F; }
+
+    .mk-colorname {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    /* ─── Image guide banner ─── */
+    .img-guide {
+      background: var(--graphite);
+      padding: 56px 0;
+    }
+    .img-guide__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+    }
+    .img-guide__block {
+      background: rgba(255,255,255,0.04);
+      padding: 40px 36px;
+    }
+    .img-guide__block-num {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--sand);
+      margin-bottom: 16px;
+    }
+    .img-guide__block-title {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--chalk);
+      margin-bottom: 10px;
+    }
+    .img-guide__block-body {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(244,241,236,0.5);
+      line-height: 1.75;
+    }
+    .img-guide__block code {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: var(--sand);
+      display: block;
+      margin-top: 12px;
+      line-height: 1.7;
+      opacity: 0.85;
+    }
+
+    /* ─── Closing band ─── */
+    .mk-close {
+      background: var(--chalk);
+      padding: 100px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .mk-close__title {
+      font-family: var(--serif);
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--graphite);
+      margin-bottom: 24px;
+    }
+    .mk-close__sub {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+    .mk-close__link {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--graphite);
+      border-bottom: 1px solid var(--graphite);
+      padding-bottom: 4px;
+      text-decoration: none;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1024px) { .mk-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 768px)  {
+      .img-guide__inner { grid-template-columns: 1fr; }
+      .mk-header__body { flex-direction: column; align-items: flex-start; }
+      .mk-header__note { text-align: left; }
+    }
+    @media (max-width: 600px)  { .mk-grid { grid-template-columns: 1fr; } }
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">Still</a>
+    <ul class="nav__links">
+      <li><a href="collection.html" class="nav__link active">Collection</a></li>
+      <li><a href="shop.html" class="nav__link">Shop</a></li>
+      <li><a href="about.html" class="nav__link">Story</a></li>
+      <li><a href="journal.html" class="nav__link">Journal</a></li>
+    </ul>
+    <div class="nav__actions">
+      <div class="nav__cart" role="button" tabindex="0">Cart <span class="nav__cart-count">0</span></div>
+    </div>
+    <button class="nav__hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<nav class="nav__mobile">
+  <a href="shop.html" class="nav__mobile-link">Shop</a>
+  <a href="about.html" class="nav__mobile-link">Story</a>
+  <a href="journal.html" class="nav__mobile-link">Journal</a>
+</nav>
+
+<main>
+
+  <!-- HEADER -->
+  <div class="mk-header">
+    <div class="container">
+      <p class="mk-header__eyebrow">Sample Lookbook</p>
+      <h1 class="mk-header__title">24 pieces.<br>Every colourway.</h1>
+      <div class="mk-header__body">
+        <p class="mk-header__sub">
+          Click the colour dots to switch between colourways.
+          Filter by category above. Drop real product photos into
+          <code style="font-family:monospace;font-size:12px;color:var(--graphite)">still/images/products/</code>
+          and they appear instantly.
+        </p>
+        <p class="mk-header__note">
+          Placeholders are shown<br>until product photography<br>is ready to drop in.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="container" style="padding:0">
+    <div class="mk-filters">
+      <button class="mk-filter-btn active" data-cat="all">All (24)</button>
+      <button class="mk-filter-btn" data-cat="hats">Hats</button>
+      <button class="mk-filter-btn" data-cat="hoodies">Hoodies</button>
+      <button class="mk-filter-btn" data-cat="shirts">Shirts</button>
+      <button class="mk-filter-btn" data-cat="longsleeve">Long Sleeve</button>
+      <button class="mk-filter-btn" data-cat="tees">Tees</button>
+      <button class="mk-filter-btn" data-cat="trackies">Trackies</button>
+      <button class="mk-filter-btn" data-cat="shorts">Shorts</button>
+      <button class="mk-filter-btn" data-cat="trousers">Trousers</button>
+      <button class="mk-filter-btn" data-cat="socks">Socks</button>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="container" style="padding-left:0;padding-right:0">
+    <div class="mk-grid" id="mkGrid">
+
+      <!-- ═══════════════ HATS ═══════════════ -->
+
+      <div class="mk-card" data-cat="hats" data-slug="six-panel">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Six-Panel</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/six-panel-graphite.jpg" alt="The Six-Panel — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Six-Panel</span>
+            <span class="mk-card__price">$85</span>
+          </div>
+          <p class="mk-card__spec">Unstructured cotton twill — Brass buckle — No logo</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="hats" data-slug="wool-cap">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Wool Cap</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/wool-cap-graphite.jpg" alt="The Wool Cap — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Wool Cap</span>
+            <span class="mk-card__price">$105</span>
+          </div>
+          <p class="mk-card__spec">80% Merino / 20% Nylon — Structured — Pre-curved peak</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="hats" data-slug="bucket">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Bucket</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/bucket-chalk.jpg" alt="The Bucket — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Bucket</span>
+            <span class="mk-card__price">$95</span>
+          </div>
+          <p class="mk-card__spec">100% Washed cotton canvas — Medium brim — Packable</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ HOODIES ═══════════════ -->
+
+      <div class="mk-card" data-cat="hoodies" data-slug="foundation-hoodie">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Foundation Hoodie</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/foundation-hoodie-graphite.jpg" alt="Foundation Hoodie — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Foundation Hoodie</span>
+            <span class="mk-card__price">$185</span>
+          </div>
+          <p class="mk-card__spec">380gsm French terry — Lyon, France — Set-in sleeve</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="hoodies" data-slug="the-zip">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Zip</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/the-zip-graphite.jpg" alt="The Zip — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Zip</span>
+            <span class="mk-card__price">$205</span>
+          </div>
+          <p class="mk-card__spec">380gsm French terry — Full YKK zip — Two zip hip pockets</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-swatch" data-color="chalk" title="Chalk"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ SHIRTS ═══════════════ -->
+
+      <div class="mk-card" data-cat="shirts" data-slug="the-oxford">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Oxford</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/the-oxford-chalk.jpg" alt="The Oxford — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Oxford</span>
+            <span class="mk-card__price">$165</span>
+          </div>
+          <p class="mk-card__spec">140gsm Pima Royal Oxford — Mother-of-pearl buttons</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="shirts" data-slug="the-overshirt">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Overshirt</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/the-overshirt-sand.jpg" alt="The Overshirt — Sand">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Overshirt</span>
+            <span class="mk-card__price">$225</span>
+          </div>
+          <p class="mk-card__spec">300gsm Brushed cotton twill — Japan fabric — Boxy</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Sand</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="shirts" data-slug="foundation-polo">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Foundation Polo</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/foundation-polo-chalk.jpg" alt="Foundation Polo — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Foundation Polo</span>
+            <span class="mk-card__price">$145</span>
+          </div>
+          <p class="mk-card__spec">210gsm Pima piqué — 2-button — Ribbed collar same fabric</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ LONG SLEEVE ═══════════════ -->
+
+      <div class="mk-card" data-cat="longsleeve" data-slug="ls-foundation">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Long-Sleeve Foundation</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/ls-foundation-chalk.jpg" alt="Long-Sleeve Foundation — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Long-Sleeve Foundation</span>
+            <span class="mk-card__price">$125</span>
+          </div>
+          <p class="mk-card__spec">230gsm Pima cotton — Peru — Set-in sleeve, crew neck</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="longsleeve" data-slug="merino-ls">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Merino Long-Sleeve</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/merino-ls-graphite.jpg" alt="Merino Long-Sleeve — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Merino Long-Sleeve</span>
+            <span class="mk-card__price">$165</span>
+          </div>
+          <p class="mk-card__spec">180gsm Superfine Merino 17.5µ — New Zealand — Slim fit</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ TEES ═══════════════ -->
+
+      <div class="mk-card" data-cat="tees" data-slug="foundation-tee">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Foundation Tee</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/foundation-tee-chalk.jpg" alt="Foundation Tee — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Foundation Tee</span>
+            <span class="mk-card__price">$95</span>
+          </div>
+          <p class="mk-card__spec">230gsm Pima — Peru — Tubular knit, extended body</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="tees" data-slug="fitted-tee">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Fitted Tee</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/fitted-tee-graphite.jpg" alt="Fitted Tee — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Fitted Tee</span>
+            <span class="mk-card__price">$95</span>
+          </div>
+          <p class="mk-card__spec">230gsm Pima — Shorter body, closer to torso, narrower sleeve</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="tees" data-slug="heavyweight-tee">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Heavyweight Tee</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/heavyweight-tee-graphite.jpg" alt="Heavyweight Tee — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Heavyweight Tee</span>
+            <span class="mk-card__price">$110</span>
+          </div>
+          <p class="mk-card__spec">280gsm Garment-dyed Pima — Boxy, drop shoulder — Fades intentionally</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ TRACKIES ═══════════════ -->
+
+      <div class="mk-card" data-cat="trackies" data-slug="foundation-track">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Foundation Track Pant</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/foundation-track-graphite.jpg" alt="Foundation Track Pant — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Foundation Track Pant</span>
+            <span class="mk-card__price">$195</span>
+          </div>
+          <p class="mk-card__spec">380gsm French terry — Lyon — Ribbed ankle, zip back pocket</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="trackies" data-slug="tech-track">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Tech Track Pant</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/tech-track-graphite.jpg" alt="Tech Track Pant — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Tech Track Pant</span>
+            <span class="mk-card__price">$225</span>
+          </div>
+          <p class="mk-card__spec">220gsm Japanese technical twill — 4-way stretch — Looks tailored</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ SHORTS ═══════════════ -->
+
+      <div class="mk-card" data-cat="shorts" data-slug="pull-on-short">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Pull-On Short</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/pull-on-short-chalk.jpg" alt="The Pull-On Short — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Pull-On Short</span>
+            <span class="mk-card__price">$145</span>
+          </div>
+          <p class="mk-card__spec">220gsm Japanese tech twill — 7″ inseam — Hidden drawcord</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="shorts" data-slug="terry-short">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Terry Short</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/terry-short-chalk.jpg" alt="Terry Short — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Terry Short</span>
+            <span class="mk-card__price">$125</span>
+          </div>
+          <p class="mk-card__spec">French terry — Matches hoodie set — 6″ inseam</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="shorts" data-slug="linen-short">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Linen Short</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/linen-short-chalk.jpg" alt="Linen Short — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Linen Short</span>
+            <span class="mk-card__price">$155</span>
+          </div>
+          <p class="mk-card__spec">190gsm Portuguese linen — 7.5″ inseam — Side hem split</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ TROUSERS ═══════════════ -->
+
+      <div class="mk-card" data-cat="trousers" data-slug="five-pocket" data-hero>
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Five-Pocket Trouser</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/five-pocket-graphite.jpg" alt="The Five-Pocket Trouser — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Five-Pocket Trouser</span>
+            <span class="mk-card__price">$225</span>
+          </div>
+          <p class="mk-card__spec">228gsm Merino-TENCEL — Biella, Italy — Porto, Portugal</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="trousers" data-slug="tapered-chino">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Tapered Chino</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/tapered-chino-chalk.jpg" alt="Tapered Chino — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Tapered Chino</span>
+            <span class="mk-card__price">$185</span>
+          </div>
+          <p class="mk-card__spec">260gsm Japanese cotton-TENCEL — No contrast stitching</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="trousers" data-slug="wide-leg">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Wide-Leg Pant</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/wide-leg-chalk.jpg" alt="Wide-Leg Pant — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Wide-Leg Pant</span>
+            <span class="mk-card__price">$245</span>
+          </div>
+          <p class="mk-card__spec">280gsm Italian wool-linen — High-rise — Drawcord waist</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ SOCKS ═══════════════ -->
+
+      <div class="mk-card" data-cat="socks" data-slug="crew-sock">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The Crew Sock</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/crew-sock-graphite.jpg" alt="The Crew Sock — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The Crew Sock</span>
+            <span class="mk-card__price">$28 / 3-pack $75</span>
+          </div>
+          <p class="mk-card__spec">80% Egyptian cotton / 15% Nylon — Mid-calf — Tonal</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-swatch" data-color="sand" title="Sand"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="socks" data-slug="no-show">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">The No-Show</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/no-show-chalk.jpg" alt="The No-Show — Chalk">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">The No-Show</span>
+            <span class="mk-card__price">$22 / 3-pack $60</span>
+          </div>
+          <p class="mk-card__spec">75% Egyptian cotton — Silicone grip heel — Seamless toe</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="chalk" title="Chalk"></span>
+            <span class="mk-swatch" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-colorname">Chalk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mk-card" data-cat="socks" data-slug="merino-crew-sock">
+        <div class="mk-card__img-wrap">
+          <div class="mk-card__placeholder">
+            <span class="mk-card__placeholder-label">Merino Crew</span>
+            <span class="mk-card__placeholder-hint">Image pending</span>
+          </div>
+          <img src="images/products/merino-crew-sock-graphite.jpg" alt="Merino Crew — Graphite">
+        </div>
+        <div class="mk-card__info">
+          <div class="mk-card__row1">
+            <span class="mk-card__name">Merino Crew</span>
+            <span class="mk-card__price">$38 / 3-pack $105</span>
+          </div>
+          <p class="mk-card__spec">70% Merino NZ — Temp-regulating — Odour-resistant</p>
+          <div class="mk-swatches">
+            <span class="mk-swatch active" data-color="graphite" title="Graphite"></span>
+            <span class="mk-swatch" data-color="navy" title="Navy"></span>
+            <span class="mk-swatch" data-color="black" title="Black"></span>
+            <span class="mk-swatch" data-color="chalk" title="Chalk"></span>
+            <span class="mk-colorname">Graphite</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- IMAGE GUIDE -->
+  <div class="img-guide">
+    <div class="container">
+      <p style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);margin-bottom:40px">How to add product images</p>
+      <div class="img-guide__inner">
+        <div class="img-guide__block">
+          <p class="img-guide__block-num">01 — AI Generation</p>
+          <p class="img-guide__block-title">Generate with Midjourney</p>
+          <p class="img-guide__block-body">
+            Prompt: <em>"flat lay clothing photography, [piece name], [colour], chalk background, natural light, editorial, no text, premium brand"</em>
+            <br><br>
+            Use —ar 3:4 for the right ratio. Download at max resolution.
+          </p>
+        </div>
+        <div class="img-guide__block">
+          <p class="img-guide__block-num">02 — File naming</p>
+          <p class="img-guide__block-title">Drop into /images/products/</p>
+          <p class="img-guide__block-body">
+            Create a folder at <code>still/images/products/</code> and name files exactly:
+            <code>six-panel-graphite.jpg
+wool-cap-navy.jpg
+foundation-tee-chalk.jpg
+five-pocket-sand.jpg</code>
+          </p>
+        </div>
+        <div class="img-guide__block">
+          <p class="img-guide__block-num">03 — Done</p>
+          <p class="img-guide__block-title">Images appear automatically</p>
+          <p class="img-guide__block-body">
+            No code changes needed. The page checks for each image at the right path — when the file is there, it shows. When it's not, the colour placeholder shows instead.
+            <br><br>
+            Add one colourway at a time as you shoot.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="mk-close">
+    <p class="mk-close__title">The complete wardrobe.</p>
+    <p class="mk-close__sub">24 pieces. Head to toe. Nothing missing.</p>
+    <a href="collection.html" class="mk-close__link">View full collection</a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <span class="footer__brand">Still</span>
+      <nav class="footer__nav">
+        <a href="shop.html" class="footer__nav-link">Shop</a>
+        <a href="about.html" class="footer__nav-link">Story</a>
+        <a href="journal.html" class="footer__nav-link">Journal</a>
+        <a href="#" class="footer__nav-link">Care</a>
+        <a href="#" class="footer__nav-link">Returns</a>
+      </nav>
+      <div class="footer__right">
+        <p>Made in Portugal &amp; Peru</p>
+        <p style="margin-top:6px">© 2026 Still</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+
+  // ─── Placeholder colour map ───
+  const PLACEHOLDER_COLORS = {
+    chalk:    { bg: '#F4F1EC', text: '#2A2A2A' },
+    graphite: { bg: '#2A2A2A', text: '#F4F1EC' },
+    navy:     { bg: '#1B2B4B', text: '#F4F1EC' },
+    sand:     { bg: '#C9B89A', text: '#2A2A2A' },
+    black:    { bg: '#0F0F0F', text: '#F4F1EC' },
+  };
+
+  // ─── Image load handling ───
+  document.querySelectorAll('.mk-card__img-wrap img').forEach(img => {
+    if (img.complete && img.naturalWidth > 0) {
+      img.classList.add('loaded');
+    } else {
+      img.addEventListener('load', () => img.classList.add('loaded'));
+      img.addEventListener('error', () => { /* placeholder stays visible */ });
+    }
+  });
+
+  // ─── Colour swatch logic ───
+  document.querySelectorAll('.mk-card').forEach(card => {
+    const slug = card.dataset.slug;
+    const img = card.querySelector('.mk-card__img-wrap img');
+    const placeholder = card.querySelector('.mk-card__placeholder');
+    const label = card.querySelector('.mk-card__placeholder-label');
+    const hint = card.querySelector('.mk-card__placeholder-hint');
+    const colorname = card.querySelector('.mk-colorname');
+
+    card.querySelectorAll('.mk-swatch').forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        const color = swatch.dataset.color;
+        const pal = PLACEHOLDER_COLORS[color];
+
+        // Update placeholder appearance
+        placeholder.style.background = pal.bg;
+        label.style.color = pal.text;
+        hint.style.color = pal.text;
+
+        // Swap image src
+        img.classList.remove('loaded');
+        img.src = `images/products/${slug}-${color}.jpg`;
+
+        // Active swatch
+        card.querySelectorAll('.mk-swatch').forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+
+        // Update label
+        colorname.textContent = color.charAt(0).toUpperCase() + color.slice(1);
+      });
+    });
+  });
+
+  // ─── Filter tabs ───
+  const filterBtns = document.querySelectorAll('.mk-filter-btn');
+  const cards = document.querySelectorAll('.mk-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      cards.forEach(card => {
+        const match = cat === 'all' || card.dataset.cat === cat;
+        card.style.display = match ? 'flex' : 'none';
+      });
+    });
+  });
+
+  // ─── Set initial placeholder colours to match default swatch ───
+  document.querySelectorAll('.mk-card').forEach(card => {
+    const activeSwatch = card.querySelector('.mk-swatch.active');
+    if (!activeSwatch) return;
+    const color = activeSwatch.dataset.color;
+    const pal = PLACEHOLDER_COLORS[color];
+    const placeholder = card.querySelector('.mk-card__placeholder');
+    const label = card.querySelector('.mk-card__placeholder-label');
+    const hint = card.querySelector('.mk-card__placeholder-hint');
+    placeholder.style.background = pal.bg;
+    label.style.color = pal.text;
+    hint.style.color = pal.text;
+  });
+
+</script>
+</body>
+</html>

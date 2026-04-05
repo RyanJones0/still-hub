@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STILL — Elevated Lifestyle Clothing</title>
+  <meta name="description" content="Clothing made to move with your life. Premium lifestyle wear crafted from the world's finest fabrics.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Fade-up animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+    .fade-up.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================== NAV ======================== -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">Still</a>
+
+      <ul class="nav__links">
+        <li><a href="collection.html" class="nav__link">Collection</a></li>
+        <li><a href="shop.html" class="nav__link">Shop</a></li>
+        <li><a href="about.html" class="nav__link">Story</a></li>
+        <li><a href="journal.html" class="nav__link">Journal</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <div class="nav__cart" role="button" tabindex="0" aria-label="Shopping cart">
+          Cart
+          <span class="nav__cart-count" aria-live="polite">0</span>
+        </div>
+      </div>
+
+      <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav -->
+  <nav class="nav__mobile" aria-hidden="true">
+    <a href="shop.html" class="nav__mobile-link">Shop</a>
+    <a href="about.html" class="nav__mobile-link">Story</a>
+    <a href="journal.html" class="nav__mobile-link">Journal</a>
+    <a href="#" class="nav__mobile-link" style="color: var(--muted); font-size: 18px;">Cart (0)</a>
+  </nav>
+
+  <main>
+
+    <!-- ======================== HERO ======================== -->
+    <section class="hero" aria-label="Hero">
+      <div class="hero__image">
+        <div class="img-placeholder img-placeholder--warm" style="width:100%;height:100%;"></div>
+      </div>
+
+      <div class="hero__content container">
+        <p class="hero__tagline">
+          Clothing made to move with your life.
+          From the first meeting to the last glass of wine.
+        </p>
+      </div>
+
+      <div class="hero__scroll">
+        <span class="hero__scroll-line"></span>
+        Scroll
+      </div>
+    </section>
+
+    <!-- ======================== PRODUCT TRIO ======================== -->
+    <section class="product-trio section--sm">
+      <div class="container">
+        <div class="product-trio__grid">
+
+          <a href="product.html" class="product-trio__item fade-up">
+            <div class="product-trio__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+            </div>
+            <div class="product-trio__info">
+              <span class="product-trio__name">The Five-Pocket Trouser</span>
+              <span class="product-trio__price">$225</span>
+            </div>
+          </a>
+
+          <a href="product.html" class="product-trio__item fade-up" style="transition-delay: 0.1s">
+            <div class="product-trio__image">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <div class="product-trio__info">
+              <span class="product-trio__name">Foundation Tee</span>
+              <span class="product-trio__price">$95</span>
+            </div>
+          </a>
+
+          <a href="product.html" class="product-trio__item fade-up" style="transition-delay: 0.2s">
+            <div class="product-trio__image">
+              <div class="img-placeholder img-placeholder--dark"></div>
+            </div>
+            <div class="product-trio__info">
+              <span class="product-trio__name">Merino Half-Zip</span>
+              <span class="product-trio__price">$265</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== BRAND STATEMENT ======================== -->
+    <section class="brand-statement section fade-up">
+      <div class="container">
+        <p class="brand-statement__text">
+          "The clothing that performs best rarely looks the part.
+          The clothing that looks best rarely holds up past 6pm.
+          We resolved that."
+        </p>
+        <a href="about.html" class="brand-statement__link">Our approach</a>
+      </div>
+    </section>
+
+    <!-- ======================== FABRIC STORY ======================== -->
+    <section class="fabric-story">
+      <div class="fabric-story__image">
+        <div class="img-placeholder img-placeholder--sand" style="width:100%;height:100%;"></div>
+      </div>
+
+      <div class="fabric-story__content">
+        <p class="label fabric-story__eyebrow">Materials</p>
+        <h2 class="fabric-story__heading">
+          Every fabric<br>has a reason.
+        </h2>
+        <p class="fabric-story__body">
+          We source our Pima cotton from the Ica Valley, Peru. Our
+          merino from the South Island of New Zealand. Our twill
+          from the mills of Biella, Italy.
+        </p>
+        <p class="fabric-story__body">
+          Every fabric is chosen once and committed to. We publish
+          the origin, weight, and composition of every garment we
+          make — because you deserve to know exactly what you're
+          wearing and where it came from.
+        </p>
+        <a href="about.html" class="fabric-story__link">View materials</a>
+      </div>
+    </section>
+
+    <!-- ======================== DIVIDER MARQUEE ======================== -->
+    <div class="divider-text">
+      <div class="divider-text__track">
+        <!-- First set -->
+        <span class="divider-text__item">Pima Cotton · Peru</span>
+        <span class="divider-text__item">Merino Wool · New Zealand</span>
+        <span class="divider-text__item">Italian Twill · Biella</span>
+        <span class="divider-text__item">Portuguese Linen · Porto</span>
+        <span class="divider-text__item">Japanese TENCEL · Osaka</span>
+        <span class="divider-text__item">French Terry · Lyon</span>
+        <!-- Duplicate for seamless loop -->
+        <span class="divider-text__item">Pima Cotton · Peru</span>
+        <span class="divider-text__item">Merino Wool · New Zealand</span>
+        <span class="divider-text__item">Italian Twill · Biella</span>
+        <span class="divider-text__item">Portuguese Linen · Porto</span>
+        <span class="divider-text__item">Japanese TENCEL · Osaka</span>
+        <span class="divider-text__item">French Terry · Lyon</span>
+      </div>
+    </div>
+
+    <!-- ======================== HERO PRODUCT ======================== -->
+    <section class="hero-product">
+      <div class="hero-product__image">
+        <div class="img-placeholder img-placeholder--chalk" style="width:100%;height:100%;"></div>
+      </div>
+
+      <div class="hero-product__content">
+        <p class="label hero-product__eyebrow">Signature</p>
+        <h2 class="hero-product__heading">
+          The Five-Pocket<br>Trouser
+        </h2>
+        <p class="hero-product__desc">
+          The trouser that resolved the question of what to wear.
+          228gsm Merino-TENCEL, woven in Biella. Wrinkle-resistant.
+          Machine washable. Structured without stiffness.
+          It moves from your morning to your evening without asking
+          anything of you.
+        </p>
+        <p class="hero-product__detail">228gsm Merino-TENCEL blend</p>
+        <p class="hero-product__detail">Woven in Biella, Italy</p>
+        <p class="hero-product__detail">Made in Portugal</p>
+        <a href="product.html" class="hero-product__cta">View the trouser</a>
+      </div>
+    </section>
+
+    <!-- ======================== JOURNAL PREVIEW ======================== -->
+    <section class="journal-preview section">
+      <div class="container">
+        <div class="journal-preview__header">
+          <span class="journal-preview__title label label--dark">Journal</span>
+          <a href="journal.html" class="journal-preview__all">All pieces</a>
+        </div>
+
+        <div class="journal-preview__grid">
+
+          <a href="journal.html" class="journal-card fade-up">
+            <div class="journal-card__image">
+              <div class="img-placeholder img-placeholder--light"></div>
+            </div>
+            <p class="journal-card__category">Material Stories</p>
+            <h3 class="journal-card__title">
+              What 228gsm Actually Means
+            </h3>
+            <p class="journal-card__excerpt">
+              Fabric weight is the most misunderstood number in clothing.
+              Here's what it tells you, what it doesn't, and why it matters
+              more than the thread count on your sheets.
+            </p>
+          </a>
+
+          <a href="journal.html" class="journal-card fade-up" style="transition-delay:0.15s">
+            <div class="journal-card__image">
+              <div class="img-placeholder img-placeholder--warm"></div>
+            </div>
+            <p class="journal-card__category">The Edit</p>
+            <h3 class="journal-card__title">
+              The Trouser: Five Ways
+            </h3>
+            <p class="journal-card__excerpt">
+              One piece. Five real situations. How the Five-Pocket
+              moves through a week without repeating itself — and
+              why that matters more than having five different trousers.
+            </p>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== EMAIL CAPTURE ======================== -->
+    <section class="email-capture section--sm">
+      <div class="container">
+        <div class="email-capture__inner">
+          <p class="email-capture__heading">Join the list</p>
+          <p class="email-capture__subtext">
+            Early access to new pieces and nothing else.
+            No weekly newsletters. No discount codes.
+          </p>
+          <form class="email-capture__form" novalidate>
+            <input
+              type="email"
+              class="email-capture__input"
+              placeholder="Your email"
+              aria-label="Email address"
+              required
+            >
+            <button type="submit" class="email-capture__submit">Join</button>
+          </form>
+          <p class="email-capture__note">One email when something new is ready.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__brand">Still</span>
+
+        <nav class="footer__nav">
+          <a href="shop.html" class="footer__nav-link">Shop</a>
+          <a href="about.html" class="footer__nav-link">Story</a>
+          <a href="journal.html" class="footer__nav-link">Journal</a>
+          <a href="#" class="footer__nav-link">Care</a>
+          <a href="#" class="footer__nav-link">Returns</a>
+        </nav>
+
+        <div class="footer__right">
+          <p>Made in Portugal &amp; Peru</p>
+          <p style="margin-top:6px">© 2026 Still</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

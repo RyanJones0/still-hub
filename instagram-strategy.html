@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Still — Instagram Strategy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --chalk:    #F4F1EC;
+      --graphite: #2A2A2A;
+      --sand:     #C9B89A;
+      --border:   #E0DAD0;
+      --text:     #1A1A1A;
+      --muted:    #7A7570;
+      --font:     'DM Sans', sans-serif;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+    }
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font); background: var(--chalk); color: var(--text); }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px; border-bottom: 1px solid var(--border);
+      background: var(--chalk); position: sticky; top: 0; z-index: 10;
+    }
+    .topbar__logo { font-family: var(--serif); font-size: 18px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; }
+    .btn { padding: 9px 20px; font-family: var(--font); font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--text); transition: border-color 0.18s; text-decoration: none; display: inline-block; }
+    .btn:hover { border-color: var(--graphite); }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 60px 48px 100px; }
+
+    .page-title { font-family: var(--serif); font-size: 42px; font-weight: 300; line-height: 1.1; margin-bottom: 8px; }
+    .page-sub { font-size: 12px; font-weight: 300; color: var(--muted); margin-bottom: 64px; letter-spacing: 0.04em; }
+
+    .section { margin-bottom: 64px; }
+    .section-label { font-size: 9px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+    /* Reference panel */
+    .ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 2px; }
+    .ref-card { background: #fff; border: 1px solid var(--border); padding: 28px 32px; }
+    .ref-card__brand { font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .ref-card__name { font-family: var(--serif); font-size: 22px; font-weight: 300; margin-bottom: 16px; }
+    .ref-card__stat { font-size: 11px; font-weight: 300; color: var(--muted); margin-bottom: 4px; }
+    .ref-card__stat strong { font-weight: 500; color: var(--text); }
+    .ref-card__divider { height: 1px; background: var(--border); margin: 16px 0; }
+    .ref-card__takeaway { font-size: 12px; font-weight: 300; line-height: 1.7; color: var(--muted); }
+    .ref-card__takeaway strong { font-weight: 500; color: var(--text); }
+
+    /* Still formula */
+    .formula { background: var(--graphite); padding: 48px; margin-bottom: 2px; }
+    .formula__label { font-size: 9px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(244,241,236,0.4); margin-bottom: 20px; }
+    .formula__heading { font-family: var(--serif); font-size: 32px; font-weight: 300; color: #F4F1EC; line-height: 1.2; margin-bottom: 8px; }
+    .formula__sub { font-size: 12px; font-weight: 300; color: rgba(244,241,236,0.5); }
+
+    /* Pillars */
+    .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+    .pillar { background: #fff; border: 1px solid var(--border); padding: 28px 24px; }
+    .pillar__num { font-family: var(--serif); font-size: 36px; font-weight: 300; color: var(--sand); line-height: 1; margin-bottom: 16px; }
+    .pillar__name { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+    .pillar__desc { font-size: 12px; font-weight: 300; line-height: 1.7; color: var(--muted); }
+    .pillar__pct { font-size: 9px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sand); margin-top: 16px; }
+
+    /* Content types */
+    .content-types { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .content-type { background: #fff; border: 1px solid var(--border); padding: 28px 32px; }
+    .content-type__tag { display: inline-block; font-size: 9px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); background: var(--chalk); padding: 4px 10px; margin-bottom: 14px; }
+    .content-type__name { font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+    .content-type__desc { font-size: 12px; font-weight: 300; line-height: 1.7; color: var(--muted); margin-bottom: 16px; }
+    .content-type__examples { list-style: none; }
+    .content-type__examples li { font-size: 11px; font-weight: 300; color: var(--muted); padding: 6px 0; border-bottom: 1px solid var(--border); padding-left: 12px; position: relative; }
+    .content-type__examples li::before { content: '—'; position: absolute; left: 0; color: var(--sand); }
+    .content-type__examples li:last-child { border-bottom: none; }
+
+    /* Grid mockup */
+    .grid-mockup { background: #fff; border: 1px solid var(--border); padding: 32px; }
+    .grid-mockup__header { font-size: 11px; font-weight: 300; color: var(--muted); margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; max-width: 480px; }
+    .grid-cell { aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .grid-cell__label { font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; padding: 8px; line-height: 1.4; }
+
+    /* Photo rules */
+    .rules { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+    .rule { background: #fff; border: 1px solid var(--border); padding: 24px; }
+    .rule__icon { font-size: 22px; margin-bottom: 12px; }
+    .rule__name { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .rule__body { font-size: 11px; font-weight: 300; line-height: 1.6; color: var(--muted); }
+
+    /* Caption formula */
+    .caption-box { background: #fff; border: 1px solid var(--border); padding: 36px; }
+    .caption-example { font-family: Georgia, serif; font-size: 14px; line-height: 1.9; color: var(--text); margin-bottom: 24px; padding: 24px; background: var(--chalk); border-left: 2px solid var(--sand); }
+    .caption-rule { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .caption-rule:last-child { border-bottom: none; }
+    .caption-rule__label { font-weight: 500; min-width: 120px; color: var(--muted); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding-top: 2px; }
+    .caption-rule__value { font-weight: 300; color: var(--text); line-height: 1.6; }
+
+    /* Bio */
+    .bio-box { background: #fff; border: 1px solid var(--border); padding: 36px; }
+    .bio-preview { font-family: -apple-system, sans-serif; font-size: 14px; line-height: 1.7; color: #262626; background: #fafafa; border: 1px solid #dbdbdb; padding: 20px 24px; margin-bottom: 24px; border-radius: 4px; }
+    .bio-preview strong { font-weight: 600; font-size: 16px; display: block; margin-bottom: 4px; }
+
+    /* AI section */
+    .ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .ai-card { background: #fff; border: 1px solid var(--border); padding: 28px 32px; }
+    .ai-card__tag { font-size: 9px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .ai-card__name { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
+    .ai-card__desc { font-size: 12px; font-weight: 300; line-height: 1.7; color: var(--muted); }
+
+    @media (max-width: 768px) {
+      .topbar { padding: 16px 20px; }
+      .container { padding: 36px 20px 60px; }
+      .ref-grid, .pillars, .content-types, .rules, .ai-grid { grid-template-columns: 1fr; }
+      .pillars { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar__logo">Still</span>
+  <a href="hub.html" class="btn">← Hub</a>
+</div>
+
+<div class="container">
+
+  <h1 class="page-title">Instagram Strategy</h1>
+  <p class="page-sub">Reference: @black (Blvck Paris, 2.3M) + @fearofgod (2M) — synthesised into Still's own voice</p>
+
+  <!-- ===== REFERENCE STUDY ===== -->
+  <div class="section">
+    <p class="section-label">Reference Study</p>
+    <div class="ref-grid">
+
+      <div class="ref-card">
+        <p class="ref-card__brand">Reference 01</p>
+        <p class="ref-card__name">Blvck Paris (@black)</p>
+        <p class="ref-card__stat"><strong>2.3M followers</strong> · Following 8 people</p>
+        <p class="ref-card__stat">Built on Instagram before a single product existed</p>
+        <div class="ref-card__divider"></div>
+        <p class="ref-card__takeaway">
+          <strong>What they do:</strong> Obsessive consistency around a single aesthetic — everything is black, no exceptions. The feed isn't random posts, it's a curated lifestyle world. They post product shots, flat lays, model content, and branded lifestyle imagery all in one colour tone. The grid reads as one unified image, not individual posts.<br><br>
+          <strong>What we take:</strong> The discipline. Every post must feel like it belongs to the same world. No random content. No off-brand moments. The feed is the brand.
+        </p>
+      </div>
+
+      <div class="ref-card">
+        <p class="ref-card__brand">Reference 02</p>
+        <p class="ref-card__name">Fear of God (@fearofgod)</p>
+        <p class="ref-card__stat"><strong>2M followers</strong> · "American Luxury"</p>
+        <p class="ref-card__stat">Jerry Lorenzo — founder-led, intentional, sparse</p>
+        <div class="ref-card__divider"></div>
+        <p class="ref-card__takeaway">
+          <strong>What they do:</strong> Slow. Deliberate. Every post is editorial — full-body campaign shots, warm neutral backgrounds, minimal text. They don't post daily. Each post commands attention because there isn't noise around it. Captions are short, sometimes just a single word or a date. The product speaks, the founder speaks. Nothing else.<br><br>
+          <strong>What we take:</strong> The pace and the restraint. Less is more. Each post needs to mean something. Full-body model shots, warm tones, minimal copy.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== STILL FORMULA ===== -->
+  <div class="section">
+    <p class="section-label">The Still Formula</p>
+    <div class="formula">
+      <p class="formula__label">Blvck Paris × Fear of God × Still</p>
+      <p class="formula__heading">Blvck's consistency.<br>Fear of God's restraint.<br>Still's warmth.</p>
+      <p class="formula__sub">Where Blvck is cold monochrome and FOG is cool American luxury — Still is warm, natural, and human. Chalk, graphite, sand. Natural light. Real environments. The same discipline, a different temperature.</p>
+    </div>
+  </div>
+
+  <!-- ===== CONTENT PILLARS ===== -->
+  <div class="section">
+    <p class="section-label">Content Pillars — What We Post</p>
+    <div class="pillars">
+
+      <div class="pillar">
+        <p class="pillar__num">01</p>
+        <p class="pillar__name">Product</p>
+        <p class="pillar__desc">The clothing itself. Ghost mannequin, flat lay, model on seamless. Clean, warm, deliberate. Every piece deserves its own moment.</p>
+        <p class="pillar__pct">30% of feed</p>
+      </div>
+
+      <div class="pillar">
+        <p class="pillar__num">02</p>
+        <p class="pillar__name">Worn</p>
+        <p class="pillar__desc">Real people, real environments. Still worn at breakfast, on a walk, in a car. Aspirational but achievable. Not a runway — a life.</p>
+        <p class="pillar__pct">35% of feed</p>
+      </div>
+
+      <div class="pillar">
+        <p class="pillar__num">03</p>
+        <p class="pillar__name">Behind the Build</p>
+        <p class="pillar__desc">Fabric swatches, factory visits, spec sheets, sample unboxings. The work behind the product. Builds trust and story simultaneously.</p>
+        <p class="pillar__pct">20% of feed</p>
+      </div>
+
+      <div class="pillar">
+        <p class="pillar__num">04</p>
+        <p class="pillar__name">Stillness</p>
+        <p class="pillar__desc">Mood and atmosphere. A morning coffee, an empty room, a texture close-up. No product. Just the feeling the brand lives in.</p>
+        <p class="pillar__pct">15% of feed</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== CONTENT TYPES ===== -->
+  <div class="section">
+    <p class="section-label">Content Types — Real vs AI</p>
+    <div class="content-types">
+
+      <div class="content-type">
+        <span class="content-type__tag">Shoot yourself</span>
+        <p class="content-type__name">Real Content — Highest Priority</p>
+        <p class="content-type__desc">This is your edge over every AI-only brand. Real photography from someone who actually knows how to shoot. This is what makes the feed feel premium and trustworthy.</p>
+        <ul class="content-type__examples">
+          <li>Model shots on seamless — warm chalk or graphite background</li>
+          <li>Outdoor worn — morning light, natural environments, Brisbane locations</li>
+          <li>Sample unboxings — hands, packaging, fabric texture close-ups</li>
+          <li>Behind the scenes — factory correspondence, spec sheets, swatches arriving</li>
+          <li>Founder content — Ryan wearing the pieces, no performance needed</li>
+        </ul>
+      </div>
+
+      <div class="content-type">
+        <span class="content-type__tag">AI generated</span>
+        <p class="content-type__name">AI Content — Fill & Consistency</p>
+        <p class="content-type__desc">Keeps the feed active and consistent before samples arrive, and supplements real content long-term. Use AI for product imagery, moodboards, and atmospheric posts — never for moments that need to feel human.</p>
+        <ul class="content-type__examples">
+          <li>Product shots on seamless — tees, hoodies, track pants, accessories</li>
+          <li>Flat lay compositions — folded pieces, colour groupings</li>
+          <li>Texture close-ups — fabric grain, stitch detail, waistband close</li>
+          <li>Mood imagery — minimal rooms, morning light scenes, neutral palettes</li>
+          <li>Colour palette posts — swatches, Pantone-style reference cards</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== GRID LAYOUT ===== -->
+  <div class="section">
+    <p class="section-label">Grid Layout — How the Feed Reads</p>
+    <div class="grid-mockup">
+      <p class="grid-mockup__header">Pattern: Worn → Product → Mood → Worn → Product → Behind Build → repeat. Never two product shots side by side. Never two dark posts in a row.</p>
+      <div class="grid">
+
+        <!-- Row 1 -->
+        <div class="grid-cell" style="background:#2A2A2A;">
+          <p class="grid-cell__label" style="color:rgba(244,241,236,0.6); font-size:8px;">WORN<br>Model, dark tones</p>
+        </div>
+        <div class="grid-cell" style="background:#F4F1EC; border:1px solid #E0DAD0;">
+          <p class="grid-cell__label" style="color:#7A7570; font-size:8px;">PRODUCT<br>Chalk bg, tee</p>
+        </div>
+        <div class="grid-cell" style="background:#C9B89A;">
+          <p class="grid-cell__label" style="color:rgba(26,26,26,0.6); font-size:8px;">MOOD<br>Sand texture</p>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="grid-cell" style="background:#EAE5DC; border:1px solid #E0DAD0;">
+          <p class="grid-cell__label" style="color:#7A7570; font-size:8px;">BEHIND<br>Swatches</p>
+        </div>
+        <div class="grid-cell" style="background:#3a3530;">
+          <p class="grid-cell__label" style="color:rgba(244,241,236,0.6); font-size:8px;">WORN<br>Outdoor, warm</p>
+        </div>
+        <div class="grid-cell" style="background:#F4F1EC; border:1px solid #E0DAD0;">
+          <p class="grid-cell__label" style="color:#7A7570; font-size:8px;">PRODUCT<br>Chalk bg, hoodie</p>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="grid-cell" style="background:#2A2A2A;">
+          <p class="grid-cell__label" style="color:rgba(244,241,236,0.6); font-size:8px;">MOOD<br>Dark, minimal</p>
+        </div>
+        <div class="grid-cell" style="background:#EAE5DC; border:1px solid #E0DAD0;">
+          <p class="grid-cell__label" style="color:#7A7570; font-size:8px;">BEHIND<br>Factory / spec</p>
+        </div>
+        <div class="grid-cell" style="background:#3a3530;">
+          <p class="grid-cell__label" style="color:rgba(244,241,236,0.6); font-size:8px;">WORN<br>Full body</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PHOTO RULES ===== -->
+  <div class="section">
+    <p class="section-label">Photography Rules — Non-Negotiable</p>
+    <div class="rules">
+
+      <div class="rule">
+        <p class="rule__icon">🌡</p>
+        <p class="rule__name">Warm tones only</p>
+        <p class="rule__body">Every image must sit in the chalk / graphite / sand palette. No cool blue shadows. No harsh white light. Think morning sun through a window, not a flash-lit studio.</p>
+      </div>
+
+      <div class="rule">
+        <p class="rule__icon">📐</p>
+        <p class="rule__name">4:5 ratio, always</p>
+        <p class="rule__body">Instagram's native portrait format. No squares. No landscape. 4:5 on every single post — product, model, mood, everything. Consistency builds the grid.</p>
+      </div>
+
+      <div class="rule">
+        <p class="rule__icon">🤫</p>
+        <p class="rule__name">No clutter</p>
+        <p class="rule__body">One subject per frame. Empty backgrounds. Negative space is not wasted space — it's what makes the subject land. Fear of God never clutters a frame.</p>
+      </div>
+
+      <div class="rule">
+        <p class="rule__icon">👤</p>
+        <p class="rule__name">Full body on model</p>
+        <p class="rule__body">When using a model, show the full outfit. Cropped shots lose the proportion story. FOG always shows full body — you understand the garment because you see how it sits.</p>
+      </div>
+
+      <div class="rule">
+        <p class="rule__icon">🚫</p>
+        <p class="rule__name">No logos visible</p>
+        <p class="rule__body">Still doesn't rely on a logo to communicate quality. Never place a logo front and centre in a photo. The clothing speaks. The brand doesn't need to shout.</p>
+      </div>
+
+      <div class="rule">
+        <p class="rule__icon">✂️</p>
+        <p class="rule__name">Edit with restraint</p>
+        <p class="rule__body">Light grading only. Slight warmth, slight desaturation. Never heavily filtered. The Blvck approach — consistent tone across every post — but warmer. Same preset, every image.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== CAPTION FORMULA ===== -->
+  <div class="section">
+    <p class="section-label">Caption Formula</p>
+    <div class="caption-box">
+
+      <p class="caption-example">The Foundation Tee.<br>220gsm Supima cotton. Made in Portugal.<br><br>Nothing more.</p>
+
+      <p class="caption-example">Most clothing is made to be sold.<br>Ours is made to be worn.<br><br>Still. Arriving 2026.</p>
+
+      <p class="caption-example">The hoodie.<br>380gsm. 85% cotton, 15% merino. French terry.<br>Built for the kind of morning where nothing else would do.</p>
+
+      <div class="caption-rule">
+        <span class="caption-rule__label">Length</span>
+        <span class="caption-rule__value">1–4 lines maximum. Blvck and FOG both use short captions. Silence communicates confidence. Long captions feel like justification.</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Tone</span>
+        <span class="caption-rule__value">Declarative. Never salesy. Never "shop now" energy in the caption itself. State the fact, let it land. The link in bio handles the rest.</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Product posts</span>
+        <span class="caption-rule__value">Name + one key spec + one line of meaning. That's it. No price in caption, no discount, no urgency.</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Mood posts</span>
+        <span class="caption-rule__value">One sentence or nothing. Sometimes just "Still." as the entire caption. Let the image do the work.</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Hashtags</span>
+        <span class="caption-rule__value">5 max, placed in first comment not the caption. #still #menswear #premiumbasics #slowfashion #foundationcollection — never generic (#fashion, #style, #ootd).</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Emoji</span>
+        <span class="caption-rule__value">None. Ever. Blvck uses them occasionally. FOG never does. Still doesn't.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== BIO ===== -->
+  <div class="section">
+    <p class="section-label">Instagram Bio</p>
+    <div class="bio-box">
+      <div class="bio-preview">
+        <strong>Still</strong>
+        Clothing built to last.<br>
+        220gsm Supima. French terry. No synthetics.<br>
+        Made in Portugal &amp; Peru.<br>
+        The Foundation Collection — 2026.<br>
+        ↓ Join the waitlist
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Handle</span>
+        <span class="caption-rule__value">@wearestill — or @still (check availability when domain is confirmed)</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Name field</span>
+        <span class="caption-rule__value">STILL — use the name field, not the handle, for the logo word</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Link</span>
+        <span class="caption-rule__value">coming-soon page with waitlist form — swap to shop when live</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Profile photo</span>
+        <span class="caption-rule__value">Wordmark "Still" in serif on chalk background — clean, no icon, no logo mark needed at this stage</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== AI TOOLS ===== -->
+  <div class="section">
+    <p class="section-label">AI Tools for Content Creation</p>
+    <div class="ai-grid">
+
+      <div class="ai-card">
+        <p class="ai-card__tag">Product imagery</p>
+        <p class="ai-card__name">SDXL-Turbo (local, already set up)</p>
+        <p class="ai-card__desc">Already installed on your M2. Use for product shots on seamless backgrounds, flat lays, texture close-ups. Best for simple single-item shots. Prompts should specify: chalk/graphite background, overhead or front-on, soft diffused lighting, no model.</p>
+      </div>
+
+      <div class="ai-card">
+        <p class="ai-card__tag">Model / lifestyle</p>
+        <p class="ai-card__name">Midjourney v6 or Flux</p>
+        <p class="ai-card__desc">For AI model shots and lifestyle scenes — significantly better at human anatomy than SDXL-Turbo. Use prompt style: "still menswear campaign, model wearing [piece], warm chalk seamless, full body, FOG editorial style, soft natural light, 4:5".</p>
+      </div>
+
+      <div class="ai-card">
+        <p class="ai-card__tag">Video / Reels</p>
+        <p class="ai-card__name">Runway Gen-3 or Kling</p>
+        <p class="ai-card__desc">Generate short atmospheric video clips — fabric movement, a model walking, morning light through a window. Combine with your own real footage for Reels. AI for b-roll, real for hero content.</p>
+      </div>
+
+      <div class="ai-card">
+        <p class="ai-card__tag">Caption & copy</p>
+        <p class="ai-card__name">Claude (already here)</p>
+        <p class="ai-card__desc">Write captions in the Still voice — declarative, short, no emoji, no sales language. Brief: "Write a 2-line caption for a post showing [product]. Still brand voice — confident, minimal, no fluff." Review and approve before posting.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== POSTING CADENCE ===== -->
+  <div class="section">
+    <p class="section-label">Posting Cadence</p>
+    <div class="bio-box">
+      <div class="caption-rule">
+        <span class="caption-rule__label">Pre-launch</span>
+        <span class="caption-rule__value">3–4 posts per week. Build the world before the product exists. AI product shots, mood imagery, behind-the-build content. Goal: 1,000 followers before launch day.</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Launch week</span>
+        <span class="caption-rule__value">Daily. One post per day for 7 days. Countdown, product reveals, founder story, launch day, post-launch. This is the spike moment.</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Post-launch</span>
+        <span class="caption-rule__value">4–5 posts per week. Mix of real photography (once samples arrive) and AI fills. Never go dark for more than 2 days.</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Reels</span>
+        <span class="caption-rule__value">1–2 per week minimum. Instagram heavily prioritises Reels for reach. Even 15-second atmospheric clips — fabric texture, a fold, morning light — count. This is how you grow.</span>
+      </div>
+      <div class="caption-rule">
+        <span class="caption-rule__label">Stories</span>
+        <span class="caption-rule__value">Daily when possible. Behind the scenes, polls ("chalk or graphite?"), countdown stickers, waitlist link. Stories keep you top of mind between feed posts.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

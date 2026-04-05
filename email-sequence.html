@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Still — Email Sequence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --chalk:    #F4F1EC;
+      --graphite: #2A2A2A;
+      --sand:     #C9B89A;
+      --border:   #E0DAD0;
+      --text:     #1A1A1A;
+      --muted:    #7A7570;
+      --font:     'DM Sans', sans-serif;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+    }
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font); background: var(--chalk); color: var(--text); }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px; border-bottom: 1px solid var(--border);
+      background: var(--chalk); position: sticky; top: 0; z-index: 10;
+    }
+    .topbar__logo { font-family: var(--serif); font-size: 18px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; }
+    .btn { padding: 9px 20px; font-family: var(--font); font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--text); transition: border-color 0.18s; text-decoration: none; display: inline-block; }
+    .btn:hover { border-color: var(--graphite); }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 60px 48px 100px; }
+
+    .section-label { font-size: 9px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+    /* Preview name input */
+    .preview-bar {
+      display: flex; align-items: center; gap: 16px;
+      background: #fff; border: 1px solid var(--border);
+      padding: 14px 20px; margin-bottom: 40px;
+    }
+    .preview-bar label { font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .preview-bar input { flex: 1; font-family: var(--font); font-size: 13px; font-weight: 300; border: none; outline: none; color: var(--text); background: transparent; }
+
+    /* Sequence timeline */
+    .timeline { display: flex; gap: 0; margin-bottom: 48px; border: 1px solid var(--border); background: #fff; }
+    .timeline__step { flex: 1; padding: 20px 24px; border-right: 1px solid var(--border); cursor: pointer; transition: background 0.18s; }
+    .timeline__step:last-child { border-right: none; }
+    .timeline__step.active { background: var(--graphite); }
+    .timeline__step__timing { font-size: 9px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .timeline__step.active .timeline__step__timing { color: rgba(244,241,236,0.5); }
+    .timeline__step__name { font-size: 13px; font-weight: 400; color: var(--text); }
+    .timeline__step.active .timeline__step__name { color: #F4F1EC; }
+    .timeline__step__desc { font-size: 11px; font-weight: 300; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    .timeline__step.active .timeline__step__desc { color: rgba(244,241,236,0.45); }
+
+    /* Email preview */
+    .email-wrap { display: none; }
+    .email-wrap.active { display: block; }
+
+    .email-meta { background: #fff; border: 1px solid var(--border); border-bottom: none; padding: 24px 32px; }
+    .email-field { display: flex; gap: 20px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .email-field:last-child { border-bottom: none; }
+    .email-field__label { font-weight: 500; min-width: 56px; color: var(--muted); }
+    .email-field__value { color: var(--text); }
+
+    /* The actual email — styled like a real Gmail/email client */
+    .email-body-wrap {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 48px 56px 56px;
+      font-family: Georgia, serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.85;
+      color: #1a1a1a;
+      max-width: 100%;
+    }
+    .email-body-wrap p { margin-bottom: 20px; }
+    .email-body-wrap p:last-child { margin-bottom: 0; }
+    .email-body-wrap .sig { margin-top: 32px; }
+    .email-body-wrap .sig p { margin-bottom: 4px; }
+
+    .email-actions { display: flex; gap: 12px; margin-top: 16px; }
+
+    /* ESP setup note */
+    .esp-note {
+      margin-top: 56px;
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 32px 36px;
+    }
+    .esp-note__title { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+    .esp-note__body { font-size: 13px; font-weight: 300; line-height: 1.8; color: var(--muted); }
+    .esp-note__body strong { font-weight: 500; color: var(--text); }
+    .esp-note__steps { margin-top: 16px; }
+    .esp-note__step { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 300; color: var(--muted); }
+    .esp-note__step:last-child { border-bottom: none; }
+    .esp-note__num { font-family: var(--serif); font-size: 16px; color: var(--sand); min-width: 20px; }
+
+    @media (max-width: 768px) {
+      .topbar { padding: 16px 20px; }
+      .container { padding: 36px 20px 60px; }
+      .timeline { flex-direction: column; }
+      .timeline__step { border-right: none; border-bottom: 1px solid var(--border); }
+      .email-body-wrap { padding: 28px 24px 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar__logo">Still</span>
+  <a href="hub.html" class="btn">← Hub</a>
+</div>
+
+<div class="container">
+
+  <p class="section-label">Welcome Email Sequence — Waitlist Flow</p>
+
+  <!-- Name preview -->
+  <div class="preview-bar">
+    <label for="previewName">Preview as</label>
+    <input type="text" id="previewName" placeholder="Type a name to preview personalisation…" value="James" oninput="updateName()">
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+    <div class="timeline__step active" onclick="showEmail(0, this)">
+      <p class="timeline__step__timing">Immediately</p>
+      <p class="timeline__step__name">Email 1 — You're in</p>
+      <p class="timeline__step__desc">Confirmation + what to expect</p>
+    </div>
+    <div class="timeline__step" onclick="showEmail(1, this)">
+      <p class="timeline__step__timing">Day 2</p>
+      <p class="timeline__step__name">Email 2 — Why we're building this</p>
+      <p class="timeline__step__desc">Ryan's personal brand story</p>
+    </div>
+    <div class="timeline__step" onclick="showEmail(2, this)">
+      <p class="timeline__step__timing">Day 5</p>
+      <p class="timeline__step__name">Email 3 — What's coming</p>
+      <p class="timeline__step__desc">The collection, the timeline, founding member details</p>
+    </div>
+  </div>
+
+  <!-- ===== EMAIL 1 ===== -->
+  <div class="email-wrap active" id="email-0">
+    <div class="email-meta">
+      <div class="email-field"><span class="email-field__label">From</span><span class="email-field__value">Ryan Jones &lt;ryan@3pixmedia.com&gt;</span></div>
+      <div class="email-field"><span class="email-field__label">To</span><span class="email-field__value"><span class="preview-name">James</span></span></div>
+      <div class="email-field"><span class="email-field__label">Subject</span><span class="email-field__value">You're in, <span class="preview-name">James</span>.</span></div>
+    </div>
+    <div class="email-body-wrap">
+      <p>Hey <span class="preview-name">James</span>,</p>
+      <p>You're on the list.</p>
+      <p>I wanted to reach out personally. Still is built on the idea that the people who find something first deserve to be treated differently — and that's exactly how we're going to treat you.</p>
+      <p>Here's what being on the list means:</p>
+      <p>You get access to the collection 48 hours before it opens to anyone else. You also get 15% off your first order, permanently. Not a launch promo. Not a code that expires. Just your price, from here on out, for being someone who was here from day one.</p>
+      <p>Over the next few days I'll send you two more emails — one on why we're building this, and one on what's actually in the collection. They're worth two minutes of your time.</p>
+      <p>Talk soon.</p>
+      <div class="sig">
+        <p>Ryan</p>
+        <p style="color:#7A7570; font-size:13px;">Still — Brisbane, Australia</p>
+      </div>
+    </div>
+    <div class="email-actions">
+      <button class="btn" onclick="copyEmail('email-0')">Copy Email</button>
+    </div>
+  </div>
+
+  <!-- ===== EMAIL 2 ===== -->
+  <div class="email-wrap" id="email-1">
+    <div class="email-meta">
+      <div class="email-field"><span class="email-field__label">From</span><span class="email-field__value">Ryan Jones &lt;ryan@3pixmedia.com&gt;</span></div>
+      <div class="email-field"><span class="email-field__label">To</span><span class="email-field__value"><span class="preview-name">James</span></span></div>
+      <div class="email-field"><span class="email-field__label">Subject</span><span class="email-field__value">Why I'm building Still</span></div>
+    </div>
+    <div class="email-body-wrap">
+      <p>Hey <span class="preview-name">James</span>,</p>
+      <p>I've been a creative for years — I work in photography and video, mostly for fashion and lifestyle brands. I've spent a lot of time around clothing, around how it's made, how it's sold, and what actually makes people reach for the same piece over and over.</p>
+      <p>What I kept noticing was a gap. You're either buying something that falls apart after a season, or you're paying for a name you're not sure you believe in anymore. Nobody was making the thing I actually wanted to wear — built to the standard of the best houses in the world, but without the performance of the logo.</p>
+      <p>That's Still. Not a trend brand. Not a hype drop. Clothing built to the highest construction standard we could find — 220gsm Supima cotton, French terry with a merino blend, made in Portugal and Peru by manufacturers who've spent decades working at the top end of the industry. No synthetics. No shortcuts. Nothing we wouldn't keep ourselves.</p>
+      <p>The Foundation Collection is 24 pieces. Considered, deliberate, built to last. The kind of wardrobe you stop thinking about because everything in it works.</p>
+      <p>More on what's coming in a few days.</p>
+      <div class="sig">
+        <p>Ryan</p>
+        <p style="color:#7A7570; font-size:13px;">Still — Brisbane, Australia</p>
+      </div>
+    </div>
+    <div class="email-actions">
+      <button class="btn" onclick="copyEmail('email-1')">Copy Email</button>
+    </div>
+  </div>
+
+  <!-- ===== EMAIL 3 ===== -->
+  <div class="email-wrap" id="email-2">
+    <div class="email-meta">
+      <div class="email-field"><span class="email-field__label">From</span><span class="email-field__value">Ryan Jones &lt;ryan@3pixmedia.com&gt;</span></div>
+      <div class="email-field"><span class="email-field__label">To</span><span class="email-field__value"><span class="preview-name">James</span></span></div>
+      <div class="email-field"><span class="email-field__label">Subject</span><span class="email-field__value">What's in the collection, <span class="preview-name">James</span></span></div>
+    </div>
+    <div class="email-body-wrap">
+      <p>Hey <span class="preview-name">James</span>,</p>
+      <p>The Foundation Collection is 24 pieces. I want to walk you through what it actually is.</p>
+      <p>It starts with the basics — two tees (a 220gsm and a heavier 280gsm garment-dyed version), a long sleeve, and an Oxford shirt. These are the things you wear most. They need to be right before anything else does.</p>
+      <p>Then there's a winter set — a hoodie and matching track pant in a French terry blend we've had made specifically for Still. 380gsm, 85% cotton, 15% merino. Heavy enough to mean something. The kind of set you'll still be wearing in five years.</p>
+      <p>Beyond that — tailored trousers, linen shorts, a polo, outerwear, accessories. Everything in five colours: chalk, graphite, sand, navy, tobacco. Nothing printed. Nothing with a big logo. Just the piece itself.</p>
+      <p>We're in sampling right now. Once the samples come back and I'm happy with the quality — and I won't move until I am — we'll open up for founding member orders.</p>
+      <p>As someone on the early list, you'll hear about that before anyone else. And your 15% is locked in from your first order onwards.</p>
+      <p>I'll be in touch when we're close.</p>
+      <div class="sig">
+        <p>Ryan</p>
+        <p style="color:#7A7570; font-size:13px;">Still — Brisbane, Australia</p>
+      </div>
+    </div>
+    <div class="email-actions">
+      <button class="btn" onclick="copyEmail('email-2')">Copy Email</button>
+    </div>
+  </div>
+
+  <!-- ===== ESP Setup ===== -->
+  <div class="esp-note">
+    <p class="esp-note__title">How to automate these — Brevo (free)</p>
+    <div class="esp-note__body">
+      <p>To send these automatically with the subscriber's real name, you need <strong>Brevo</strong> (formerly Sendinblue) — free up to 300 emails/day, automation included on the free plan. Takes 15 minutes to set up.</p>
+      <div class="esp-note__steps">
+        <div class="esp-note__step"><span class="esp-note__num">1</span><span>Sign up at brevo.com with ryan@3pixmedia.com</span></div>
+        <div class="esp-note__step"><span class="esp-note__num">2</span><span>Create a Contact List called "Still Waitlist"</span></div>
+        <div class="esp-note__step"><span class="esp-note__num">3</span><span>Get your free API key from Settings → API Keys</span></div>
+        <div class="esp-note__step"><span class="esp-note__num">4</span><span>Bring that API key back here — the coming-soon form gets updated in 2 minutes to POST directly to Brevo, triggering the full sequence automatically with the subscriber's real name</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function updateName() {
+    const name = document.getElementById('previewName').value || 'there';
+    document.querySelectorAll('.preview-name').forEach(el => el.textContent = name);
+  }
+
+  function showEmail(index, tab) {
+    document.querySelectorAll('.timeline__step').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.email-wrap').forEach(e => e.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('email-' + index).classList.add('active');
+  }
+
+  function copyEmail(id) {
+    const body = document.getElementById(id).querySelector('.email-body-wrap').innerText;
+    navigator.clipboard.writeText(body).then(() => {
+      const btn = document.getElementById(id).querySelector('.btn');
+      btn.textContent = 'Copied';
+      setTimeout(() => btn.textContent = 'Copy Email', 2000);
+    });
+  }
+
+  updateName();
+</script>
+
+</body>
+</html>

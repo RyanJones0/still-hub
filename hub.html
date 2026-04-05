@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Still — Brand Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --chalk:    #F4F1EC;
+      --graphite: #2A2A2A;
+      --sand:     #C9B89A;
+      --border:   #E0DAD0;
+      --text:     #1A1A1A;
+      --muted:    #7A7570;
+      --font:     'DM Sans', sans-serif;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+    }
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font);
+      background: var(--chalk);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .hub-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 36px 48px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hub-logo {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .hub-badge {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #EAE5DC;
+      padding: 6px 14px;
+      border-radius: 2px;
+    }
+
+    /* Main */
+    .hub-main {
+      padding: 52px 48px 80px;
+      max-width: 1200px;
+    }
+
+    .hub-section {
+      margin-bottom: 56px;
+    }
+
+    .hub-section__label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hub-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .hub-grid--2 { grid-template-columns: repeat(2, 1fr); }
+    .hub-grid--3 { grid-template-columns: repeat(3, 1fr); }
+    .hub-grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* Cards */
+    .hub-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 26px;
+      background: #fff;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+      min-height: 100px;
+    }
+    .hub-card:hover {
+      border-color: var(--graphite);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+    .hub-card--dark {
+      background: var(--graphite);
+      border-color: var(--graphite);
+      color: #F4F1EC;
+    }
+    .hub-card--dark:hover {
+      background: #1a1a1a;
+      border-color: #1a1a1a;
+    }
+    .hub-card--tall { min-height: 130px; }
+
+    .hub-card__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .hub-card__icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .hub-card__arrow {
+      font-size: 16px;
+      color: var(--muted);
+      transition: transform 0.18s;
+    }
+    .hub-card:hover .hub-card__arrow { transform: translate(2px, -2px); }
+    .hub-card--dark .hub-card__arrow { color: rgba(244,241,236,0.4); }
+
+    .hub-card__name {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      margin-bottom: 4px;
+    }
+    .hub-card__desc {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .hub-card--dark .hub-card__desc { color: rgba(244,241,236,0.5); }
+
+    /* Status dot */
+    .hub-card__status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+    .hub-card__status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sand);
+    }
+    .hub-card__status-dot--live { background: #6BAF7A; }
+
+    @media (max-width: 900px) {
+      .hub-header { padding: 24px 24px 20px; }
+      .hub-main { padding: 36px 24px 60px; }
+      .hub-grid--3 { grid-template-columns: repeat(2, 1fr); }
+      .hub-grid--4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .hub-grid--2, .hub-grid--3, .hub-grid--4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="hub-header">
+  <span class="hub-logo">Still</span>
+  <span class="hub-badge">Brand Hub</span>
+</header>
+
+<main class="hub-main">
+
+  <!-- Website -->
+  <div class="hub-section">
+    <p class="hub-section__label">Website</p>
+    <div class="hub-grid hub-grid--3">
+
+      <a href="index.html" class="hub-card hub-card--dark hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">🏠</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Homepage</p>
+          <p class="hub-card__desc">Hero, editorial sections, email capture</p>
+        </div>
+      </a>
+
+      <a href="shop.html" class="hub-card hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">🛍</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Shop</p>
+          <p class="hub-card__desc">24-piece grid with category filtering</p>
+        </div>
+      </a>
+
+      <a href="product.html" class="hub-card hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">👕</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Product Page</p>
+          <p class="hub-card__desc">Size selector, colour picker, add to cart</p>
+        </div>
+      </a>
+
+      <a href="about.html" class="hub-card" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">📖</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Story</p>
+          <p class="hub-card__desc">Brand narrative, values, manufacturing</p>
+        </div>
+      </a>
+
+      <a href="journal.html" class="hub-card" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">📝</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Journal</p>
+          <p class="hub-card__desc">Editorial content, brand storytelling</p>
+        </div>
+      </a>
+
+      <a href="collection.html" class="hub-card" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">🗂</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Collection</p>
+          <p class="hub-card__desc">The Foundation — full lookbook view</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Launch -->
+  <div class="hub-section">
+    <p class="hub-section__label">Launch</p>
+    <div class="hub-grid hub-grid--2">
+
+      <a href="coming-soon.html" class="hub-card hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">🚀</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Pre-Launch Page</p>
+          <p class="hub-card__desc">Waitlist capture, countdown to Oct 2026, founding member perks</p>
+          <span class="hub-card__status">
+            <span class="hub-card__status-dot hub-card__status-dot--live"></span>
+            Live — emails → frizy.jones28@gmail.com
+          </span>
+        </div>
+      </a>
+
+      <a href="financial-model.html" class="hub-card hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">📊</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Financial Model</p>
+          <p class="hub-card__desc">Unit economics, 12-month projections, break-even, inventory planner</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Product Design -->
+  <div class="hub-section">
+    <p class="hub-section__label">Product Design</p>
+    <div class="hub-grid hub-grid--2">
+
+      <a href="mockup-sizing.html" class="hub-card hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">📏</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Printable Mockup Sheets</p>
+          <p class="hub-card__desc">SVG flat sketches with callouts — Foundation Tee, Hoodie, Track Pant. Print-ready A4.</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Manufacturer Outreach -->
+  <div class="hub-section">
+    <p class="hub-section__label">Manufacturing</p>
+    <div class="hub-grid hub-grid--2">
+
+      <a href="manufacturer-brief.html" class="hub-card hub-card--dark hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">🏭</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Manufacturer Brief</p>
+          <p class="hub-card__desc">Printable brand brief + ready-to-send outreach emails for ASBX, Master Knit, Positivo, Naveena</p>
+          <span class="hub-card__status">
+            <span class="hub-card__status-dot hub-card__status-dot--live"></span>
+            4 emails ready — copy &amp; send
+          </span>
+        </div>
+      </a>
+
+      <a href="spec-sheet.html" class="hub-card hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">📐</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Spec Sheet</p>
+          <p class="hub-card__desc">Full POM measurements, Pantone refs, grade rules — attach to manufacturer emails</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div class="hub-section">
+    <p class="hub-section__label">Email</p>
+    <div class="hub-grid hub-grid--2">
+
+      <a href="email-sequence.html" class="hub-card hub-card--dark hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">✉️</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Welcome Sequence</p>
+          <p class="hub-card__desc">3 personalised emails — confirmation, brand story, collection preview. Live name preview included.</p>
+          <span class="hub-card__status">
+            <span class="hub-card__status-dot"></span>
+            Needs Brevo API key to automate
+          </span>
+        </div>
+      </a>
+
+      <a href="coming-soon.html" class="hub-card hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">📋</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Waitlist Form</p>
+          <p class="hub-card__desc">Captures first name + email. Submissions notify frizy.jones28@gmail.com instantly.</p>
+          <span class="hub-card__status">
+            <span class="hub-card__status-dot hub-card__status-dot--live"></span>
+            Live
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Social -->
+  <div class="hub-section">
+    <p class="hub-section__label">Social</p>
+    <div class="hub-grid hub-grid--2">
+
+      <a href="instagram-strategy.html" class="hub-card hub-card--dark hub-card--tall" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">📱</span>
+          <span class="hub-card__arrow">↗</span>
+        </div>
+        <div>
+          <p class="hub-card__name">Instagram Strategy</p>
+          <p class="hub-card__desc">Blvck Paris × Fear of God analysis, content pillars, grid layout, photo rules, caption formula, AI tools, posting cadence</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Quick links -->
+  <div class="hub-section">
+    <p class="hub-section__label">Quick Actions</p>
+    <div class="hub-grid hub-grid--4">
+
+      <div class="hub-card" onclick="window.open('mockup-sizing.html','_blank'); window.print()">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">🖨</span>
+        </div>
+        <p class="hub-card__name">Print Spec Sheets</p>
+        <p class="hub-card__desc">Open + print mockups</p>
+      </div>
+
+      <a href="mailto:ryan@3pixmedia.com?subject=STILL — Manufacturer Enquiry&body=Hi,%0D%0A%0D%0AWe are STILL, a premium menswear brand launching in 2026. We are seeking manufacturing partners for our Foundation Collection — 24 pieces in cotton and merino.%0D%0A%0D%0AWe'd love to discuss a 10-piece sample run to begin.%0D%0A%0D%0AKind regards,%0D%0ARyan Jones%0D%0ASTILL" class="hub-card">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">✉️</span>
+        </div>
+        <p class="hub-card__name">Email Manufacturer</p>
+        <p class="hub-card__desc">Pre-written outreach draft</p>
+      </a>
+
+      <a href="financial-model.html" class="hub-card" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">💰</span>
+        </div>
+        <p class="hub-card__name">Update Financials</p>
+        <p class="hub-card__desc">Adjust COGS when quotes arrive</p>
+      </a>
+
+      <a href="coming-soon.html" class="hub-card" target="_blank">
+        <div class="hub-card__top">
+          <span class="hub-card__icon">👥</span>
+        </div>
+        <p class="hub-card__name">Waitlist Page</p>
+        <p class="hub-card__desc">Share this link to collect signups</p>
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

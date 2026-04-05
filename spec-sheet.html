@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STILL — Sample Specification Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --chalk: #F4F1EC; --chalk-dark: #EAE5DC; --graphite: #2A2A2A;
+      --navy: #1B2B4B; --sand: #C9B89A; --border: #E0DAD0;
+      --text: #1A1A1A; --muted: #7A7570;
+      --font: 'DM Sans', sans-serif; --serif: 'Cormorant Garamond', Georgia, serif;
+    }
+    html { font-size: 15px; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font); background: var(--chalk); color: var(--text); line-height: 1.6; }
+
+    /* ---- PAGE ---- */
+    .page { max-width: 1100px; margin: 0 auto; padding: 60px 40px 120px; }
+
+    /* ---- COVER ---- */
+    .cover { border-bottom: 1px solid var(--border); padding-bottom: 48px; margin-bottom: 60px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .cover-brand { font-family: var(--serif); font-size: 3rem; font-weight: 300; letter-spacing: 0.2em; }
+    .cover-meta { text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 2; }
+    .cover-meta strong { color: var(--graphite); display: block; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    /* ---- SECTION ---- */
+    .section { margin-bottom: 72px; }
+    .section-title { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+    .section-intro { font-size: 0.88rem; color: var(--muted); line-height: 1.7; max-width: 700px; margin-bottom: 32px; }
+
+    /* ---- GARMENT BLOCK ---- */
+    .garment { margin-bottom: 64px; page-break-inside: avoid; }
+    .garment-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--graphite); }
+    .garment-name { font-family: var(--serif); font-size: 1.7rem; font-weight: 400; }
+    .garment-meta { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-align: right; line-height: 1.8; }
+    .garment-meta span { display: block; }
+
+    /* ---- FIT PHILOSOPHY ---- */
+    .fit-note { background: var(--chalk-dark); border-left: 3px solid var(--sand); padding: 14px 18px; font-size: 0.82rem; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+    .fit-note strong { color: var(--graphite); }
+
+    /* ---- SPEC TABLE ---- */
+    .spec-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .spec-table th { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--border); background: var(--chalk-dark); font-weight: 500; }
+    .spec-table th.num { text-align: center; }
+    .spec-table td { padding: 11px 14px; font-size: 0.83rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .spec-table td.num { text-align: center; font-variant-numeric: tabular-nums; }
+    .spec-table td.pom { font-weight: 500; color: var(--graphite); white-space: nowrap; }
+    .spec-table td.why { color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table tr:hover td { background: var(--chalk-dark); }
+    .spec-table .grade { color: var(--muted); font-size: 0.75rem; }
+
+    /* ---- GRADE CHART ---- */
+    .grade-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .grade-table th { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; text-align: center; border-bottom: 1px solid var(--border); background: var(--chalk-dark); }
+    .grade-table th:first-child { text-align: left; }
+    .grade-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: center; font-variant-numeric: tabular-nums; }
+    .grade-table td:first-child { text-align: left; font-weight: 500; color: var(--graphite); }
+    .grade-table .hero { background: var(--graphite); color: var(--chalk); font-weight: 600; }
+    .grade-table .hero td { border-color: rgba(255,255,255,0.1); }
+    .grade-table .hero td:first-child { color: var(--sand); }
+    .grade-table tr:last-child td { border: none; }
+
+    /* ---- CONSTRUCTION NOTES ---- */
+    .construction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); border: 1px solid var(--border); margin-bottom: 32px; }
+    .construction-card { background: var(--chalk); padding: 20px 22px; }
+    .construction-card h4 { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .construction-card ul { list-style: none; font-size: 0.82rem; color: var(--text); line-height: 1.9; }
+    .construction-card ul li::before { content: "—"; margin-right: 8px; color: var(--sand); }
+
+    /* ---- COLOUR PALETTE ---- */
+    .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin-bottom: 28px; }
+    .palette-swatch { aspect-ratio: 1; position: relative; }
+    .palette-info { padding: 14px 4px 0; }
+    .palette-name { font-size: 0.75rem; font-weight: 500; color: var(--graphite); }
+    .palette-hex { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em; }
+    .palette-pantone { font-size: 0.65rem; color: var(--muted); }
+    .palette-note { font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin-top: 6px; }
+
+    /* ---- TOL BOX ---- */
+    .tolerance-box { border: 1px solid var(--border); padding: 20px 24px; font-size: 0.82rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .tol-item { }
+    .tol-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .tol-val { font-family: var(--serif); font-size: 1.3rem; color: var(--graphite); }
+    .tol-desc { font-size: 0.72rem; color: var(--muted); }
+
+    /* ---- PRINT ---- */
+    @media print {
+      body { background: white; }
+      .garment { page-break-inside: avoid; }
+      .section { page-break-inside: avoid; }
+    }
+    @media (max-width: 768px) {
+      .cover { flex-direction: column; gap: 20px; align-items: flex-start; }
+      .cover-meta { text-align: left; }
+      .construction-grid { grid-template-columns: 1fr; }
+      .palette-grid { grid-template-columns: repeat(3, 1fr); }
+      .tolerance-box { grid-template-columns: 1fr; }
+      .page { padding: 32px 20px 80px; }
+      .spec-table td.why { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-brand">STILL</div>
+    <div class="cover-meta">
+      <strong>Document</strong>Sample Specification Sheet v1.0
+      <strong>Date</strong>April 2026
+      <strong>Prepared for</strong>Manufacturer Sample Production
+      <strong>Contact</strong>ryan@3pixmedia.com
+      <strong>Reference</strong>Foundation Collection — 24 pieces
+    </div>
+  </div>
+
+  <!-- FIT PHILOSOPHY -->
+  <div class="section">
+    <div class="section-title">01 — Fit Philosophy</div>
+    <div class="section-intro">
+      STILL is positioned between athletic wear and formalwear. The fit language is <strong>contemporary relaxed</strong> — structured enough for a dinner, comfortable enough for a full day. Reference brands for fit: COS (relaxed structure), Theory (functional precision), Reiss (clean everyday). Not Fear of God Essentials (too boxy), not Lululemon (too technical). The garment should read clean when standing and allow full range of motion when seated.
+    </div>
+
+    <div class="fit-note">
+      <strong>Reference body for Size Medium:</strong> 6'0" (183cm) · Chest 38–40" (97–102cm) · Waist 32–33" (81–84cm) · Hip 38–40" (97–102cm) · Inseam 32" (81cm). This reflects the metropolitan professional male (28–45), health-conscious, not statistically average. The US average male waist is ~40" — STILL sizes for the active, not the average.
+    </div>
+
+    <div class="tolerance-box">
+      <div class="tol-item">
+        <div class="tol-label">Tolerance — Small dims (&lt;5")</div>
+        <div class="tol-val">± ¼"</div>
+        <div class="tol-desc">Neckband, placket, cuff width</div>
+      </div>
+      <div class="tol-item">
+        <div class="tol-label">Tolerance — Mid dims (5–15")</div>
+        <div class="tol-val">± ⅜"</div>
+        <div class="tol-desc">Sleeve length, rise, inseam</div>
+      </div>
+      <div class="tol-item">
+        <div class="tol-label">Tolerance — Large dims (&gt;15")</div>
+        <div class="tol-val">± ½"</div>
+        <div class="tol-desc">Chest, body length, hip, outseam</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADE CHART -->
+  <div class="section">
+    <div class="section-title">02 — Grade Chart (all garments, inches)</div>
+    <div class="section-intro">
+      Sample to be produced in <strong>Medium</strong>. Full range XS–XL for production. Grade increments are consistent across all garments. Body length grades at +½" per size (S→M, M→L) and +¾" (L→XL) to account for height distribution in the upper sizes.
+    </div>
+    <table class="grade-table">
+      <thead>
+        <tr>
+          <th>Measurement</th>
+          <th>XS</th>
+          <th>S</th>
+          <th class="hero">M</th>
+          <th>L</th>
+          <th>XL</th>
+          <th>Grade / size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Chest (flat)</td><td>19.5"</td><td>20.5"</td><td class="hero">21.5"</td><td>22.5"</td><td>23.5"</td><td>+1"</td></tr>
+        <tr><td>Waist (flat, tops)</td><td>18"</td><td>19"</td><td class="hero">20"</td><td>21"</td><td>22"</td><td>+1"</td></tr>
+        <tr><td>Body length (HPS, tops)</td><td>27.5"</td><td>28"</td><td class="hero">29"</td><td>29.5"</td><td>30.25"</td><td>+½–¾"</td></tr>
+        <tr><td>Shoulder width</td><td>17.5"</td><td>18"</td><td class="hero">18.5"</td><td>19.25"</td><td>20"</td><td>+¾"</td></tr>
+        <tr><td>Sleeve (from shoulder seam, tee)</td><td>8"</td><td>8.375"</td><td class="hero">8.75"</td><td>9"</td><td>9.25"</td><td>+¼–⅜"</td></tr>
+        <tr><td>Waist flat (trousers)</td><td>14"</td><td>15.25"</td><td class="hero">16.5"</td><td>17.75"</td><td>19"</td><td>+1.25"</td></tr>
+        <tr><td>Hip flat (trousers, 8" below WB)</td><td>19"</td><td>20"</td><td class="hero">21"</td><td>22"</td><td>23"</td><td>+1"</td></tr>
+        <tr><td>Rise</td><td>10.75"</td><td>11.125"</td><td class="hero">11.5"</td><td>11.875"</td><td>12.25"</td><td>+⅜"</td></tr>
+        <tr><td>Inseam (trousers)</td><td>30.5"</td><td>31"</td><td class="hero">31.5"</td><td>32"</td><td>32.5"</td><td>+½"</td></tr>
+        <tr><td>Leg opening flat</td><td>7.5"</td><td>7.75"</td><td class="hero">8"</td><td>8.25"</td><td>8.5"</td><td>+¼"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GARMENTS -->
+
+  <!-- 1. FOUNDATION TEE -->
+  <div class="section">
+    <div class="section-title">03 — Garment Specifications</div>
+
+    <div class="garment">
+      <div class="garment-header">
+        <div class="garment-name">Foundation Tee</div>
+        <div class="garment-meta">
+          <span>230gsm Pima cotton · Tubular knit · Crew neck</span>
+          <span>Made in Peru · $95 retail</span>
+          <span>Sample colour: Chalk #F0EBE1</span>
+        </div>
+      </div>
+      <div class="fit-note">
+        <strong>Fit intent:</strong> Extended body, slightly relaxed. 4–5" chest ease. Reads as a considered garment, not a blank — the extended length and chest width give it structure without looking deliberate. References: COS organic cotton tee, Lady White Co. (single needle chain stitch standard).
+      </div>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th>Point of Measure</th>
+            <th class="num">XS</th><th class="num">S</th><th class="num">M ★</th><th class="num">L</th><th class="num">XL</th>
+            <th>Why this measurement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pom">Chest (flat, 1" below armhole)</td>
+            <td class="num">19.5"</td><td class="num">20.5"</td><td class="num">21.5"</td><td class="num">22.5"</td><td class="num">23.5"</td>
+            <td class="why">21.5" = 43" circumference on a 38" chest body = 4–5" ease. Less than 4" reads as slim (tension when seated). More than 6" enters oversized territory. 4–5" ease is the COS/Theory standard for "relaxed but intentional." The 230gsm Pima has enough weight to drape cleanly at this width without clinging.</td>
+          </tr>
+          <tr>
+            <td class="pom">Body length (HPS to hem)</td>
+            <td class="num">27.5"</td><td class="num">28"</td><td class="num">29"</td><td class="num">29.5"</td><td class="num">30.25"</td>
+            <td class="why">29" at M sits 2–3" below the trouser waistband on a 6'0" frame — ensures the tee doesn't ride up when arms are raised or seated. Standard premium tee is 27.5–28". The extra 1" is the "extended body" differentiator from the brief. Benchmark: COS oversized tees are 29–30" at M.</td>
+          </tr>
+          <tr>
+            <td class="pom">Shoulder width (seam to seam)</td>
+            <td class="num">17.5"</td><td class="num">18"</td><td class="num">18.5"</td><td class="num">19.25"</td><td class="num">20"</td>
+            <td class="why">18.5" gives ~0.75" drop each side from the natural shoulder point (approx 17"). A clean slight drop — not a fashion drop shoulder (20"+). The natural shoulder sits structured; the 0.75" drop allows fabric to hang cleanly without armhole tension. Any more drop and the sleeve starts to look athletic.</td>
+          </tr>
+          <tr>
+            <td class="pom">Sleeve length (shoulder seam to hem)</td>
+            <td class="num">8"</td><td class="num">8.375"</td><td class="num">8.75"</td><td class="num">9"</td><td class="num">9.25"</td>
+            <td class="why">8.75" lands at mid-bicep on a 6'0" arm. Below 8" exposes the armhole when arm is raised (cheap). Above 9.5" reads athletic/basketball. Mid-bicep is the premium benchmark — used by COS, APC, Theory universally. The slight ⅜" grade per size accounts for arm length increase.</td>
+          </tr>
+          <tr>
+            <td class="pom">Sleeve opening (flat)</td>
+            <td class="num">5.75"</td><td class="num">6"</td><td class="num">6.25"</td><td class="num">6.5"</td><td class="num">6.75"</td>
+            <td class="why">6.25" = 12.5" circumference at the sleeve hem — fits cleanly around the mid-bicep without cutting or bunching. Proportional to the 8.75" sleeve length and 21.5" chest.</td>
+          </tr>
+          <tr>
+            <td class="pom">Neck width (flat, seam to seam)</td>
+            <td class="num">7.75"</td><td class="num">8"</td><td class="num">8.25"</td><td class="num">8.5"</td><td class="num">8.75"</td>
+            <td class="why">8.25" sits 2 finger-widths from the collarbone — the standard premium crew neck position. Under 7.5" looks costume-like. Over 9" reads as a wide scoop. The neck should frame the collarbone without exposing chest or riding up the throat.</td>
+          </tr>
+          <tr>
+            <td class="pom">Neckband height</td>
+            <td class="num" colspan="5" style="text-align:center">⅞" (0.875") — all sizes</td>
+            <td class="why">7/8" is finer than the 1" athletic standard — it sits lower and looks more refined. The difference is subtle but felt. Budget and sportswear brands use 1". Premium basics brands (Lady White Co., Buck Mason) use 7/8".</td>
+          </tr>
+          <tr>
+            <td class="pom">Hem finish</td>
+            <td class="num" colspan="5" style="text-align:center">Single needle chain stitch, ⅝" from edge — all sizes</td>
+            <td class="why">Single needle chain stitch creates a subtle rope-like roll at the hem that cannot be replicated on an industrial coverstitch machine. It is the single biggest visual and tactile separator between a $95 tee and a $30 tee. Slower to produce — which is why only premium brands use it. Specify this explicitly in the tech pack.</td>
+          </tr>
+          <tr>
+            <td class="pom">Body construction</td>
+            <td class="num" colspan="5" style="text-align:center">Tubular knit — no side seams</td>
+            <td class="why">Tubular knit eliminates the side seam entirely. Side seams can twist, chafe, and create visible ridges through lighter fabrics. All premium basics brands (Sunspel, Lady White Co.) use tubular construction for tees. It also reduces fabric waste in cutting.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FITTED TEE -->
+    <div class="garment">
+      <div class="garment-header">
+        <div class="garment-name">Fitted Tee</div>
+        <div class="garment-meta">
+          <span>230gsm Pima cotton · Tubular knit · Crew neck</span>
+          <span>Made in Peru · $95 retail</span>
+          <span>Sample colour: Graphite #47433F</span>
+        </div>
+      </div>
+      <div class="fit-note">
+        <strong>Fit intent:</strong> Closer to the torso, shorter body. 1–2" chest ease. Designed to be worn tucked or under a layer. Same fabric block as Foundation Tee, different cut. Reference: Sunspel Q82 tee, APC Jimmy tee.
+      </div>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Point of Measure</th><th class="num">XS</th><th class="num">S</th><th class="num">M ★</th><th class="num">L</th><th class="num">XL</th><th>Why this measurement</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pom">Chest (flat, 1" below armhole)</td>
+            <td class="num">18.5"</td><td class="num">19.25"</td><td class="num">20"</td><td class="num">20.75"</td><td class="num">21.5"</td>
+            <td class="why">20" = 40" circumference = 0–2" ease on a 38–40" chest. This is intentionally snug — it shows the body without clinging. The Pima piqué at 230gsm is dense enough not to show texture imperfections at this ease. Grade is ¾" per size (not 1") because the Fitted Tee should maintain its close fit across the size range.</td>
+          </tr>
+          <tr>
+            <td class="pom">Body length (HPS to hem)</td>
+            <td class="num">26"</td><td class="num">26.5"</td><td class="num">27"</td><td class="num">27.5"</td><td class="num">28"</td>
+            <td class="why">27" sits at the natural waistband of a mid-rise trouser on a 6'0" frame — works perfectly tucked or untucked. Foundation Tee is 2" longer for contrast between the two styles.</td>
+          </tr>
+          <tr>
+            <td class="pom">Shoulder width</td>
+            <td class="num">17"</td><td class="num">17.5"</td><td class="num">18"</td><td class="num">18.75"</td><td class="num">19.5"</td>
+            <td class="why">18" is set-in shoulder (natural, no drop). The close-fit body demands a natural shoulder to maintain the structured silhouette. A dropped shoulder on a fitted tee creates unwanted fabric pooling under the arm.</td>
+          </tr>
+          <tr>
+            <td class="pom">Sleeve length</td>
+            <td class="num">7.75"</td><td class="num">8"</td><td class="num">8.25"</td><td class="num">8.75"</td><td class="num">9"</td>
+            <td class="why">Slightly shorter than the Foundation Tee — ½" less. This keeps the sleeve closer to the bicep and prevents the fabric bunching that can happen with a shorter sleeve on a close-fit tee.</td>
+          </tr>
+          <tr>
+            <td class="pom">Sleeve opening (flat)</td>
+            <td class="num">5.5"</td><td class="num">5.625"</td><td class="num">5.75"</td><td class="num">6"</td><td class="num">6.25"</td>
+            <td class="why">½" tighter than Foundation Tee — proportional to the closer chest and natural shoulder.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FOUNDATION HOODIE -->
+    <div class="garment">
+      <div class="garment-header">
+        <div class="garment-name">Foundation Hoodie</div>
+        <div class="garment-meta">
+          <span>380gsm French terry · Set-in sleeve · Gunmetal aglets</span>
+          <span>Made in Portugal · $185 retail</span>
+          <span>Sample colour: Chalk #F0EBE1</span>
+        </div>
+      </div>
+      <div class="fit-note">
+        <strong>Fit intent:</strong> Relaxed. 7–8" chest ease. The weight of the fabric (380gsm) provides structural drape at this ease — it will not look sloppy because the French terry holds its shape. Reference: Studio Nicholson, COS heavy hoodies. The key spec difference from competitors is the 380gsm weight — most brand hoodies are 280–320gsm and feel hollow.
+      </div>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Point of Measure</th><th class="num">XS</th><th class="num">S</th><th class="num">M ★</th><th class="num">L</th><th class="num">XL</th><th>Why this measurement</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pom">Chest (flat, 1" below armhole)</td>
+            <td class="num">21.5"</td><td class="num">22.5"</td><td class="num">23.5"</td><td class="num">24.5"</td><td class="num">25.5"</td>
+            <td class="why">23.5" = 47" circumference = 7–8" ease on a 38–40" chest. This is the relaxed hoodie sweet spot. Under 22" feels restrictive when layering (defeats the purpose). Over 25" (FOG territory) creates an unintentional boxy silhouette. The 380gsm weight means the fabric falls cleanly at 23.5" — lighter French terry would look droopy at the same width.</td>
+          </tr>
+          <tr>
+            <td class="pom">Body length (HPS to hem)</td>
+            <td class="num">26.5"</td><td class="num">27"</td><td class="num">27.5"</td><td class="num">28"</td><td class="num">28.75"</td>
+            <td class="why">27.5" at M sits at mid-hip — covers the waistband by ~1". This is the critical hoodie length. Too short (26") and the hem sits at the waist and rides up when arms raise. Too long (29"+) and it starts folding over the waistband when seated — creates bulk. Mid-hip is the premium benchmark.</td>
+          </tr>
+          <tr>
+            <td class="pom">Shoulder width (dropped)</td>
+            <td class="num">18.5"</td><td class="num">19.25"</td><td class="num">20"</td><td class="num">20.75"</td><td class="num">21.5"</td>
+            <td class="why">20" is a ¾" drop each side from natural shoulder. This is intentional — a 380gsm French terry hoodie with a natural shoulder will pull and bunch at the armhole because the heavy fabric creates downward tension. The slight drop allows the sleeve to fall cleanly. COS and Studio Nicholson both use a similar drop on heavy fleece.</td>
+          </tr>
+          <tr>
+            <td class="pom">Sleeve length (from shoulder seam)</td>
+            <td class="num">24.5"</td><td class="num">25"</td><td class="num">25.5"</td><td class="num">26"</td><td class="num">26.5"</td>
+            <td class="why">25.5" with a dropped shoulder places the cuff at the wrist bone on a 6'0" frame. Critical: because the shoulder is dropped, the sleeve origin is 1" further from the neck than on a natural shoulder — the sleeve must be longer to reach the same body point. Failure to account for this is a common factory error.</td>
+          </tr>
+          <tr>
+            <td class="pom">Sleeve opening (flat, before aglet)</td>
+            <td class="num">4.75"</td><td class="num">5"</td><td class="num">5.25"</td><td class="num">5.5"</td><td class="num">5.75"</td>
+            <td class="why">5.25" = 10.5" circumference — snug enough to hold the gunmetal flat-braid drawcord in position at the cuff. A wider sleeve opening (6"+) allows the cord to slide and the sleeve to bunch. The ribbed cuff itself contracts slightly, so the finished measurement will read tighter than this spec.</td>
+          </tr>
+          <tr>
+            <td class="pom">Hood height (centre back, flat)</td>
+            <td class="num" colspan="5" style="text-align:center">14" — all sizes</td>
+            <td class="why">14" covers the back of the head on a 6'0" frame (head height ~9") with 5" of depth when worn up. Under 12" (budget/basic standard) and the hood falls back immediately when raised. 14" is the COS/Acne Studios standard. The hood must actually function as a hood, not a cosmetic feature.</td>
+          </tr>
+          <tr>
+            <td class="pom">Hood width (flat, at widest)</td>
+            <td class="num" colspan="5" style="text-align:center">12" — all sizes</td>
+            <td class="why">12" flat = 24" circumference — the average male head is 58cm (23"). 1" ease means the hood frames the face without being loose. Wider (13"+) pools at the sides. Narrower (11") compresses the head.</td>
+          </tr>
+          <tr>
+            <td class="pom">Kangaroo pocket width</td>
+            <td class="num" colspan="5" style="text-align:center">12.5" wide × 7" deep — all sizes</td>
+            <td class="why">Proportional to the chest width and body length at M. The pocket opening should align with the natural hand position when arms hang relaxed. 7" depth ensures a phone (current max ~6.5" length) sits fully inside.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FIVE-POCKET TROUSER -->
+    <div class="garment">
+      <div class="garment-header">
+        <div class="garment-name">Five-Pocket Trouser — Hero Product</div>
+        <div class="garment-meta">
+          <span>228gsm Merino-TENCEL blend · Woven in Biella, Italy</span>
+          <span>Made in Porto, Portugal · $225 retail</span>
+          <span>Sample colour: Graphite #47433F</span>
+        </div>
+      </div>
+      <div class="fit-note">
+        <strong>Fit intent:</strong> Mid-rise, tapered. This is the brand's hero product — the spec must be executed with zero compromise. Mid-rise places the waistband at the navel, elongating the leg line. The taper runs from generous thigh through a gradual knee to a clean ankle — not a skinny taper, a considered one. Reference: Incotex slim, Theory Zaine, COS tapered wool trouser.
+      </div>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Point of Measure</th><th class="num">XS</th><th class="num">S</th><th class="num">M ★</th><th class="num">L</th><th class="num">XL</th><th>Why this measurement</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pom">Waist (flat, WB top to WB top)</td>
+            <td class="num">14"</td><td class="num">15.25"</td><td class="num">16.5"</td><td class="num">17.75"</td><td class="num">19"</td>
+            <td class="why">16.5" flat = 33" circumference = 1" ease on a 32" waist body. Flat-front mid-rise trousers require this exact ease — zero ease pulls and gaps at the back; 2"+ requires a belt always. The 1.25" grade between sizes is larger than tops because trouser waists need to accommodate a wider body size range. Spec: no elastic, hook-and-bar closure behind a flat button.</td>
+          </tr>
+          <tr>
+            <td class="pom">Hip (flat, 8" below WB seam)</td>
+            <td class="num">19"</td><td class="num">20"</td><td class="num">21"</td><td class="num">22"</td><td class="num">23"</td>
+            <td class="why">21" flat = 42" circumference = 2" ease on a 40" hip. This is the minimum functional ease for sitting without trouser seat tension. Under 1.5" creates visible pulling across the back when seated. Over 3" creates excess fabric folds at the seat (looks unstructured). 2" is the tailoring standard for a clean seated silhouette.</td>
+          </tr>
+          <tr>
+            <td class="pom">Rise (WB top to crotch seam)</td>
+            <td class="num">10.75"</td><td class="num">11.125"</td><td class="num">11.5"</td><td class="num">11.875"</td><td class="num">12.25"</td>
+            <td class="why">11.5" is mid-rise — sits at the navel on a 6'0" frame. Low rise (9–10") exposes the underwear waistband when bending and restricts seated comfort. High rise (13"+) is formal and fashion-specific — limits the market. 11.5" is the everyday premium standard used by Theory, COS, and Reiss. It also creates a longer visual leg line, which is the core silhouette benefit of mid-rise.</td>
+          </tr>
+          <tr>
+            <td class="pom">Thigh (flat, 1" below crotch seam)</td>
+            <td class="num">12.5"</td><td class="num">13"</td><td class="num">13.5"</td><td class="num">14"</td><td class="num">14.5"</td>
+            <td class="why">13.5" flat = 27" circumference. For a 20–22" thigh body measurement this is 5–7" ease — enough to walk and climb stairs without the trouser pulling. A tapered trouser only looks clean if the thigh has volume to taper from. Too tight (12") makes the taper look like a skinny jean. Too wide (15"+) creates a parallel leg, not a taper.</td>
+          </tr>
+          <tr>
+            <td class="pom">Knee (flat, 14" below crotch seam)</td>
+            <td class="num">9.75"</td><td class="num">10.125"</td><td class="num">10.5"</td><td class="num">10.875"</td><td class="num">11.25"</td>
+            <td class="why">10.5" = the midpoint of the taper. From 13.5" thigh to 10.5" knee = 3" reduction over 14" — a gradual, clean taper. A sharp taper (5"+ reduction) in the same distance produces the skinny-jean silhouette STILL explicitly avoids.</td>
+          </tr>
+          <tr>
+            <td class="pom">Leg opening (flat, at hem)</td>
+            <td class="num">7.5"</td><td class="num">7.75"</td><td class="num">8"</td><td class="num">8.25"</td><td class="num">8.5"</td>
+            <td class="why">8" flat = 16" circumference. This is generous for a tapered trouser — and intentionally so. A 6–7" leg opening (skinny territory) slides over shoes awkwardly and restricts the ankle. 8" allows the trouser to stack cleanly over leather shoes or clean sneakers with a half-break. COS, Theory, and Reiss all use 7.75–8" at M.</td>
+          </tr>
+          <tr>
+            <td class="pom">Inseam (crotch seam to hem)</td>
+            <td class="num">30.5"</td><td class="num">31"</td><td class="num">31.5"</td><td class="num">32"</td><td class="num">32.5"</td>
+            <td class="why">31.5" at M for a 32" inseam body = ½" less than the body measurement. This creates a half-break — the trouser hem rests on top of the shoe with a subtle front crease fold. Full break (32") reads business-formal. No break (30.5") reads fashion-cropped. Half break is the premium everyday standard — wearable from coffee to dinner without adjustment.</td>
+          </tr>
+          <tr>
+            <td class="pom">Front rise</td>
+            <td class="num" colspan="5" style="text-align:center">9.5" at M (2" shorter than total rise)</td>
+            <td class="why">Front rise is always shorter than back rise — the back needs extra depth for the seat curve. 9.5" front / 11.5" total means 2" of additional back rise depth. Standard tailoring ratio. If front and back rise are equal, the trouser pulls down at the front waistband when seated.</td>
+          </tr>
+          <tr>
+            <td class="pom">Outseam (WB top to hem)</td>
+            <td class="num">41.25"</td><td class="num">42.125"</td><td class="num">43"</td><td class="num">43.875"</td><td class="num">44.75"</td>
+            <td class="why">Outseam = rise + inseam + WB height (approx 1.25"). 43" at M provides the reference cross-check against the individual measurements.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FOUNDATION TRACK PANT -->
+    <div class="garment">
+      <div class="garment-header">
+        <div class="garment-name">Foundation Track Pant</div>
+        <div class="garment-meta">
+          <span>380gsm French terry · Elastic waist · Ribbed cuff · YKK zip back pocket</span>
+          <span>Made in Portugal · $195 retail</span>
+          <span>Sample colour: Slate #47433F</span>
+        </div>
+      </div>
+      <div class="fit-note">
+        <strong>Fit intent:</strong> Relaxed through seat and thigh, tapered to ribbed ankle. The ribbed cuff is the defining construction detail — it must sit at the ankle bone, not above it. The elastic waistband should be 3.5cm wide (substantial, not a thin strip). Drawcord: flat braided cotton, metal aglets. Reference: Sunspel, COS loopback sweat pant.
+      </div>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Point of Measure</th><th class="num">XS</th><th class="num">S</th><th class="num">M ★</th><th class="num">L</th><th class="num">XL</th><th>Why this measurement</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pom">Waist (flat, relaxed elastic)</td>
+            <td class="num">13"</td><td class="num">13.75"</td><td class="num">14.5"</td><td class="num">15.25"</td><td class="num">16"</td>
+            <td class="why">14.5" relaxed = 29" — the elastic at M will comfortably accommodate a 30–34" waist body. The elastic should have enough recovery to hold its position without a constant reliance on the drawcord. 3.5cm wide waistband specified — wider than commodity sweat pants (2cm), which gives a more premium, structured waistband.</td>
+          </tr>
+          <tr>
+            <td class="pom">Hip (flat, 9" below WB seam)</td>
+            <td class="num">21"</td><td class="num">22"</td><td class="num">23"</td><td class="num">24"</td><td class="num">25"</td>
+            <td class="why">23" flat = 46" circumference = 6" ease on a 40" hip. Track pants need generous seat room to function as both home-wear and public-wear. Under 5" ease and the seat pulls when seated or bending. This is the Sunspel sweat pant standard — relaxed in the seat, tapers below the knee.</td>
+          </tr>
+          <tr>
+            <td class="pom">Thigh (flat, 1" below crotch)</td>
+            <td class="num">13.5"</td><td class="num">14"</td><td class="num">14.5"</td><td class="num">15"</td><td class="num">15.5"</td>
+            <td class="why">29" circumference at thigh — relaxed. The track pant should feel like wearing nothing through the thigh while remaining presentable. This is 7–9" more circumference than the Five-Pocket Trouser — the intentional contrast between the two bottom weights in the collection.</td>
+          </tr>
+          <tr>
+            <td class="pom">Leg opening (flat, before ribbing)</td>
+            <td class="num">5.25"</td><td class="num">5.5"</td><td class="num">5.75"</td><td class="num">6"</td><td class="num">6.25"</td>
+            <td class="why">5.75" before ribbing contracts to approximately 4.5–5" when the ribbed cuff is worn. This positions the cuff snugly at the ankle without compression. The ribbed cuff height should be 9cm (3.5") — this is the dimension that dictates where the track pant visually terminates on the leg.</td>
+          </tr>
+          <tr>
+            <td class="pom">Inseam (to base of ribbed cuff)</td>
+            <td class="num">29"</td><td class="num">29.5"</td><td class="num">30"</td><td class="num">30.5"</td><td class="num">31"</td>
+            <td class="why">30" at M, with a 9cm ribbed cuff, places the bottom of the cuff at the ankle bone on a 6'0" frame with a 32" inseam. The cuff must NOT sit above the ankle (looks cropped/wrong). It should terminate AT the ankle. Measure from crotch seam to bottom of the ribbed cuff, not to the cut fabric edge.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- THE OXFORD -->
+    <div class="garment">
+      <div class="garment-header">
+        <div class="garment-name">The Oxford</div>
+        <div class="garment-meta">
+          <span>140gsm Pima Royal Oxford · Albini fabric · Mother-of-pearl buttons</span>
+          <span>Made in Portugal · $165 retail</span>
+          <span>Sample colour: Chalk #F0EBE1</span>
+        </div>
+      </div>
+      <div class="fit-note">
+        <strong>Fit intent:</strong> Contemporary fit — not slim, not relaxed. 4" chest ease. Works tucked or untucked, under a jacket or alone. The 2-button collar is a deliberate design detail — the second button eliminates the rolling collar issue that plagues single-button dress shirts when worn open. Reference: Albini oxford cloth, Gitman Vintage, Hamilton Shirts.
+      </div>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Point of Measure</th><th class="num">XS</th><th class="num">S</th><th class="num">M ★</th><th class="num">L</th><th class="num">XL</th><th>Why this measurement</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pom">Chest (flat, 1" below armhole)</td>
+            <td class="num">20"</td><td class="num">21"</td><td class="num">22"</td><td class="num">23"</td><td class="num">24"</td>
+            <td class="why">22" = 44" circumference = 4–6" ease on a 38–40" chest. The Contemporary fit standard. Slim shirts are 2–3" ease (too restrictive for a full work day). Classic/regular fit is 6–8" ease (dated silhouette). 4" ease allows layering under a jacket without pulling at the shoulders. Theory, Reiss, and COS all use this ease for their "everyday shirt."</td>
+          </tr>
+          <tr>
+            <td class="pom">Body length — back (HPS to hem)</td>
+            <td class="num">29.5"</td><td class="num">30.25"</td><td class="num">31"</td><td class="num">31.75"</td><td class="num">32.5"</td>
+            <td class="why">31" back length clears the back trouser waistband on a 6'0" body with an 11.5" rise trouser when tucked. A shorter back length (29") pulls free from trousers with every arm raise. This is the working-day requirement — the shirt must stay tucked through a full day of movement.</td>
+          </tr>
+          <tr>
+            <td class="pom">Front hem drop (curved hem, front shorter than back)</td>
+            <td class="num" colspan="5" style="text-align:center">1.5" drop — all sizes</td>
+            <td class="why">A 1.5" front-shorter-than-back curved hem allows the shirt to untuck cleanly in a casual setting without looking sloppy. When tucked, the curved front prevents excess fabric bunching at the stomach. This is the standard in all premium shirting — a straight hem (same front and back) works only when always worn tucked.</td>
+          </tr>
+          <tr>
+            <td class="pom">Collar height (back stand)</td>
+            <td class="num" colspan="5" style="text-align:center">1.75" — all sizes</td>
+            <td class="why">The 1.75" collar stand is the most important construction spec on a dress shirt. Under 1.5" and the collar collapses — it won't hold its shape when worn open. At 1.75" it holds its structure with or without a tie, with or without the top button closed. The 2-button collar design requires this height to function correctly.</td>
+          </tr>
+          <tr>
+            <td class="pom">Sleeve length (from CB seam, across back, down arm)</td>
+            <td class="num">33.5"</td><td class="num">34.25"</td><td class="num">35"</td><td class="num">35.75"</td><td class="num">36.5"</td>
+            <td class="why">35" from center-back seam places the cuff at the wrist bone on a 6'0" frame. The 0.5" of visible cuff below a jacket sleeve is the tailoring standard. Shorter (33.5") looks casual and imprecise. Longer (36.5"+) bunches under a jacket sleeve.</td>
+          </tr>
+          <tr>
+            <td class="pom">Shoulder width</td>
+            <td class="num">17.75"</td><td class="num">18.25"</td><td class="num">18.75"</td><td class="num">19.25"</td><td class="num">19.75"</td>
+            <td class="why">18.75" is a natural set-in shoulder — ¼" inside the natural shoulder point on a 38" chest body. A shirt shoulder must never drop — the shoulder seam should sit precisely at the shoulder bone. Unlike tees and hoodies, a drop shoulder on a woven shirt reads as poor fit, not considered design.</td>
+          </tr>
+          <tr>
+            <td class="pom">Button specification</td>
+            <td class="num" colspan="5" style="text-align:center">Mother-of-pearl, 18L (11.43mm) front · 16L (10.16mm) cuff — all sizes</td>
+            <td class="why">Mother-of-pearl buttons have slight iridescence and a heavier feel than plastic — the most immediate tactile signal of shirt quality. 18L is the premium standard for front placket buttons (Eton, Gitman Vintage, Hartford all spec 18L). Plastic injection-moulded buttons at this price point would destroy the brand positioning immediately.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /section 03 -->
+
+  <!-- CONSTRUCTION STANDARDS -->
+  <div class="section">
+    <div class="section-title">04 — Construction Standards (all garments)</div>
+    <div class="construction-grid">
+      <div class="construction-card">
+        <h4>Stitching</h4>
+        <ul>
+          <li>Minimum 12 SPI (stitches per inch) on all seams</li>
+          <li>Single needle chain stitch on all tee + LS hems</li>
+          <li>Double-stitched seat seam on all trousers</li>
+          <li>Flat-felled side seams on Oxford shirt</li>
+          <li>French seams on overshirt body</li>
+        </ul>
+      </div>
+      <div class="construction-card">
+        <h4>Reinforcement</h4>
+        <ul>
+          <li>Bar tack at all pocket corners (min 21 stitches)</li>
+          <li>Bar tack at all belt loop bases</li>
+          <li>Bar tack at all zipper base and top stops</li>
+          <li>Double-stitched crotch seam (2 pass minimum)</li>
+          <li>Collar stand stitched top and bottom (not just top)</li>
+        </ul>
+      </div>
+      <div class="construction-card">
+        <h4>Hardware</h4>
+        <ul>
+          <li>YKK Excella metal coil zippers — zip hoodie only</li>
+          <li>YKK #5 moulded coil — track pant back pocket</li>
+          <li>Mother-of-pearl buttons — Oxford, Polo (front)</li>
+          <li>Gunmetal flat-braid drawcord with metal aglets — all hoodies and track pants</li>
+          <li>No plastic tip aglets on any garment</li>
+        </ul>
+      </div>
+      <div class="construction-card">
+        <h4>Finishing & Labels</h4>
+        <ul>
+          <li>All cotton pieces: garment washed pre-delivery</li>
+          <li>Pre-shrunk — max 3% shrinkage post first wash</li>
+          <li>Colour fastness: ISO 105 rating 4–5 minimum</li>
+          <li>Reactive dyeing only on all cotton and cotton-blend pieces</li>
+          <li>Woven labels, folded, soft-finish — no printed or heat-transferred</li>
+          <li>Label placement: left side seam (not centre back neck) on tees and knitwear</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOUR PALETTE -->
+  <div class="section">
+    <div class="section-title">05 — Sample Colour Specification</div>
+    <div class="section-intro">
+      Five colours for sample production. Request colour strike-offs on each fabric type before bulk dyeing. Specify reactive dyeing on all cotton. Request ISO 105 wash-fastness rating of 4–5 minimum.
+    </div>
+    <div class="palette-grid">
+      <div>
+        <div class="palette-swatch" style="background:#F0EBE1"></div>
+        <div class="palette-info">
+          <div class="palette-name">Chalk</div>
+          <div class="palette-hex">#F0EBE1</div>
+          <div class="palette-pantone">Pantone 9183 C</div>
+          <div class="palette-note">Hero colour. Warm off-white. Primary sample colour for tees, Oxford, Wide-Leg Pant, Hoodie. The most demanding colour — shows every construction flaw, which enforces quality.</div>
+        </div>
+      </div>
+      <div>
+        <div class="palette-swatch" style="background:#B2AAA2"></div>
+        <div class="palette-info">
+          <div class="palette-name">Stone</div>
+          <div class="palette-hex">#B2AAA2</div>
+          <div class="palette-pantone">Pantone Warm Gray 5 C</div>
+          <div class="palette-note">Warm greige. The versatile mid-neutral. Primary for Five-Pocket Trouser, Tapered Chino, Wool Cap. Premium brands' best-selling colour — coordinates with everything the customer already owns.</div>
+        </div>
+      </div>
+      <div>
+        <div class="palette-swatch" style="background:#47433F"></div>
+        <div class="palette-info">
+          <div class="palette-name">Slate</div>
+          <div class="palette-hex">#47433F</div>
+          <div class="palette-pantone">Pantone Warm Gray 11 C</div>
+          <div class="palette-note">Deep warm dark grey. The workhorse dark. Primary for Track Pants, Fitted Tee, Merino LS. Warmer than cold charcoal — reads as intentional in natural light.</div>
+        </div>
+      </div>
+      <div>
+        <div class="palette-swatch" style="background:#C2A882"></div>
+        <div class="palette-info">
+          <div class="palette-name">Sand</div>
+          <div class="palette-hex">#C2A882</div>
+          <div class="palette-pantone">Pantone 7503 C</div>
+          <div class="palette-note">Warm golden earth tone. Primary for Overshirt, Linen Short, Six-Panel. The campaign-visual colour — catches light best on camera. Loro Piana's highest-velocity seasonal tone.</div>
+        </div>
+      </div>
+      <div>
+        <div class="palette-swatch" style="background:#1A1714"></div>
+        <div class="palette-info">
+          <div class="palette-name">Midnight</div>
+          <div class="palette-hex">#1A1714</div>
+          <div class="palette-pantone">Pantone Black 6 C</div>
+          <div class="palette-note">Deep warm near-black. NOT pure black — pure black reads as harsh on natural fibres. Primary for The Zip, Tech Track Pant, Fitted Tee (second colourway). Has warmth and depth on camera that pure black cannot.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAMPLE ORDER -->
+  <div class="section">
+    <div class="section-title">06 — Sample Order Summary</div>
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Product</th><th>Colour</th><th class="num">Size</th><th>Fabric</th><th>Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="pom">Foundation Tee</td><td>Chalk</td><td class="num">M</td><td>230gsm Pima Peru</td><td>★ Hero</td></tr>
+        <tr><td class="pom">Foundation Tee</td><td>Slate</td><td class="num">M</td><td>230gsm Pima Peru</td><td>★ Hero</td></tr>
+        <tr><td class="pom">Fitted Tee</td><td>Midnight</td><td class="num">M</td><td>230gsm Pima Peru</td><td>Core</td></tr>
+        <tr><td class="pom">Foundation Hoodie</td><td>Chalk</td><td class="num">M</td><td>380gsm French terry Portugal</td><td>★ Hero</td></tr>
+        <tr><td class="pom">Five-Pocket Trouser</td><td>Stone</td><td class="num">M</td><td>228gsm Merino-TENCEL Biella</td><td>★ Hero</td></tr>
+        <tr><td class="pom">Five-Pocket Trouser</td><td>Midnight</td><td class="num">M</td><td>228gsm Merino-TENCEL Biella</td><td>★ Hero</td></tr>
+        <tr><td class="pom">Foundation Track Pant</td><td>Slate</td><td class="num">M</td><td>380gsm French terry Portugal</td><td>Core</td></tr>
+        <tr><td class="pom">The Oxford</td><td>Chalk</td><td class="num">M</td><td>140gsm Pima Royal Oxford Albini</td><td>Core</td></tr>
+        <tr><td class="pom">The Overshirt</td><td>Sand</td><td class="num">M</td><td>300gsm brushed cotton twill Japan</td><td>Core</td></tr>
+        <tr><td class="pom">Tapered Chino</td><td>Stone</td><td class="num">M</td><td>260gsm Japanese cotton-TENCEL</td><td>Core</td></tr>
+      </tbody>
+    </table>
+    <div class="fit-note" style="margin-top:20px">
+      <strong>Sample brief to manufacturer:</strong> All samples to be produced in Size M only. Provide one physical sample per style/colour. Request lab dip (colour strike-off) approval before sample production begins. All construction specs above apply. Samples must be delivered before bulk order is placed. Include seam allowance and full internal finishing per spec.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

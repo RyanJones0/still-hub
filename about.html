@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story — STILL</title>
+  <meta name="description" content="Why we exist, how we make it, and where everything comes from.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================== NAV ======================== -->
+  <nav class="nav" role="navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">Still</a>
+      <ul class="nav__links">
+        <li><a href="collection.html" class="nav__link">Collection</a></li>
+        <li><a href="shop.html" class="nav__link">Shop</a></li>
+        <li><a href="about.html" class="nav__link active">Story</a></li>
+        <li><a href="journal.html" class="nav__link">Journal</a></li>
+      </ul>
+      <div class="nav__actions">
+        <div class="nav__cart" role="button" tabindex="0">
+          Cart <span class="nav__cart-count">0</span>
+        </div>
+      </div>
+      <button class="nav__hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <nav class="nav__mobile">
+    <a href="shop.html" class="nav__mobile-link">Shop</a>
+    <a href="about.html" class="nav__mobile-link">Story</a>
+    <a href="journal.html" class="nav__mobile-link">Journal</a>
+    <a href="#" class="nav__mobile-link" style="color:var(--muted);font-size:18px">Cart (0)</a>
+  </nav>
+
+  <main>
+
+    <!-- ======================== ABOUT HERO ======================== -->
+    <div style="height:calc(var(--nav-height) + 0px)"></div>
+    <div style="width:100%;aspect-ratio:21/8;overflow:hidden">
+      <div class="img-placeholder img-placeholder--warm" style="width:100%;height:100%;"></div>
+    </div>
+
+    <!-- ======================== BRAND STORY ======================== -->
+    <section class="container">
+      <div class="about-story">
+
+        <div class="about-story__sticky">
+          <p class="label about-story__eyebrow">Why we exist</p>
+          <h1 class="about-story__title">
+            The space<br>between.
+          </h1>
+        </div>
+
+        <div class="about-story__body">
+          <p>
+            Still was built around a single frustration: the clothing that
+            performs best rarely looks the part, and the clothing that looks best
+            rarely holds up past 6pm.
+          </p>
+          <p>
+            We didn't set out to make sportswear. We didn't set out to make
+            formalwear. We set out to make clothing for the space in between —
+            which is where real life actually happens.
+          </p>
+          <p>
+            The morning coffee that runs long. The walk that becomes a meeting.
+            The dinner that wasn't planned. The day that asks more of you than
+            you expected.
+          </p>
+          <p>
+            Every piece we make exists because it solved a specific problem in
+            the wardrobe. We don't produce for production's sake. We will never
+            be the brand with the most options. We intend to be the one with the
+            right ones.
+          </p>
+          <p>
+            We manufacture in Portugal and Peru. We source fabric from Italy,
+            New Zealand, Japan, and France. We publish the origin, weight, and
+            composition of everything we make. Not as a marketing exercise —
+            because we believe you deserve to know exactly what you're wearing.
+          </p>
+          <p>
+            We don't discount. The price is the price — set to reflect the
+            true cost of making something well, and to be fair to every customer
+            who has ever paid it.
+          </p>
+          <p style="font-family:var(--serif);font-size:20px;color:var(--graphite);font-style:italic;line-height:1.6">
+            "The most powerful statement is often the most restrained one."
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================== MATERIALS ======================== -->
+    <section class="container">
+      <div class="materials">
+        <h2 class="materials__heading">What we're made of.</h2>
+
+        <!-- Pima Cotton -->
+        <div class="material-item">
+          <div class="material-item__image">
+            <div class="img-placeholder img-placeholder--light"></div>
+          </div>
+          <div>
+            <p class="material-item__origin">Ica Valley, Peru</p>
+            <h3 class="material-item__name">Pima Cotton</h3>
+            <div class="material-item__specs">
+              <div class="material-spec">
+                <strong>Weight</strong>
+                <span>230gsm</span>
+              </div>
+              <div class="material-spec">
+                <strong>Composition</strong>
+                <span>100% Pima</span>
+              </div>
+              <div class="material-spec">
+                <strong>Used in</strong>
+                <span>Foundation Tee, Polo</span>
+              </div>
+            </div>
+            <p class="material-item__desc">
+              Pima cotton fibres are 45% longer than standard cotton, which means
+              they produce a smoother, softer yarn. The result is a fabric that is
+              resistant to pilling, retains its shape through washing, and becomes
+              more comfortable with every wear. We source exclusively from the Ica
+              Valley, where the combination of desert sun and irrigation produces
+              the finest Pima in the world. The cotton is combed, spun, and woven
+              at 230gsm — heavy enough to have presence, light enough for
+              three-season wear.
+            </p>
+          </div>
+        </div>
+
+        <!-- Merino-TENCEL -->
+        <div class="material-item">
+          <div class="material-item__image">
+            <div class="img-placeholder img-placeholder--warm"></div>
+          </div>
+          <div>
+            <p class="material-item__origin">Biella, Italy</p>
+            <h3 class="material-item__name">Merino-TENCEL Blend</h3>
+            <div class="material-item__specs">
+              <div class="material-spec">
+                <strong>Weight</strong>
+                <span>228gsm</span>
+              </div>
+              <div class="material-spec">
+                <strong>Composition</strong>
+                <span>60% Merino / 40% TENCEL</span>
+              </div>
+              <div class="material-spec">
+                <strong>Used in</strong>
+                <span>Five-Pocket Trouser</span>
+              </div>
+            </div>
+            <p class="material-item__desc">
+              The fabric at the centre of the brand. A blend of superfine Merino
+              wool from New Zealand (17.5 microns — below the threshold for itch)
+              and TENCEL Lyocell from sustainably managed forests. The Merino gives
+              structure, warmth, and natural odour resistance. The TENCEL gives
+              drape, breathability, and the slight sheen that reads as intentional
+              in any room. Woven in Biella — Italy's historic textile capital — to
+              a 228gsm weight that holds its shape through a full day without
+              pressing. Machine washable cold.
+            </p>
+          </div>
+        </div>
+
+        <!-- French Terry -->
+        <div class="material-item">
+          <div class="material-item__image">
+            <div class="img-placeholder img-placeholder--chalk"></div>
+          </div>
+          <div>
+            <p class="material-item__origin">Lyon, France</p>
+            <h3 class="material-item__name">Structured French Terry</h3>
+            <div class="material-item__specs">
+              <div class="material-spec">
+                <strong>Weight</strong>
+                <span>380gsm</span>
+              </div>
+              <div class="material-spec">
+                <strong>Composition</strong>
+                <span>85% Cotton / 15% Nylon</span>
+              </div>
+              <div class="material-spec">
+                <strong>Used in</strong>
+                <span>Foundation Hoodie</span>
+              </div>
+            </div>
+            <p class="material-item__desc">
+              Most hoodies are made from fleece that goes soft immediately and
+              loses its structure within months. We use a French terry — a looped
+              fabric knitted tight and finished heavy at 380gsm — that is soft but
+              architectural. It holds its shape across the chest and shoulder in a
+              way fleece cannot. The 15% nylon gives it resilience. The cotton
+              gives it warmth. Lyon has produced this fabric construction since the
+              17th century. Ours is woven to our specification.
+            </p>
+          </div>
+        </div>
+
+        <!-- Merino Knitwear -->
+        <div class="material-item">
+          <div class="material-item__image">
+            <div class="img-placeholder img-placeholder--dark"></div>
+          </div>
+          <div>
+            <p class="material-item__origin">South Island, New Zealand</p>
+            <h3 class="material-item__name">Superfine Merino</h3>
+            <div class="material-item__specs">
+              <div class="material-spec">
+                <strong>Micron</strong>
+                <span>17.5µ</span>
+              </div>
+              <div class="material-spec">
+                <strong>Composition</strong>
+                <span>100% Merino</span>
+              </div>
+              <div class="material-spec">
+                <strong>Used in</strong>
+                <span>Half-Zip, Crewneck</span>
+              </div>
+            </div>
+            <p class="material-item__desc">
+              At 17.5 microns, this Merino sits at the boundary between standard
+              superfine and ultra-fine. Below 18.5 microns, fibres stop feeling
+              rough against bare skin — the sensation most people associate with
+              wool is gone entirely. What remains is warmth without weight,
+              temperature regulation that synthetic fabrics cannot match, and
+              a natural odour resistance that means you can wear it three days
+              without washing. Sourced from a single station on New Zealand's
+              South Island where the flock grazes at altitude year-round.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================== MADE IN ======================== -->
+    <section style="background:var(--graphite);padding:100px 0">
+      <div class="container">
+        <p class="label" style="color:var(--sand);margin-bottom:32px">Where we make it</p>
+        <h2 style="font-size:clamp(28px,3vw,44px);font-weight:300;color:var(--chalk);margin-bottom:64px;line-height:1.2">
+          Two countries.<br>Every piece by hand.
+        </h2>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
+
+          <div style="background:rgba(255,255,255,0.04);padding:56px 48px">
+            <p style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);margin-bottom:20px">Portugal — Porto</p>
+            <h3 style="font-size:24px;font-weight:300;color:var(--chalk);margin-bottom:20px">Knitwear &amp; Trousers</h3>
+            <p style="font-size:15px;font-weight:300;color:rgba(244,241,236,0.6);line-height:1.85">
+              Our Portuguese factory has operated in Porto since 1987. They run
+              one shift. Every piece is inspected by hand before it leaves the
+              floor. We visited before we placed our first order and we visit
+              every season. The people who make our clothes are paid above
+              the national living wage and work under a collective agreement
+              that has been in place for 22 years.
+            </p>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.07);padding:56px 48px">
+            <p style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--sand);margin-bottom:20px">Peru — Lima</p>
+            <h3 style="font-size:24px;font-weight:300;color:var(--chalk);margin-bottom:20px">Cotton Basics</h3>
+            <p style="font-size:15px;font-weight:300;color:rgba(244,241,236,0.6);line-height:1.85">
+              Peru is the source of the finest Pima cotton in the world and has
+              been for a century. Our Lima factory specialises exclusively in
+              Pima — they do not work with inferior cotton because they don't
+              need to. They cut and sew our Foundation Tee, Long-Sleeve, and
+              Polo. Lead time is 14 weeks. We don't rush it.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== EMAIL CAPTURE ======================== -->
+    <section class="email-capture section--sm">
+      <div class="container">
+        <div class="email-capture__inner">
+          <p class="email-capture__heading">Join the list</p>
+          <p class="email-capture__subtext">
+            Early access to new pieces and nothing else.
+          </p>
+          <form class="email-capture__form" novalidate>
+            <input type="email" class="email-capture__input" placeholder="Your email" required>
+            <button type="submit" class="email-capture__submit">Join</button>
+          </form>
+          <p class="email-capture__note">One email when something new is ready.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__brand">Still</span>
+        <nav class="footer__nav">
+          <a href="shop.html" class="footer__nav-link">Shop</a>
+          <a href="about.html" class="footer__nav-link">Story</a>
+          <a href="journal.html" class="footer__nav-link">Journal</a>
+          <a href="#" class="footer__nav-link">Care</a>
+          <a href="#" class="footer__nav-link">Returns</a>
+        </nav>
+        <div class="footer__right">
+          <p>Made in Portugal &amp; Peru</p>
+          <p style="margin-top:6px">© 2026 Still</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

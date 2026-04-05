@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STILL — Financial Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --chalk: #F4F1EC;
+      --chalk-dark: #EAE5DC;
+      --graphite: #2A2A2A;
+      --navy: #1B2B4B;
+      --sand: #C9B89A;
+      --sand-light: #E8DECE;
+      --black: #0F0F0F;
+      --border: #E0DAD0;
+      --text: #1A1A1A;
+      --muted: #7A7570;
+      --green: #2D6A4F;
+      --green-light: #E8F5EF;
+      --red: #8B2635;
+      --red-light: #F5E8EA;
+      --font: 'DM Sans', sans-serif;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+    }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font); background: var(--chalk); color: var(--text); line-height: 1.6; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 64px; border-bottom: 1px solid var(--border); background: var(--chalk); position: sticky; top: 0; z-index: 100; }
+    .nav-brand { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; letter-spacing: 0.15em; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+    .nav-links a:hover { color: var(--graphite); }
+
+    /* LAYOUT */
+    .page { max-width: 1280px; margin: 0 auto; padding: 60px 40px 100px; }
+    .page-header { margin-bottom: 60px; border-bottom: 1px solid var(--border); padding-bottom: 40px; }
+    .page-header h1 { font-family: var(--serif); font-size: 2.8rem; font-weight: 300; margin-bottom: 8px; }
+    .page-header p { color: var(--muted); font-size: 0.9rem; }
+
+    /* SECTION */
+    .section { margin-bottom: 64px; }
+    .section-title { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+    /* METRICS GRID */
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 40px; }
+    .metric-card { background: var(--chalk); padding: 28px 24px; }
+    .metric-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .metric-value { font-family: var(--serif); font-size: 2.2rem; font-weight: 400; color: var(--graphite); line-height: 1; margin-bottom: 4px; }
+    .metric-sub { font-size: 0.75rem; color: var(--muted); }
+    .metric-card.positive .metric-value { color: var(--green); }
+    .metric-card.warning .metric-value { color: #8B6914; }
+
+    /* CONTROLS */
+    .controls-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; background: var(--chalk-dark); padding: 32px; border: 1px solid var(--border); margin-bottom: 40px; }
+    .control-group label { display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .control-group input[type="range"] { width: 100%; accent-color: var(--graphite); margin-bottom: 4px; }
+    .control-group .control-val { font-family: var(--serif); font-size: 1.4rem; color: var(--graphite); }
+    .control-group select, .control-group input[type="number"] {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border); background: var(--chalk);
+      font-family: var(--font); font-size: 0.9rem; color: var(--graphite);
+      appearance: none; -webkit-appearance: none; outline: none;
+    }
+    .control-group select:focus, .control-group input[type="number"]:focus { border-color: var(--graphite); }
+
+    /* TABLE */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .data-table th { text-align: left; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 10px 16px; border-bottom: 1px solid var(--border); font-weight: 500; }
+    .data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--chalk-dark); }
+    .data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .data-table th.num { text-align: right; }
+    .data-table .cat { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .pill { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; letter-spacing: 0.05em; font-weight: 500; }
+    .pill-green { background: var(--green-light); color: var(--green); }
+    .pill-sand { background: var(--sand-light); color: #7A5C30; }
+
+    /* MARGIN BAR */
+    .margin-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; min-width: 80px; }
+    .margin-bar-fill { height: 100%; background: var(--graphite); border-radius: 3px; transition: width 0.3s; }
+    .margin-bar-fill.high { background: var(--green); }
+    .margin-bar-fill.mid  { background: var(--sand); }
+
+    /* SCENARIO GRID */
+    .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .scenario-card { background: var(--chalk); padding: 32px 28px; }
+    .scenario-card.base { background: var(--graphite); color: var(--chalk); }
+    .scenario-card.base .scenario-label { color: var(--sand); }
+    .scenario-card.base .scenario-val { color: var(--chalk); }
+    .scenario-card.base .scenario-metric { border-color: rgba(255,255,255,0.12); }
+    .scenario-card.base .scenario-metric-label { color: rgba(255,255,255,0.5); }
+    .scenario-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .scenario-name { font-family: var(--serif); font-size: 1.6rem; font-weight: 300; margin-bottom: 4px; }
+    .scenario-desc { font-size: 0.75rem; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+    .scenario-card.base .scenario-desc { color: rgba(255,255,255,0.5); }
+    .scenario-metric { padding: 14px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; }
+    .scenario-metric-label { font-size: 0.72rem; color: var(--muted); }
+    .scenario-val { font-family: var(--serif); font-size: 1.1rem; }
+
+    /* MONTHLY PROJECTION */
+    .projection-wrap { overflow-x: auto; }
+    .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 180px; padding: 0 0 12px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .chart-bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; height: 100%; justify-content: flex-end; }
+    .chart-bar { width: 100%; border-radius: 2px 2px 0 0; transition: height 0.4s var(--ease); min-width: 20px; }
+    .bar-rev { background: var(--graphite); }
+    .bar-cogs { background: var(--border); }
+    .chart-bar-label { font-size: 0.6rem; color: var(--muted); margin-top: 6px; letter-spacing: 0.05em; }
+    .chart-legend { display: flex; gap: 24px; margin-bottom: 24px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: var(--muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+    /* PNL TABLE */
+    .pnl-table { width: 100%; border-collapse: collapse; }
+    .pnl-table td { padding: 10px 16px; font-size: 0.85rem; }
+    .pnl-table tr { border-bottom: 1px solid var(--border); }
+    .pnl-table .pnl-label { color: var(--muted); }
+    .pnl-table .pnl-value { text-align: right; font-variant-numeric: tabular-nums; }
+    .pnl-table .pnl-total td { font-weight: 600; border-top: 2px solid var(--graphite); border-bottom: 2px solid var(--graphite); }
+    .pnl-table .pnl-sub { padding-left: 32px; font-size: 0.8rem; }
+    .pnl-table .pnl-header td { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-top: 20px; }
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
+
+    /* INVENTORY PLANNER */
+    .inv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .inv-table { font-size: 0.82rem; }
+    .inv-table th { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    .inv-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .inv-table input[type="checkbox"] { accent-color: var(--graphite); width: 14px; height: 14px; cursor: pointer; }
+    .inv-table input[type="number"] { width: 60px; padding: 4px 8px; border: 1px solid var(--border); background: var(--chalk); font-family: var(--font); font-size: 0.82rem; text-align: center; }
+    .inv-summary { background: var(--chalk-dark); border: 1px solid var(--border); padding: 32px; position: sticky; top: 80px; }
+    .inv-summary-title { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .inv-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .inv-row:last-child { border: none; }
+    .inv-row.total { font-weight: 600; font-size: 1rem; padding-top: 16px; }
+    .inv-val { font-family: var(--serif); font-size: 1.1rem; }
+    .inv-row.total .inv-val { font-size: 1.4rem; }
+
+    /* TOGGLE TABS */
+    .tabs { display: flex; gap: 0; margin-bottom: 32px; border: 1px solid var(--border); width: fit-content; }
+    .tab { padding: 10px 24px; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; background: var(--chalk); color: var(--muted); border-right: 1px solid var(--border); transition: all 0.2s; }
+    .tab:last-child { border-right: none; }
+    .tab.active { background: var(--graphite); color: var(--chalk); }
+
+    /* NOTE BOX */
+    .note { background: var(--chalk-dark); border-left: 3px solid var(--sand); padding: 16px 20px; font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 32px; }
+    .note strong { color: var(--graphite); }
+
+    @media (max-width: 900px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .controls-grid { grid-template-columns: 1fr 1fr; }
+      .scenario-grid { grid-template-columns: 1fr; }
+      .inv-grid { grid-template-columns: 1fr; }
+      nav { padding: 0 20px; }
+      .page { padding: 40px 20px 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">STILL</a>
+  <div class="nav-links">
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="journal.html">Journal</a>
+    <a href="financial-model.html" style="color:var(--graphite)">Financial Model</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <h1>Financial Model</h1>
+    <p>Unit economics, inventory investment, break-even, and 12-month projections. Adjust assumptions to model different scenarios.</p>
+  </div>
+
+  <!-- ===== SECTION 1: KEY METRICS ===== -->
+  <div class="section">
+    <div class="section-title">Key Metrics — Live (adjust assumptions below to update)</div>
+    <div class="metrics-grid">
+      <div class="metric-card positive">
+        <div class="metric-label">Avg Gross Margin</div>
+        <div class="metric-value" id="kpi-gm">73.4%</div>
+        <div class="metric-sub">Before fulfillment costs</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Contribution Margin</div>
+        <div class="metric-value" id="kpi-cm">56.8%</div>
+        <div class="metric-sub">After shipping, returns, fees</div>
+      </div>
+      <div class="metric-card warning">
+        <div class="metric-label">Break-Even Revenue</div>
+        <div class="metric-value" id="kpi-be">$703</div>
+        <div class="metric-sub">Monthly orders to cover fixed costs</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Inventory Investment</div>
+        <div class="metric-value" id="kpi-inv">$9,840</div>
+        <div class="metric-sub">Launch stock (selected products)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: ASSUMPTIONS ===== -->
+  <div class="section">
+    <div class="section-title">Assumptions</div>
+    <div class="controls-grid">
+      <div class="control-group">
+        <label>Average Order Value (AOV) — $<span id="aov-val">185</span></label>
+        <input type="range" min="95" max="400" value="185" id="ctrl-aov" oninput="updateAll()" />
+        <div class="control-val" id="aov-display">$185</div>
+      </div>
+      <div class="control-group">
+        <label>Outbound Shipping (per order) — $<span id="ship-val">14</span></label>
+        <input type="range" min="8" max="30" value="14" id="ctrl-ship" oninput="updateAll()" />
+        <div class="control-val" id="ship-display">$14</div>
+      </div>
+      <div class="control-group">
+        <label>Return Rate — <span id="ret-val">12</span>%</label>
+        <input type="range" min="5" max="30" value="12" id="ctrl-ret" oninput="updateAll()" />
+        <div class="control-val" id="ret-display">12%</div>
+      </div>
+      <div class="control-group">
+        <label>Payment Processing (Stripe) — <span id="stripe-val">3.2</span>%</label>
+        <input type="range" min="2" max="5" step="0.1" value="3.2" id="ctrl-stripe" oninput="updateAll()" />
+        <div class="control-val" id="stripe-display">3.2%</div>
+      </div>
+      <div class="control-group">
+        <label>Monthly Fixed Costs — $<span id="fixed-val">400</span></label>
+        <input type="range" min="200" max="3000" step="50" value="400" id="ctrl-fixed" oninput="updateAll()" />
+        <div class="control-val" id="fixed-display">$400</div>
+      </div>
+      <div class="control-group">
+        <label>Packaging Cost (per order) — $<span id="pack-val">5</span></label>
+        <input type="range" min="2" max="20" value="5" id="ctrl-pack" oninput="updateAll()" />
+        <div class="control-val" id="pack-display">$5</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Fixed costs breakdown:</strong> Shopify Basic $105 + Email (Klaviyo starter) $150 + Domain/tools $50 + Misc $95 = ~$400/month at launch. Scale to $800+ once volume demands better tooling. Payment processing is per order (2.9% + $0.30, ~3.2% effective on average AOV).
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: UNIT ECONOMICS ===== -->
+  <div class="section">
+    <div class="section-title">Unit Economics — All 24 Products</div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="filterCat('all', this)">All</div>
+      <div class="tab" onclick="filterCat('tops', this)">Tops</div>
+      <div class="tab" onclick="filterCat('bottoms', this)">Bottoms</div>
+      <div class="tab" onclick="filterCat('outerwear', this)">Outerwear</div>
+      <div class="tab" onclick="filterCat('accessories', this)">Accessories</div>
+    </div>
+
+    <table class="data-table" id="unit-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Category</th>
+          <th class="num">Retail</th>
+          <th class="num">COGS</th>
+          <th class="num">Gross Profit</th>
+          <th class="num">Gross Margin</th>
+          <th class="num">Contrib. Margin</th>
+          <th style="min-width:100px"></th>
+        </tr>
+      </thead>
+      <tbody id="unit-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- ===== SECTION 4: INVENTORY PLANNER ===== -->
+  <div class="section">
+    <div class="section-title">Launch Inventory Planner</div>
+    <div class="note">
+      <strong>MOQ Reality:</strong> Portuguese and Peruvian factories typically require 50–100 units per style/colorway. Starting smaller (25–30 units) may be possible with premium pricing and direct relationships. The planner below defaults to 50 units — adjust per product.
+    </div>
+    <div class="inv-grid">
+      <div>
+        <table class="inv-table" id="inv-table">
+          <thead>
+            <tr>
+              <th>Include</th>
+              <th>Product</th>
+              <th>COGS/unit</th>
+              <th>Units</th>
+              <th>Total Cost</th>
+            </tr>
+          </thead>
+          <tbody id="inv-tbody"></tbody>
+        </table>
+      </div>
+      <div>
+        <div class="inv-summary">
+          <div class="inv-summary-title">Inventory Summary</div>
+          <div class="inv-row"><span>Products selected</span><span class="inv-val" id="inv-count">0</span></div>
+          <div class="inv-row"><span>Total units</span><span class="inv-val" id="inv-units">0</span></div>
+          <div class="inv-row"><span>Total COGS</span><span class="inv-val" id="inv-cogs">$0</span></div>
+          <div class="inv-row"><span>Retail value (100% sell-through)</span><span class="inv-val" id="inv-retail">$0</span></div>
+          <div class="inv-row"><span>Gross profit (100% sell-through)</span><span class="inv-val" id="inv-profit">$0</span></div>
+          <div class="inv-row total"><span>Initial cash needed</span><span class="inv-val" id="inv-total">$0</span></div>
+          <div style="margin-top:20px; font-size:0.75rem; color:var(--muted); line-height:1.6;">
+            Initial cash includes inventory COGS only. Add packaging design (~$2,000 one-time), photoshoot costs, and 3–6 months of operating costs as buffer.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: P&L ===== -->
+  <div class="section">
+    <div class="section-title">Monthly P&L — Per Scenario</div>
+
+    <div class="scenario-grid" id="scenario-grid"></div>
+  </div>
+
+  <!-- ===== SECTION 6: 12-MONTH PROJECTION ===== -->
+  <div class="section">
+    <div class="section-title">12-Month Revenue Projection</div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="setScenario('conservative', this)">Conservative</div>
+      <div class="tab" onclick="setScenario('base', this)">Base</div>
+      <div class="tab" onclick="setScenario('optimistic', this)">Optimistic</div>
+    </div>
+
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--graphite)"></div>Revenue</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--border)"></div>COGS</div>
+    </div>
+
+    <div class="projection-wrap">
+      <div class="chart-bars" id="chart-bars"></div>
+      <div style="display:flex;gap:8px;padding-top:0;" id="chart-labels"></div>
+    </div>
+
+    <div style="margin-top:40px; overflow-x:auto;">
+      <table class="data-table" id="projection-table">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th class="num">Orders</th>
+            <th class="num">Revenue</th>
+            <th class="num">COGS</th>
+            <th class="num">Gross Profit</th>
+            <th class="num">Fulfillment</th>
+            <th class="num">Fixed Costs</th>
+            <th class="num">Net Profit</th>
+            <th class="num">Cum. Net</th>
+          </tr>
+        </thead>
+        <tbody id="proj-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 7: BREAK-EVEN ===== -->
+  <div class="section">
+    <div class="section-title">Break-Even Analysis</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+      <div>
+        <table class="pnl-table">
+          <tr><td class="pnl-label">Monthly Fixed Costs</td><td class="pnl-value" id="be-fixed">$400</td></tr>
+          <tr><td class="pnl-label">Average Order Value</td><td class="pnl-value" id="be-aov">$185</td></tr>
+          <tr><td class="pnl-label">Avg Gross Margin</td><td class="pnl-value" id="be-gm">73.4%</td></tr>
+          <tr><td class="pnl-label">Fulfillment cost / order</td><td class="pnl-value" id="be-ful">$29.18</td></tr>
+          <tr><td class="pnl-label">Contribution per order</td><td class="pnl-value" id="be-contrib">$105.95</td></tr>
+          <tr class="pnl-total"><td class="pnl-label">Break-even orders / month</td><td class="pnl-value" id="be-orders">4</td></tr>
+          <tr><td class="pnl-label">Break-even revenue / month</td><td class="pnl-value" id="be-rev">$703</td></tr>
+          <tr><td class="pnl-label">Break-even daily revenue</td><td class="pnl-value" id="be-daily">$23.43</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="note" style="margin-bottom:16px;">
+          <strong>What this means:</strong> Sell 4 orders per month and you're profitable on operations. The bar is extremely low because fixed costs are lean. The real capital risk is inventory — if sell-through is low, cash is stuck in stock.
+        </div>
+        <div class="note">
+          <strong>Path to $10K/month revenue:</strong> ~54 orders/month at $185 AOV. That's ~1.8 orders per day — achievable with a tight email list (2,000–3,000 subscribers) in months 6–12. Net profit at $10K revenue ≈ <span id="be-10k-net" style="color:var(--green);font-weight:600;">$5,280</span>/month.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 8: COST STRUCTURE ===== -->
+  <div class="section">
+    <div class="section-title">Cost Structure — Per $185 Order</div>
+    <div style="max-width:560px;">
+      <table class="pnl-table">
+        <tr class="pnl-header"><td colspan="2">Revenue</td></tr>
+        <tr><td class="pnl-label">Customer pays</td><td class="pnl-value pos" id="cs-rev">$185.00</td></tr>
+        <tr class="pnl-header"><td colspan="2">Direct Costs</td></tr>
+        <tr class="pnl-sub"><td class="pnl-label">COGS (avg 26.6% of retail)</td><td class="pnl-value neg" id="cs-cogs">–$49.21</td></tr>
+        <tr class="pnl-sub"><td class="pnl-label">Outbound shipping</td><td class="pnl-value neg" id="cs-ship">–$14.00</td></tr>
+        <tr class="pnl-sub"><td class="pnl-label">Payment processing (3.2%)</td><td class="pnl-value neg" id="cs-stripe">–$5.92</td></tr>
+        <tr class="pnl-sub"><td class="pnl-label">Packaging</td><td class="pnl-value neg" id="cs-pack">–$5.00</td></tr>
+        <tr class="pnl-sub"><td class="pnl-label">Returns provision (12% × avg COGS)</td><td class="pnl-value neg" id="cs-ret">–$5.91</td></tr>
+        <tr class="pnl-total"><td class="pnl-label">Contribution per order</td><td class="pnl-value pos" id="cs-contrib">$104.96</td></tr>
+        <tr class="pnl-header"><td colspan="2">Fixed Cost Allocation (÷ break-even orders)</td></tr>
+        <tr class="pnl-sub"><td class="pnl-label">Platform / tools</td><td class="pnl-value neg">–$105.00</td></tr>
+        <tr class="pnl-sub"><td class="pnl-label">Email platform</td><td class="pnl-value neg">–$150.00</td></tr>
+        <tr class="pnl-sub"><td class="pnl-label">Domain / misc</td><td class="pnl-value neg">–$145.00</td></tr>
+        <tr class="pnl-total"><td class="pnl-label">Net profit per order (at scale)</td><td class="pnl-value pos" id="cs-net">$104.96</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const products = [
+  // TOPS
+  { name:"Foundation Tee",       cat:"tops",        retail:95,  cogs:22 },
+  { name:"Fitted Tee",           cat:"tops",        retail:95,  cogs:22 },
+  { name:"Heavyweight Tee",      cat:"tops",        retail:110, cogs:26 },
+  { name:"Long-Sleeve Foundation",cat:"tops",       retail:125, cogs:30 },
+  { name:"Merino Long-Sleeve",   cat:"tops",        retail:165, cogs:48 },
+  { name:"Foundation Polo",      cat:"tops",        retail:145, cogs:35 },
+  { name:"The Oxford",           cat:"tops",        retail:165, cogs:42 },
+  // OUTERWEAR / LAYERS
+  { name:"The Overshirt",        cat:"outerwear",   retail:225, cogs:62 },
+  { name:"Foundation Hoodie",    cat:"outerwear",   retail:185, cogs:50 },
+  { name:"The Zip",              cat:"outerwear",   retail:205, cogs:55 },
+  // BOTTOMS
+  { name:"Foundation Track Pant",cat:"bottoms",     retail:195, cogs:52 },
+  { name:"Tech Track Pant",      cat:"bottoms",     retail:225, cogs:68 },
+  { name:"Five-Pocket Trouser",  cat:"bottoms",     retail:225, cogs:65 },
+  { name:"Tapered Chino",        cat:"bottoms",     retail:185, cogs:52 },
+  { name:"Wide-Leg Pant",        cat:"bottoms",     retail:245, cogs:78 },
+  { name:"Pull-On Short",        cat:"bottoms",     retail:145, cogs:38 },
+  { name:"Terry Short",          cat:"bottoms",     retail:125, cogs:33 },
+  { name:"Linen Short",          cat:"bottoms",     retail:155, cogs:42 },
+  // ACCESSORIES
+  { name:"The Six-Panel Hat",    cat:"accessories", retail:85,  cogs:18 },
+  { name:"The Wool Cap",         cat:"accessories", retail:105, cogs:28 },
+  { name:"The Bucket Hat",       cat:"accessories", retail:95,  cogs:22 },
+  { name:"Crew Sock",            cat:"accessories", retail:28,  cogs:8  },
+  { name:"No-Show Sock",         cat:"accessories", retail:22,  cogs:6  },
+  { name:"Merino Crew Sock",     cat:"accessories", retail:38,  cogs:10 },
+];
+
+// Inventory planner — track units and inclusion
+const invState = products.map((p, i) => ({
+  included: i < 15, // default: first 15 products
+  units: 50
+}));
+
+const scenarios = {
+  conservative: { name:"Conservative", desc:"Small launch, word-of-mouth only. 2–3 orders/day by end of year.", months:[2,3,4,6,8,10,14,18,22,28,34,40] },
+  base:         { name:"Base",         desc:"Email list of 1,500 at launch, consistent content. 5–6 orders/day by month 9.", months:[5,8,12,18,25,35,45,55,70,85,100,120] },
+  optimistic:   { name:"Optimistic",   desc:"Press hit or viral moment month 3. Email list 3,000+. 10+ orders/day by month 8.", months:[8,15,30,55,80,110,140,175,200,230,260,300] }
+};
+
+let activeScenario = 'conservative';
+
+// ============================================================
+// HELPERS
+// ============================================================
+const fmt = (n, dec=0) => n < 0
+  ? `–$${Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec})}`
+  : `$${n.toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec})}`;
+const pct = n => n.toFixed(1) + '%';
+const num = n => n.toLocaleString();
+
+function getParams() {
+  return {
+    aov:    +document.getElementById('ctrl-aov').value,
+    ship:   +document.getElementById('ctrl-ship').value,
+    ret:    +document.getElementById('ctrl-ret').value / 100,
+    stripe: +document.getElementById('ctrl-stripe').value / 100,
+    fixed:  +document.getElementById('ctrl-fixed').value,
+    pack:   +document.getElementById('ctrl-pack').value,
+  };
+}
+
+function avgCOGSPct() {
+  const total = products.reduce((s, p) => s + p.retail, 0);
+  const totalCOGS = products.reduce((s, p) => s + p.cogs, 0);
+  return totalCOGS / total;
+}
+
+function contributionMargin(p) {
+  const params = getParams();
+  const avgGM = 1 - avgCOGSPct();
+  const cogsAmt = p.aov * avgCOGSPct();
+  const stripeAmt = p.aov * p.stripe;
+  const retProvision = cogsAmt * p.ret;
+  const fulfillment = p.ship + stripeAmt + p.pack + retProvision;
+  const contribution = p.aov - cogsAmt - fulfillment;
+  return { contribution, fulfillment, cogsAmt };
+}
+
+// ============================================================
+// RENDER UNIT TABLE
+// ============================================================
+function renderUnitTable(filter) {
+  const params = getParams();
+  const avgCOGS = avgCOGSPct();
+  let rows = '';
+  products.forEach(p => {
+    if (filter && filter !== 'all' && p.cat !== filter) return;
+    const gp = p.retail - p.cogs;
+    const gm = gp / p.retail * 100;
+    const cogsAmt = p.retail * avgCOGS; // use avg for contribution
+    const stripeAmt = p.retail * params.stripe;
+    const retProv = p.cogs * params.ret;
+    const contrib = p.retail - p.cogs - params.ship - stripeAmt - params.pack - retProv;
+    const contribPct = contrib / p.retail * 100;
+    const barWidth = Math.min(100, gm);
+    const barClass = gm > 72 ? 'high' : 'mid';
+    rows += `<tr data-cat="${p.cat}">
+      <td>${p.name}</td>
+      <td class="cat">${p.cat}</td>
+      <td class="num">${fmt(p.retail)}</td>
+      <td class="num">${fmt(p.cogs)}</td>
+      <td class="num">${fmt(gp)}</td>
+      <td class="num">
+        <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
+          <span>${pct(gm)}</span>
+          <div class="margin-bar"><div class="margin-bar-fill ${barClass}" style="width:${barWidth}%"></div></div>
+        </div>
+      </td>
+      <td class="num ${contribPct > 0 ? 'pos' : 'neg'}">${pct(contribPct)}</td>
+      <td><span class="pill ${gm > 72 ? 'pill-green' : 'pill-sand'}">${gm > 72 ? 'Strong' : 'Good'}</span></td>
+    </tr>`;
+  });
+  document.getElementById('unit-tbody').innerHTML = rows;
+}
+
+// ============================================================
+// RENDER INVENTORY
+// ============================================================
+function renderInventory() {
+  const params = getParams();
+  let rows = '';
+  let totalCOGS = 0, totalUnits = 0, totalRetail = 0, count = 0;
+
+  products.forEach((p, i) => {
+    const state = invState[i];
+    const lineCOGS = state.included ? p.cogs * state.units : 0;
+    const lineRetail = state.included ? p.retail * state.units : 0;
+    if (state.included) { totalCOGS += lineCOGS; totalRetail += lineRetail; totalUnits += state.units; count++; }
+    rows += `<tr>
+      <td><input type="checkbox" ${state.included ? 'checked' : ''} onchange="invToggle(${i}, this.checked)" /></td>
+      <td>${p.name}</td>
+      <td>${fmt(p.cogs)}</td>
+      <td><input type="number" value="${state.units}" min="1" max="500" onchange="invUnits(${i}, this.value)" /></td>
+      <td>${state.included ? fmt(lineCOGS) : '—'}</td>
+    </tr>`;
+  });
+  document.getElementById('inv-tbody').innerHTML = rows;
+
+  const gp = totalRetail - totalCOGS;
+  document.getElementById('inv-count').textContent  = count;
+  document.getElementById('inv-units').textContent  = num(totalUnits);
+  document.getElementById('inv-cogs').textContent   = fmt(totalCOGS);
+  document.getElementById('inv-retail').textContent = fmt(totalRetail);
+  document.getElementById('inv-profit').textContent = fmt(gp);
+  document.getElementById('inv-total').textContent  = fmt(totalCOGS);
+  document.getElementById('kpi-inv').textContent    = fmt(totalCOGS);
+}
+
+function invToggle(i, val) { invState[i].included = val; renderInventory(); }
+function invUnits(i, val)  { invState[i].units = Math.max(1, +val); renderInventory(); }
+
+// ============================================================
+// RENDER SCENARIOS
+// ============================================================
+function renderScenarios() {
+  const params = getParams();
+  const avgCOGS = avgCOGSPct();
+  const scList = ['conservative', 'base', 'optimistic'];
+  let html = '';
+  scList.forEach(key => {
+    const s = scenarios[key];
+    const isBase = key === 'base';
+    const monthOrders = s.months;
+    const yr1Revenue = monthOrders.reduce((a,b) => a+b, 0) * params.aov;
+    const yr1COGS    = yr1Revenue * avgCOGS;
+    const yr1GP      = yr1Revenue - yr1COGS;
+    const yr1Fulfill = monthOrders.reduce((a,b) => a+b, 0) * (params.ship + params.aov * params.stripe + params.pack + avgCOGS * params.aov * params.ret);
+    const yr1Fixed   = params.fixed * 12;
+    const yr1Net     = yr1GP - yr1Fulfill - yr1Fixed;
+    const m12Rev     = monthOrders[11] * params.aov;
+    html += `<div class="scenario-card ${isBase ? 'base' : ''}">
+      <div class="scenario-label">${isBase ? '— recommended —' : ''}</div>
+      <div class="scenario-name">${s.name}</div>
+      <div class="scenario-desc">${s.desc}</div>
+      <div class="scenario-metric"><span class="scenario-metric-label">Year 1 Revenue</span><span class="scenario-val">${fmt(yr1Revenue)}</span></div>
+      <div class="scenario-metric"><span class="scenario-metric-label">Year 1 Gross Profit</span><span class="scenario-val">${fmt(yr1GP)}</span></div>
+      <div class="scenario-metric"><span class="scenario-metric-label">Year 1 Net Profit</span><span class="scenario-val ${yr1Net>0?'pos':'neg'}">${fmt(yr1Net)}</span></div>
+      <div class="scenario-metric"><span class="scenario-metric-label">Month 12 Revenue</span><span class="scenario-val">${fmt(m12Rev)}</span></div>
+      <div class="scenario-metric"><span class="scenario-metric-label">Month 12 Orders/day</span><span class="scenario-val">${(monthOrders[11]/30).toFixed(1)}</span></div>
+    </div>`;
+  });
+  document.getElementById('scenario-grid').innerHTML = html;
+}
+
+// ============================================================
+// RENDER PROJECTION
+// ============================================================
+function renderProjection() {
+  const params = getParams();
+  const avgCOGS = avgCOGSPct();
+  const s = scenarios[activeScenario];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const maxRev = Math.max(...s.months) * params.aov;
+
+  // Chart
+  let bars = '', labels = '';
+  s.months.forEach((orders, i) => {
+    const rev = orders * params.aov;
+    const cogs = rev * avgCOGS;
+    const revH  = Math.max(4, (rev / maxRev) * 160);
+    const cogsH = Math.max(2, (cogs / maxRev) * 160);
+    bars += `<div class="chart-bar-group">
+      <div class="chart-bar bar-cogs" style="height:${cogsH}px" title="COGS ${fmt(cogs)}"></div>
+      <div class="chart-bar bar-rev" style="height:${revH}px" title="Revenue ${fmt(rev)}"></div>
+    </div>`;
+    labels += `<div style="flex:1;text-align:center;font-size:0.6rem;color:var(--muted)">${months[i]}</div>`;
+  });
+  document.getElementById('chart-bars').innerHTML = bars;
+  document.getElementById('chart-labels').innerHTML = labels;
+
+  // Table
+  let rows = '', cumNet = 0;
+  s.months.forEach((orders, i) => {
+    const rev  = orders * params.aov;
+    const cogs = rev * avgCOGS;
+    const gp   = rev - cogs;
+    const stripeAmt = rev * params.stripe;
+    const retProv   = cogs * params.ret;
+    const fulfill   = orders * params.ship + stripeAmt + orders * params.pack + retProv;
+    const net  = gp - fulfill - params.fixed;
+    cumNet += net;
+    rows += `<tr>
+      <td>${months[i]}</td>
+      <td class="num">${num(orders)}</td>
+      <td class="num">${fmt(rev)}</td>
+      <td class="num neg">${fmt(cogs)}</td>
+      <td class="num pos">${fmt(gp)}</td>
+      <td class="num neg">${fmt(fulfill)}</td>
+      <td class="num neg">${fmt(params.fixed)}</td>
+      <td class="num ${net>=0?'pos':'neg'}">${fmt(net)}</td>
+      <td class="num ${cumNet>=0?'pos':'neg'}">${fmt(cumNet)}</td>
+    </tr>`;
+  });
+  document.getElementById('proj-tbody').innerHTML = rows;
+}
+
+// ============================================================
+// RENDER BREAK-EVEN
+// ============================================================
+function renderBreakEven() {
+  const params = getParams();
+  const avgCOGS = avgCOGSPct();
+  const avgGM = 1 - avgCOGS;
+  const cogsPerOrder = params.aov * avgCOGS;
+  const stripePerOrder = params.aov * params.stripe;
+  const retPerOrder = cogsPerOrder * params.ret;
+  const fulfillPerOrder = params.ship + stripePerOrder + params.pack + retPerOrder;
+  const contribPerOrder = params.aov - cogsPerOrder - fulfillPerOrder;
+  const contribPct = contribPerOrder / params.aov * 100;
+  const beOrders = Math.ceil(params.fixed / contribPerOrder);
+  const beRev = beOrders * params.aov;
+
+  const m10kOrders = Math.ceil(10000 / params.aov);
+  const m10kNet = 10000 - (10000 * avgCOGS) - (m10kOrders * fulfillPerOrder) - params.fixed;
+
+  document.getElementById('be-fixed').textContent  = fmt(params.fixed);
+  document.getElementById('be-aov').textContent    = fmt(params.aov);
+  document.getElementById('be-gm').textContent     = pct(avgGM * 100);
+  document.getElementById('be-ful').textContent    = fmt(fulfillPerOrder, 2);
+  document.getElementById('be-contrib').textContent= fmt(contribPerOrder, 2);
+  document.getElementById('be-orders').textContent = num(beOrders);
+  document.getElementById('be-rev').textContent    = fmt(beRev);
+  document.getElementById('be-daily').textContent  = fmt(beRev / 30, 2);
+  document.getElementById('be-10k-net').textContent= fmt(m10kNet);
+  document.getElementById('kpi-be').textContent    = fmt(beRev);
+}
+
+// ============================================================
+// RENDER COST STRUCTURE
+// ============================================================
+function renderCostStructure() {
+  const params = getParams();
+  const avgCOGS = avgCOGSPct();
+  const cogsAmt   = params.aov * avgCOGS;
+  const stripeAmt = params.aov * params.stripe;
+  const retAmt    = cogsAmt * params.ret;
+  const contrib   = params.aov - cogsAmt - params.ship - stripeAmt - params.pack - retAmt;
+
+  document.getElementById('cs-rev').textContent    = fmt(params.aov, 2);
+  document.getElementById('cs-cogs').textContent   = `–$${cogsAmt.toFixed(2)}`;
+  document.getElementById('cs-ship').textContent   = `–$${params.ship.toFixed(2)}`;
+  document.getElementById('cs-stripe').textContent = `–$${stripeAmt.toFixed(2)}`;
+  document.getElementById('cs-pack').textContent   = `–$${params.pack.toFixed(2)}`;
+  document.getElementById('cs-ret').textContent    = `–$${retAmt.toFixed(2)}`;
+  document.getElementById('cs-contrib').textContent= fmt(contrib, 2);
+  document.getElementById('cs-net').textContent    = fmt(contrib, 2);
+}
+
+// ============================================================
+// RENDER KPIs
+// ============================================================
+function renderKPIs() {
+  const params = getParams();
+  const avgCOGS = avgCOGSPct();
+  const avgGM = (1 - avgCOGS) * 100;
+  const cogsPerOrder = params.aov * avgCOGS;
+  const stripePerOrder = params.aov * params.stripe;
+  const retPerOrder = cogsPerOrder * params.ret;
+  const fulfillPerOrder = params.ship + stripePerOrder + params.pack + retPerOrder;
+  const contribPerOrder = params.aov - cogsPerOrder - fulfillPerOrder;
+  const contribPct = contribPerOrder / params.aov * 100;
+
+  document.getElementById('kpi-gm').textContent = pct(avgGM);
+  document.getElementById('kpi-cm').textContent = pct(contribPct);
+}
+
+// ============================================================
+// UPDATE SLIDER DISPLAYS
+// ============================================================
+function updateDisplays() {
+  const p = getParams();
+  document.getElementById('aov-val').textContent    = p.aov;
+  document.getElementById('aov-display').textContent= fmt(p.aov);
+  document.getElementById('ship-val').textContent   = p.ship;
+  document.getElementById('ship-display').textContent= fmt(p.ship);
+  document.getElementById('ret-val').textContent    = (p.ret*100).toFixed(0);
+  document.getElementById('ret-display').textContent= pct(p.ret*100);
+  document.getElementById('stripe-val').textContent = (p.stripe*100).toFixed(1);
+  document.getElementById('stripe-display').textContent= pct(p.stripe*100);
+  document.getElementById('fixed-val').textContent  = p.fixed;
+  document.getElementById('fixed-display').textContent= fmt(p.fixed);
+  document.getElementById('pack-val').textContent   = p.pack;
+  document.getElementById('pack-display').textContent= fmt(p.pack);
+}
+
+// ============================================================
+// MASTER UPDATE
+// ============================================================
+function updateAll() {
+  updateDisplays();
+  renderKPIs();
+  renderUnitTable(currentFilter);
+  renderInventory();
+  renderScenarios();
+  renderProjection();
+  renderBreakEven();
+  renderCostStructure();
+}
+
+// ============================================================
+// FILTER / SCENARIO TABS
+// ============================================================
+let currentFilter = 'all';
+
+function filterCat(cat, el) {
+  currentFilter = cat;
+  document.querySelectorAll('.tabs .tab').forEach(t => {
+    if (t.closest('#unit-table') === null) return;
+    t.classList.remove('active');
+  });
+  // Target only the tabs near the unit table — just toggle by parent
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderUnitTable(cat === 'all' ? null : cat);
+}
+
+function setScenario(key, el) {
+  activeScenario = key;
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderProjection();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+updateAll();
+</script>
+
+</body>
+</html>

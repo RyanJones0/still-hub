@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Still — Coming Soon</title>
+  <meta name="description" content="A new standard in everyday clothing. Arriving 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --chalk:    #F4F1EC;
+      --graphite: #2A2A2A;
+      --sand:     #C9B89A;
+      --border:   #E0DAD0;
+      --text:     #1A1A1A;
+      --muted:    #7A7570;
+      --font:     'DM Sans', -apple-system, sans-serif;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--chalk);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Layout ---- */
+    .page {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* ---- Left — Image panel ---- */
+    .panel-image {
+      position: relative;
+      overflow: hidden;
+      background: var(--graphite);
+    }
+
+    .panel-image__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(160deg, #3a3530 0%, #1a1814 100%);
+    }
+
+    /* Subtle grain texture overlay */
+    .panel-image__bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+
+    .panel-image__content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px;
+    }
+
+    .panel-image__logo {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #F4F1EC;
+    }
+
+    .panel-image__quote {
+      max-width: 380px;
+    }
+
+    .panel-image__quote-text {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 300;
+      line-height: 1.2;
+      color: #F4F1EC;
+      margin-bottom: 24px;
+    }
+
+    .panel-image__quote-sub {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(244,241,236,0.45);
+    }
+
+    .panel-image__details {
+      display: flex;
+      gap: 40px;
+    }
+
+    .panel-detail__label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(244,241,236,0.35);
+      margin-bottom: 6px;
+    }
+
+    .panel-detail__value {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(244,241,236,0.7);
+      letter-spacing: 0.04em;
+    }
+
+    /* ---- Right — Form panel ---- */
+    .panel-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 72px;
+    }
+
+    .panel-form__eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .panel-form__heading {
+      font-family: var(--serif);
+      font-size: clamp(38px, 4vw, 58px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .panel-form__heading em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .panel-form__body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 380px;
+      margin-bottom: 48px;
+    }
+
+    /* Form */
+    .signup-form {
+      max-width: 400px;
+    }
+
+    .signup-form__label {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .signup-form__row {
+      display: flex;
+      border: 1px solid var(--border);
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .signup-form__row:focus-within {
+      border-color: var(--graphite);
+    }
+
+    .signup-form__input {
+      flex: 1;
+      padding: 15px 18px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+
+    .signup-form__input::placeholder {
+      color: #B8B0A6;
+    }
+
+    .signup-form__btn {
+      padding: 15px 24px;
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--graphite);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      white-space: nowrap;
+    }
+
+    .signup-form__btn:hover {
+      background: #1a1a1a;
+    }
+
+    .signup-form__note {
+      margin-top: 14px;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Success state */
+    .signup-form__success {
+      display: none;
+      padding: 20px 0;
+    }
+
+    .signup-form__success-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--graphite);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .signup-form__success-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .signup-form__success-heading {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .signup-form__success-text {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Divider + perks */
+    .panel-form__divider {
+      width: 32px;
+      height: 1px;
+      background: var(--border);
+      margin: 48px 0 32px;
+    }
+
+    .perks {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 360px;
+    }
+
+    .perk {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .perk__dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--sand);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .perk__text {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .perk__text strong {
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    /* Countdown */
+    .countdown {
+      margin-top: 48px;
+      display: flex;
+      gap: 32px;
+    }
+
+    .countdown__unit {
+      text-align: center;
+    }
+
+    .countdown__num {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--text);
+      display: block;
+      min-width: 48px;
+    }
+
+    .countdown__label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+      display: block;
+    }
+
+    .countdown__sep {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--border);
+      align-self: flex-start;
+      padding-top: 4px;
+    }
+
+    /* ---- Mobile ---- */
+    @media (max-width: 768px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-image {
+        min-height: 320px;
+      }
+
+      .panel-image__content {
+        padding: 32px 28px;
+      }
+
+      .panel-image__details {
+        display: none;
+      }
+
+      .panel-form {
+        padding: 52px 28px 64px;
+      }
+
+      .countdown {
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ========== LEFT — Brand panel ========== -->
+  <div class="panel-image">
+    <div class="panel-image__bg"></div>
+    <div class="panel-image__content">
+
+      <div class="panel-image__logo">Still</div>
+
+      <div class="panel-image__quote">
+        <p class="panel-image__quote-text">
+          Clothing that<br>earns its place<br>in your wardrobe.
+        </p>
+        <p class="panel-image__quote-sub">The Foundation Collection — 2026</p>
+      </div>
+
+      <div class="panel-image__details">
+        <div>
+          <p class="panel-detail__label">Made in</p>
+          <p class="panel-detail__value">Portugal &amp; Peru</p>
+        </div>
+        <div>
+          <p class="panel-detail__label">Collection</p>
+          <p class="panel-detail__value">24 pieces</p>
+        </div>
+        <div>
+          <p class="panel-detail__label">Fabric</p>
+          <p class="panel-detail__value">No synthetics</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== RIGHT — Form panel ========== -->
+  <div class="panel-form">
+
+    <p class="panel-form__eyebrow">Coming Soon</p>
+
+    <h1 class="panel-form__heading">
+      Be the first<br>to know when<br>we <em>arrive.</em>
+    </h1>
+
+    <p class="panel-form__body">
+      Still is a collection of everyday clothing built to the highest standard we could find.
+      Premium cotton and merino, made without shortcuts, in Portugal and Peru.
+      Launching 2026.
+    </p>
+
+    <!-- Email form -->
+    <form class="signup-form" id="signupForm" novalidate>
+      <label class="signup-form__label" for="nameInput">Join the waitlist</label>
+      <div class="signup-form__row" style="margin-bottom:8px;">
+        <input
+          class="signup-form__input"
+          type="text"
+          id="nameInput"
+          placeholder="Your first name"
+          autocomplete="given-name"
+          required
+        />
+      </div>
+      <div class="signup-form__row">
+        <input
+          class="signup-form__input"
+          type="email"
+          id="emailInput"
+          placeholder="Your email address"
+          autocomplete="email"
+          required
+        />
+        <button class="signup-form__btn" type="submit">Notify me</button>
+      </div>
+      <p class="signup-form__note">Early access &amp; founding member pricing. No spam, ever.</p>
+    </form>
+
+    <!-- Success state -->
+    <div class="signup-form__success" id="signupSuccess">
+      <div class="signup-form__success-icon">
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 7L5.5 10.5L12 4" stroke="#F4F1EC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="signup-form__success-heading">You're on the list.</p>
+      <p class="signup-form__success-text">
+        We'll reach out before anyone else when Still is ready.<br>
+        Worth the wait.
+      </p>
+    </div>
+
+    <div class="panel-form__divider"></div>
+
+    <!-- Perks -->
+    <div class="perks">
+      <div class="perk">
+        <div class="perk__dot"></div>
+        <p class="perk__text"><strong>Early access.</strong> Shop 48 hours before the public launch.</p>
+      </div>
+      <div class="perk">
+        <div class="perk__dot"></div>
+        <p class="perk__text"><strong>Founding member pricing.</strong> 15% off your first order, permanently.</p>
+      </div>
+      <div class="perk">
+        <div class="perk__dot"></div>
+        <p class="perk__text"><strong>Behind the build.</strong> Occasional emails on how we're making it.</p>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown" id="countdown">
+      <div class="countdown__unit">
+        <span class="countdown__num" id="cdDays">--</span>
+        <span class="countdown__label">Days</span>
+      </div>
+      <span class="countdown__sep">·</span>
+      <div class="countdown__unit">
+        <span class="countdown__num" id="cdHours">--</span>
+        <span class="countdown__label">Hours</span>
+      </div>
+      <span class="countdown__sep">·</span>
+      <div class="countdown__unit">
+        <span class="countdown__num" id="cdMins">--</span>
+        <span class="countdown__label">Mins</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* ---- Form ---- */
+  const form = document.getElementById('signupForm');
+  const success = document.getElementById('signupSuccess');
+  const btn = form.querySelector('.signup-form__btn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name  = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    if (!name || !email || !email.includes('@')) return;
+
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/frizy.jones28@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          _subject: `New Still Waitlist Signup — ${name}`,
+          _template: 'box',
+        }),
+      });
+
+      if (res.ok) {
+        form.style.display = 'none';
+        document.querySelector('.signup-form__success-heading').textContent = `You're on the list, ${name}.`;
+        success.style.display = 'block';
+      } else {
+        throw new Error('Failed');
+      }
+    } catch {
+      btn.textContent = 'Try again';
+      btn.disabled = false;
+    }
+  });
+
+  /* ---- Countdown — target: 1 October 2026 ---- */
+  const LAUNCH = new Date('2026-10-01T00:00:00');
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = LAUNCH - now;
+    if (diff <= 0) {
+      document.getElementById('countdown').style.display = 'none';
+      return;
+    }
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000)  / 60000);
+
+    document.getElementById('cdDays').textContent  = String(days).padStart(2, '0');
+    document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('cdMins').textContent  = String(mins).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 30000);
+</script>
+
+</body>
+</html>

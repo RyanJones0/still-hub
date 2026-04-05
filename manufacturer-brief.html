@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Still — Manufacturer Brief</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --chalk:    #F4F1EC;
+      --graphite: #2A2A2A;
+      --sand:     #C9B89A;
+      --border:   #E0DAD0;
+      --text:     #1A1A1A;
+      --muted:    #7A7570;
+      --font:     'DM Sans', sans-serif;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+    }
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font);
+      background: var(--chalk);
+      color: var(--text);
+    }
+
+    /* ---- Print styles ---- */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; }
+      .page { box-shadow: none; margin: 0; border-radius: 0; }
+      .email-preview { page-break-before: always; }
+    }
+
+    /* ---- Nav ---- */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+      background: var(--chalk);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topbar__logo {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .topbar__actions { display: flex; gap: 12px; }
+    .btn {
+      padding: 9px 20px;
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      transition: border-color 0.18s;
+    }
+    .btn:hover { border-color: var(--graphite); }
+    .btn--dark {
+      background: var(--graphite);
+      border-color: var(--graphite);
+      color: #F4F1EC;
+    }
+    .btn--dark:hover { background: #1a1a1a; }
+
+    /* ---- Layout ---- */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 48px 100px;
+    }
+
+    /* ---- Section header ---- */
+    .section-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ---- Brand brief page ---- */
+    .page {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 64px 72px;
+      margin-bottom: 40px;
+    }
+
+    .brief-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 56px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brief-logo {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    .brief-meta {
+      text-align: right;
+    }
+    .brief-meta p {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .brief-intro {
+      margin-bottom: 48px;
+    }
+    .brief-intro h1 {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .brief-intro p {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    .brief-block {
+      margin-bottom: 40px;
+    }
+    .brief-block__title {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .brief-block p {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* Two col */
+    .brief-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    /* Values list */
+    .brief-list {
+      list-style: none;
+    }
+    .brief-list li {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      padding-left: 14px;
+      position: relative;
+    }
+    .brief-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--sand);
+    }
+
+    /* Sample table */
+    .sample-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+    .sample-table th {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 10px 14px;
+      background: var(--chalk);
+      border: 1px solid var(--border);
+    }
+    .sample-table td {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text);
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      line-height: 1.5;
+    }
+    .sample-table tr:nth-child(even) td { background: #fafaf8; }
+
+    /* Colour palette */
+    .palette {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .swatch__colour {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+    }
+    .swatch__name {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* Footer */
+    .brief-footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brief-footer p {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+    }
+
+    /* ---- Email templates ---- */
+    .email-section { margin-top: 56px; }
+
+    .manufacturer-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab {
+      padding: 12px 24px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.18s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    .tab.active {
+      color: var(--text);
+      border-bottom-color: var(--graphite);
+    }
+
+    .email-preview {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 40px 48px;
+      display: none;
+    }
+    .email-preview.active { display: block; }
+
+    .email-field {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .email-field__label {
+      font-weight: 500;
+      min-width: 60px;
+      color: var(--muted);
+    }
+    .email-field__value { color: var(--text); }
+    .email-field__value a { color: var(--graphite); text-decoration: underline; }
+
+    .email-body {
+      margin-top: 28px;
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: var(--text);
+      white-space: pre-line;
+    }
+    .email-body strong { font-weight: 500; }
+
+    .copy-btn {
+      margin-top: 24px;
+      padding: 10px 22px;
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      transition: all 0.18s;
+    }
+    .copy-btn:hover { border-color: var(--graphite); }
+    .copy-btn.copied { background: var(--graphite); color: #F4F1EC; border-color: var(--graphite); }
+  </style>
+</head>
+<body>
+
+<div class="topbar no-print">
+  <span class="topbar__logo">Still</span>
+  <div class="topbar__actions">
+    <a href="hub.html" class="btn">← Hub</a>
+    <button class="btn btn--dark" onclick="window.print()">Print Brief</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <p class="section-label">Manufacturer Brief — Foundation Collection 2026</p>
+
+  <!-- ===== BRAND BRIEF ===== -->
+  <div class="page">
+    <div class="brief-header">
+      <div class="brief-logo">Still</div>
+      <div class="brief-meta">
+        <p>Ryan Jones — Creative Director</p>
+        <p>ryan@3pixmedia.com</p>
+        <p>Brisbane, Australia</p>
+        <p>April 2026</p>
+      </div>
+    </div>
+
+    <div class="brief-intro">
+      <h1>The Foundation Collection.<br>10-piece sample request.</h1>
+      <p>
+        Still is a new premium menswear brand based in Australia. We are building a small, considered collection of everyday clothing — made without shortcuts, using natural fibres only. We are seeking manufacturing partners for our inaugural Foundation Collection, launching in late 2026.
+      </p>
+    </div>
+
+    <div class="brief-cols">
+      <div class="brief-block">
+        <p class="brief-block__title">Who We Are</p>
+        <ul class="brief-list">
+          <li>Premium everyday menswear</li>
+          <li>Australia-based, global shipping</li>
+          <li>Direct-to-consumer, online-only</li>
+          <li>Small batch, considered production</li>
+          <li>Launching Q4 2026</li>
+        </ul>
+      </div>
+      <div class="brief-block">
+        <p class="brief-block__title">Our Standards</p>
+        <ul class="brief-list">
+          <li>Natural fibres only — no polyester</li>
+          <li>Reactive dye, ISO 105 wash-fastness</li>
+          <li>Single needle chain stitch finishing</li>
+          <li>Minimum 12 SPI on jersey knits</li>
+          <li>Tolerance: ±¼" on critical points</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brief-block">
+      <p class="brief-block__title">Colour Palette — Season 1</p>
+      <div class="palette">
+        <div class="swatch">
+          <div class="swatch__colour" style="background:#F4F1EC; border-color:#E0DAD0;"></div>
+          <span class="swatch__name">Chalk<br>11-0601 TCX</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__colour" style="background:#2A2A2A;"></div>
+          <span class="swatch__name">Graphite<br>19-0303 TCX</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__colour" style="background:#C9B89A;"></div>
+          <span class="swatch__name">Sand<br>14-1118 TCX</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__colour" style="background:#1B2B4B;"></div>
+          <span class="swatch__name">Navy<br>19-3832 TCX</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__colour" style="background:#4A3728;"></div>
+          <span class="swatch__name">Tobacco<br>18-1048 TCX</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="brief-block">
+      <p class="brief-block__title">Sample Order — 10 Pieces</p>
+      <table class="sample-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Garment</th>
+            <th>Fabric</th>
+            <th>Weight</th>
+            <th>Colour</th>
+            <th>Size</th>
+            <th>Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Foundation Tee</td><td>100% Supima Cotton, tubular knit</td><td>220 GSM</td><td>Chalk</td><td>M</td><td>1</td></tr>
+          <tr><td>2</td><td>Foundation Tee</td><td>100% Supima Cotton, tubular knit</td><td>220 GSM</td><td>Graphite</td><td>M</td><td>1</td></tr>
+          <tr><td>3</td><td>Heavyweight Tee</td><td>100% Supima Cotton, garment dyed</td><td>280 GSM</td><td>Sand</td><td>M</td><td>1</td></tr>
+          <tr><td>4</td><td>Foundation Hoodie</td><td>85% Cotton / 15% Merino, French terry</td><td>380 GSM</td><td>Graphite</td><td>M</td><td>1</td></tr>
+          <tr><td>5</td><td>Foundation Hoodie</td><td>85% Cotton / 15% Merino, French terry</td><td>380 GSM</td><td>Chalk</td><td>M</td><td>1</td></tr>
+          <tr><td>6</td><td>Foundation Track Pant</td><td>85% Cotton / 15% Merino, French terry</td><td>380 GSM</td><td>Graphite</td><td>M</td><td>1</td></tr>
+          <tr><td>7</td><td>Five-Pocket Trouser</td><td>98% Cotton / 2% Elastane, twill</td><td>280 GSM</td><td>Graphite</td><td>32W / 32L</td><td>1</td></tr>
+          <tr><td>8</td><td>The Oxford Shirt</td><td>100% Cotton OCBD weave</td><td>140 GSM</td><td>Chalk</td><td>M</td><td>1</td></tr>
+          <tr><td>9</td><td>Merino Crew Sock</td><td>80% Merino / 20% Nylon</td><td>—</td><td>Chalk</td><td>One size</td><td>1 pair</td></tr>
+          <tr><td>10</td><td>Six-Panel Cap</td><td>100% Cotton twill, unstructured</td><td>—</td><td>Graphite</td><td>One size</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="brief-cols">
+      <div class="brief-block">
+        <p class="brief-block__title">Timeline</p>
+        <ul class="brief-list">
+          <li>Sample quotes requested by May 2026</li>
+          <li>Sample approval by July 2026</li>
+          <li>Production run Q3 2026</li>
+          <li>Launch Q4 2026</li>
+        </ul>
+      </div>
+      <div class="brief-block">
+        <p class="brief-block__title">Production Intent</p>
+        <ul class="brief-list">
+          <li>Initial run: 50–100 units per SKU</li>
+          <li>24 SKUs across Foundation Collection</li>
+          <li>Reorder model based on sell-through</li>
+          <li>Long-term partner relationship sought</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brief-footer">
+      <p>Still — Confidential brand brief. Not for distribution.</p>
+      <p>ryan@3pixmedia.com · Brisbane, Australia</p>
+    </div>
+  </div>
+
+  <!-- ===== EMAIL TEMPLATES ===== -->
+  <div class="email-section no-print">
+    <p class="section-label">Outreach Emails — Ready to Send</p>
+
+    <div class="manufacturer-tabs">
+      <button class="tab active" onclick="showTab('asbx')">ASBX — Portugal</button>
+      <button class="tab" onclick="showTab('masterknit')">Master Knit — Peru</button>
+      <button class="tab" onclick="showTab('positivo')">Positivo — Portugal</button>
+      <button class="tab" onclick="showTab('naveena')">Naveena — Pakistan</button>
+    </div>
+
+    <!-- ASBX -->
+    <div class="email-preview active" id="email-asbx">
+      <div class="email-field"><span class="email-field__label">To</span><span class="email-field__value"><a href="mailto:info@asbx.eu">info@asbx.eu</a></span></div>
+      <div class="email-field"><span class="email-field__label">Subject</span><span class="email-field__value">Sample enquiry — Still, premium menswear, 10-piece sample run</span></div>
+      <div class="email-body" id="body-asbx">Hi ASBX team,
+
+My name is Ryan Jones. I'm the founder of Still, a new premium menswear brand based in Australia launching in late 2026.
+
+We are building a small, considered collection of everyday clothing using natural fibres only — no polyester. We've been researching manufacturing partners and your work in premium cotton and jersey production aligns closely with what we're after.
+
+<strong>We are ready to place a 10-piece sample order</strong> covering the following garments:
+
+— Foundation Tee (220 GSM Supima cotton, tubular knit) × 2 colourways
+— Heavyweight Tee (280 GSM Supima cotton, garment dyed)
+— Foundation Hoodie (380 GSM cotton/merino French terry) × 2 colourways
+— Foundation Track Pant (380 GSM cotton/merino French terry)
+— Oxford Shirt (140 GSM 100% cotton OCBD)
+— Five-Pocket Trouser (280 GSM cotton/elastane twill)
+— Merino Crew Sock (80/20 merino/nylon)
+— Six-Panel Cap (cotton twill, unstructured)
+
+Our standards: reactive dye, ISO 105 wash-fastness minimum grade 4, single needle chain stitch finishing, ±¼" tolerance on critical points of measure.
+
+I've attached our brand brief and spec sheet for your reference.
+
+Could you let me know:
+1. Whether this is within your capability and minimum order quantities
+2. Your lead time for samples
+3. An indicative price per unit for the jersey knit pieces
+
+We're aiming for sample approval by July 2026 with a production run to follow in Q3.
+
+Happy to jump on a call if that's easier.
+
+Kind regards,
+Ryan Jones
+Still — Creative Director
+ryan@3pixmedia.com
+Brisbane, Australia</div>
+      <button class="copy-btn" onclick="copyEmail('body-asbx', this)">Copy Email</button>
+    </div>
+
+    <!-- Master Knit -->
+    <div class="email-preview" id="email-masterknit">
+      <div class="email-field"><span class="email-field__label">To</span><span class="email-field__value"><a href="mailto:info@masterknit.com.pe">info@masterknit.com.pe</a></span></div>
+      <div class="email-field"><span class="email-field__label">Subject</span><span class="email-field__value">Sample enquiry — Still, premium menswear, Supima + merino knitwear</span></div>
+      <div class="email-body" id="body-masterknit">Hi Master Knit team,
+
+My name is Ryan Jones, founder of Still — a new premium menswear brand launching in Australia in late 2026.
+
+We are specifically looking for a Peruvian manufacturing partner for our knitwear. Peru's Supima and Pima cotton is unmatched, and we want that provenance built into our brand story.
+
+<strong>We're ready to place a 10-piece sample order</strong> with a focus on:
+
+— Foundation Tee (220 GSM Supima cotton, tubular knit) × 2 colourways — Chalk + Graphite
+— Heavyweight Tee (280 GSM Supima cotton, garment dyed) — Sand
+— Merino Crew Sock (80% merino / 20% nylon) — Chalk
+
+Our specification requirements:
+— Natural fibres only, no synthetic blends
+— Reactive dye, ISO 105 wash-fastness grade 4 minimum
+— Single needle chain stitch on all jersey seams
+— 12 SPI minimum stitch density
+— Tolerance: ±¼" on chest, body length, shoulder
+
+I have a full spec sheet and brand brief ready to share.
+
+Could you advise on:
+1. MOQ for sample stage vs production run
+2. Lead time for samples
+3. Indicative CMT cost per unit on 220 GSM tubular tee
+
+We're targeting sample sign-off by July 2026, production Q3 2026.
+
+Kind regards,
+Ryan Jones
+Still — Creative Director
+ryan@3pixmedia.com
+Brisbane, Australia</div>
+      <button class="copy-btn" onclick="copyEmail('body-masterknit', this)">Copy Email</button>
+    </div>
+
+    <!-- Positivo -->
+    <div class="email-preview" id="email-positivo">
+      <div class="email-field"><span class="email-field__label">To</span><span class="email-field__value"><a href="mailto:info@positivofashion.com">info@positivofashion.com</a></span></div>
+      <div class="email-field"><span class="email-field__label">Subject</span><span class="email-field__value">Sample enquiry — Still, premium menswear, woven + jersey production</span></div>
+      <div class="email-body" id="body-positivo">Hi Positivo team,
+
+I'm Ryan Jones, founder of Still — a premium menswear brand based in Australia, launching Q4 2026.
+
+We're looking for a Portuguese manufacturer for the woven pieces in our Foundation Collection. Specifically:
+
+— Oxford Shirt (140 GSM 100% cotton OCBD weave, single needle) — Chalk
+— Five-Pocket Trouser (280 GSM 98% cotton / 2% elastane twill) — Graphite
+
+Both pieces require precise pattern work and clean finish quality. Our brand sits at the premium end — comparable to brands such as Our Legacy, Applied Art Forms, and Sunspel in terms of construction standard.
+
+<strong>We'd like to start with a 2-piece sample</strong> to assess quality and fit before committing to a broader partnership.
+
+Our requirements:
+— Natural fibre base (no polyester)
+— ISO 105 wash-fastness grade 4 minimum
+— Single needle throughout
+— Pantone TCX colour matching
+
+Please let me know your sample lead time, indicative pricing, and whether you have capacity to take on a new brand partner for Q3 2026 production.
+
+Kind regards,
+Ryan Jones
+Still — Creative Director
+ryan@3pixmedia.com
+Brisbane, Australia</div>
+      <button class="copy-btn" onclick="copyEmail('body-positivo', this)">Copy Email</button>
+    </div>
+
+    <!-- Naveena -->
+    <div class="email-preview" id="email-naveena">
+      <div class="email-field"><span class="email-field__label">To</span><span class="email-field__value"><a href="mailto:exports@naveenafabrics.com">exports@naveenafabrics.com</a></span></div>
+      <div class="email-field"><span class="email-field__label">Subject</span><span class="email-field__value">Sample enquiry — Still, premium menswear, French terry hoodies + track pants</span></div>
+      <div class="email-body" id="body-naveena">Hi Naveena team,
+
+My name is Ryan Jones, founder of Still — a new premium menswear brand based in Brisbane, Australia, launching Q4 2026.
+
+We are building a winter set for our Foundation Collection and are looking for a manufacturing partner specialising in premium fleece and French terry production.
+
+<strong>Sample requirements:</strong>
+
+— Foundation Hoodie (380 GSM, 85% cotton / 15% merino, French terry, pullover, dropped shoulder) × 2 colourways — Chalk + Graphite
+— Foundation Track Pant (380 GSM, 85% cotton / 15% merino, French terry, tapered with ribbed cuff, YKK zip back pocket)
+
+Construction standards:
+— French terry loop must be dense and consistent — minimum 380 GSM
+— Merino content must be verified — we will test fibre composition
+— YKK zippers only
+— Reactive dye, ISO 105 grade 4 minimum
+— Single needle throughout
+— Pantone TCX 19-0303 (Graphite) and 11-0601 (Chalk) colourways
+
+Could you share your sample pricing, lead time, and MOQ for production?
+
+We are targeting sample approval July 2026, production Q3 2026.
+
+Kind regards,
+Ryan Jones
+Still — Creative Director
+ryan@3pixmedia.com
+Brisbane, Australia</div>
+      <button class="copy-btn" onclick="copyEmail('body-naveena', this)">Copy Email</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.email-preview').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('email-' + id).classList.add('active');
+  }
+
+  function copyEmail(id, btn) {
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy Email';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
