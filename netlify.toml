@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/"
+  to = "/hub.html"
+  status = 302
